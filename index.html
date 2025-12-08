@@ -1,439 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pavin Das – Security Engineer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pavin Das – Security Engineer | Ethical Hacker</title>
+  <meta name="description"
+    content="Pavin Das - Security Engineer & Ethical Hacker based in Bengaluru. Specializing in Web Application Testing, Secure Code Review, and Vulnerability Assessment." />
+  <meta name="author" content="Pavin Das" />
+  <meta name="keywords"
+    content="Security Engineer, Ethical Hacker, Penetration Tester, Bug Hunter, Bengaluru, Cybersecurity" />
+  <meta property="og:title" content="Pavin Das – Security Engineer" />
+  <meta property="og:description"
+    content="Security Engineer & Ethical Hacker specializing in Web Application Testing and Vulnerability Assessment." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/88970616?v=4" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@pavin__das" />
+  <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/88970616?v=4" />
+  <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/88970616?v=4" type="image/x-icon" />
+  <link rel="canonical" href="https://pavindas.github.io" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css">
 
-    <link
-      rel="shortcut icon"
-      href="https://avatars.githubusercontent.com/u/88970616?v=4"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="nav-wrapper">
-      <div class="nav-container">
-        <a href="#home-section" class="logo">PAVIN<span>DAS</span></a>
+</head>
 
-        <nav class="nav" id="nav">
-          <a href="#home-section" class="nav-link active">Home</a>
-          <a href="#about-section" class="nav-link">About</a>
-          <a href="#resume-section" class="nav-link">Projects</a>
-          <a href="#services-section" class="nav-link">Services</a>
-          <a href="#skills-section" class="nav-link">Skills</a>
-          <a href="#contact-section" class="nav-link">Contact</a>
-        </nav>
+<body>
+  <canvas id="particles"></canvas>
 
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-          <span></span><span></span>
-        </button>
-      </div>
-    </header>
+  <header>
+    <div class="nav-container">
+      <a href="#hero" class="logo">PAVIN<span>DAS</span></a>
+      <nav id="nav">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
 
-    <section id="home-section" class="hero-section">
-      <div class="hero-inner glass">
-        <div class="hero-text">
-          <p class="hero-eyebrow">HELLO!</p>
-          <h1 class="hero-title">I'm <span>Pavin Das</span></h1>
-          <h2 class="hero-subtitle">Security Engineer</h2>
-          <div class="hero-buttons">
-            <a href="#contact-section" class="btn primary">Hire Me</a>
-            <a
-              href="https://github.com/PavinDas?tab=repositories"
-              target="_blank"
-              class="btn ghost"
-              >My Works</a
-            >
-          </div>
-        </div>
-        <div class="hero-image">
-          <div class="hero-image-bg"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about-section" class="section">
-      <div class="section-header">
-        <p class="section-eyebrow">About</p>
-        <h2 class="section-title">About Me</h2>
-      </div>
-
-      <div class="about-grid">
-        <div class="about-image glass">
-          <div class="about-image-bg"></div>
-        </div>
-        <div class="about-content glass">
-          <ul class="about-info">
-            <li><span>Name</span><span>Pavin Das</span></li>
-            <li><span>Location</span><span>Bengaluru</span></li>
-            <li><span>Zip code</span><span>560102</span></li>
-            <li><span>Email</span><span>pavindas007@gmail.com</span></li>
-          </ul>
-          <div class="about-extra">
-            <div class="about-stat">
-              <div class="stat-number">30+</div>
-              <div class="stat-label">Projects Completed</div>
+  <main>
+    <!-- Hero Section -->
+    <section id="hero">
+      <div class="container">
+        <div class="hero-grid glass-strong">
+          <div class="hero-content">
+            <p class="hero-eyebrow">&gt; HELLO!</p>
+            <h1 class="hero-title">
+              I'm <span class="glitch" data-text="Pavin Das">Pavin Das</span>
+            </h1>
+            <h2 class="hero-subtitle">
+              <span id="typedText"></span><span class="cursor"></span>
+            </h2>
+            <div class="terminal-block">
+              <p class="line"><span class="prompt">root@security:~$</span> <span class="muted">cat
+                  specialization.txt</span></p>
+              <p class="line"><span class="prompt">&gt;</span> Web Application Security Testing</p>
+              <p class="line"><span class="prompt">&gt;</span> Vulnerability Assessment & Penetration Testing</p>
+              <p class="line"><span class="prompt">&gt;</span> Secure Code Review</p>
+              <p class="line"><span class="prompt">root@security:~$</span> <span class="muted">echo $STATUS</span></p>
+              <p class="line"><span class="prompt">&gt;</span> Available for freelance</p>
             </div>
-            <a
-              href="https://github.com/PavinDas/PavinDas/releases/download/Resume/PavinDas.pdf"
-              target="_blank"
-              class="btn primary"
-            >
-              Download CV
-            </a>
+            <div class="hero-buttons">
+              <a href="#contact" class="btn btn-primary">Hire Me</a>
+              <a href="https://github.com/PavinDas?tab=repositories" target="_blank" class="btn btn-ghost">My Works</a>
+            </div>
+          </div>
+          <div class="hero-image glass scanlines">
+            <div class="hero-image-bg"></div>
+            <div class="hero-image-overlay"></div>
+            <div class="hero-image-grid"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="resume-section" class="section">
-      <div class="section-header center">
-        <p class="section-eyebrow">Projects</p>
-        <h2 class="section-title">Projects</h2>
-      </div>
-
-      <div class="cards-grid">
-        <article class="card glass">
-          <h3 class="card-title">WiFried</h3>
-          <p class="card-tag">WiFi Attacking Tool</p>
-          <p class="card-text">
-            Python-based tool to scan Wi-Fi networks, perform deauthentication
-            attacks, capture WPA handshakes, and attempt password cracking.
-          </p>
-          <ul class="card-list">
-            <li>List available Wi-Fi interfaces</li>
-            <li>Enable monitor mode & scan networks</li>
-            <li>Perform deauth attacks</li>
-            <li>Capture WPA handshakes</li>
-            <li>Crack passwords using aircrack-ng</li>
-          </ul>
-        </article>
-
-        <article class="card glass">
-          <h3 class="card-title">TrafficTrace</h3>
-          <p class="card-tag">Network Traffic Monitor</p>
-          <p class="card-text">
-            Python-based tool for network traffic analysis, intrusion detection,
-            and log monitoring.
-          </p>
-          <ul class="card-list">
-            <li>Identifies active hosts using ARP</li>
-            <li>Parses network logs for anomalies</li>
-            <li>Shows top active IPs & protocols</li>
-            <li>Detects port scans & exfiltration</li>
-          </ul>
-        </article>
-
-        <article class="card glass">
-          <h3 class="card-title">CoreWatch</h3>
-          <p class="card-tag">Linux System Monitor Tool</p>
-          <p class="card-text">
-            Bash script for system health checks, CPU/memory monitoring, and
-            automated backups with rsync.
-          </p>
-          <ul class="card-list">
-            <li>Monitors CPU & memory usage</li>
-            <li>Logs system health details</li>
-            <li>Top 5 memory-heavy processes</li>
-            <li>Checks for system updates</li>
-            <li>Backups using rsync</li>
-          </ul>
-        </article>
-
-        <article class="card glass">
-          <h3 class="card-title">TamperTracker</h3>
-          <p class="card-tag">File Integrity Monitor</p>
-          <p class="card-text">
-            Python-based FIM that detects unauthorized file changes and creates
-            Jira incidents automatically.
-          </p>
-          <ul class="card-list">
-            <li>SHA-256 hashing for file tracking</li>
-            <li>Real-time tamper detection</li>
-            <li>Auto Jira ticket creation</li>
-            <li>Configurable monitoring intervals</li>
-          </ul>
-        </article>
-
-        <article class="card glass">
-          <h3 class="card-title">NopeWare</h3>
-          <p class="card-tag">Virus Scanner Tool</p>
-          <p class="card-text">
-            CLI utility to upload files to VirusTotal, fetch results, and
-            highlight malicious detections.
-          </p>
-          <ul class="card-list">
-            <li>Uploads files for scanning</li>
-            <li>Shows name, size & SHA-256</li>
-            <li>Displays AV verdicts</li>
-            <li>Flags malicious detections</li>
-          </ul>
-        </article>
-
-        <article class="card glass">
-          <h3 class="card-title">SubmarineScanner</h3>
-          <p class="card-tag">Subdomain Finder Tool</p>
-          <p class="card-text">
-            Python script using a custom wordlist to discover hidden subdomains
-            and paths.
-          </p>
-          <ul class="card-list">
-            <li>Custom wordlist-based discovery</li>
-            <li>Simple & lightweight</li>
-            <li>Custom User-Agent support</li>
-          </ul>
-        </article>
-      </div>
-
-      <div class="section-cta center">
-        <a
-          href="https://github.com/PavinDas/PavinDas/releases/download/Resume/PavinDas.pdf"
-          target="_blank"
-          class="btn primary"
-        >
-          Download CV
-        </a>
-      </div>
-    </section>
-
-    <section id="services-section" class="section">
-      <div class="section-header center">
-        <p class="section-eyebrow">Services</p>
-        <h2 class="section-title">What I Do</h2>
-      </div>
-
-      <div class="cards-grid services-grid">
-        <a
-          href="https://projects-pavindas.carrd.co/"
-          target="_blank"
-          class="card glass hover-link"
-        >
-          <h3 class="card-title">Web Application Testing</h3>
-          <p class="card-text">
-            Manual and automated security testing for modern web apps.
-          </p>
-        </a>
-
-        <a
-          href="https://candid-for-you.client-gallery.com/gallery/capture"
-          target="_blank"
-          class="card glass hover-link"
-        >
-          <h3 class="card-title">Secure Code Review</h3>
-          <p class="card-text">
-            Identify insecure patterns before they reach production.
-          </p>
-        </a>
-
-        <div class="card glass">
-          <h3 class="card-title">Vulnerability Assessment</h3>
-          <p class="card-text">
-            End-to-end assessments with prioritized remediation steps.
-          </p>
+    <!-- About Section -->
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow"><span class="prompt">&gt;</span> ABOUT</p>
+          <h2 class="section-title"><span class="prompt">$</span> cat about.txt</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-image glass-strong scanlines">
+            <div class="about-image-bg"></div>
+          </div>
+          <div class="about-content glass-strong">
+            <ul class="info-list">
+              <li><span class="label">Name</span><span>Pavin Das</span></li>
+              <li><span class="label">Location</span><span>Bengaluru</span></li>
+              <li><span class="label">Zip code</span><span>560102</span></li>
+              <li><span class="label">Email</span><span>pavindas007@gmail.com</span></li>
+            </ul>
+            <div class="about-footer">
+              <div class="stat-block">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Projects Completed</div>
+              </div>
+              <a href="https://github.com/PavinDas/PavinDas/releases/download/Resume/PavinDas.pdf" target="_blank"
+                class="btn btn-primary">
+                ↓ Download CV
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="skills-section" class="section">
-      <div class="section-header center">
-        <p class="section-eyebrow">Skills</p>
-        <h2 class="section-title">My Skills</h2>
+    <!-- Projects Section -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow"><span class="prompt">&gt;</span> PROJECTS</p>
+          <h2 class="section-title"><span class="prompt">$</span> ls -la ~/projects</h2>
+        </div>
+        <div class="cards-grid">
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0s">
+            <div class="card-title"><span class="icon">&gt;</span> WiFried</div>
+            <div class="card-tag">WiFi Attacking Tool</div>
+            <p class="card-text">Python-based tool to scan Wi-Fi networks, perform deauthentication attacks, capture WPA
+              handshakes, and attempt password cracking.</p>
+            <ul class="card-list">
+              <li>List available Wi-Fi interfaces</li>
+              <li>Enable monitor mode & scan networks</li>
+              <li>Perform deauth attacks</li>
+              <li>Capture WPA handshakes</li>
+              <li>Crack passwords using aircrack-ng</li>
+            </ul>
+          </div>
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0.1s">
+            <div class="card-title"><span class="icon">&gt;</span> TrafficTrace</div>
+            <div class="card-tag">Network Traffic Monitor</div>
+            <p class="card-text">Python-based tool for network traffic analysis, intrusion detection, and log
+              monitoring.</p>
+            <ul class="card-list">
+              <li>Identifies active hosts using ARP</li>
+              <li>Parses network logs for anomalies</li>
+              <li>Shows top active IPs & protocols</li>
+              <li>Detects port scans & exfiltration</li>
+            </ul>
+          </div>
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0.2s">
+            <div class="card-title"><span class="icon">&gt;</span> CoreWatch</div>
+            <div class="card-tag">Linux System Monitor Tool</div>
+            <p class="card-text">Bash script for system health checks, CPU/memory monitoring, and automated backups with
+              rsync.</p>
+            <ul class="card-list">
+              <li>Monitors CPU & memory usage</li>
+              <li>Logs system health details</li>
+              <li>Top 5 memory-heavy processes</li>
+              <li>Checks for system updates</li>
+              <li>Backups using rsync</li>
+            </ul>
+          </div>
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0.3s">
+            <div class="card-title"><span class="icon">&gt;</span> TamperTracker</div>
+            <div class="card-tag">File Integrity Monitor</div>
+            <p class="card-text">Python-based FIM that detects unauthorized file changes and creates Jira incidents
+              automatically.</p>
+            <ul class="card-list">
+              <li>SHA-256 hashing for file tracking</li>
+              <li>Real-time tamper detection</li>
+              <li>Auto Jira ticket creation</li>
+              <li>Configurable monitoring intervals</li>
+            </ul>
+          </div>
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0.4s">
+            <div class="card-title"><span class="icon">&gt;</span> NopeWare</div>
+            <div class="card-tag">Virus Scanner Tool</div>
+            <p class="card-text">CLI utility to upload files to VirusTotal, fetch results, and highlight malicious
+              detections.</p>
+            <ul class="card-list">
+              <li>Uploads files for scanning</li>
+              <li>Shows name, size & SHA-256</li>
+              <li>Displays AV verdicts</li>
+              <li>Flags malicious detections</li>
+            </ul>
+          </div>
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0.5s">
+            <div class="card-title"><span class="icon">&gt;</span> SubmarineScanner</div>
+            <div class="card-tag">Subdomain Finder Tool</div>
+            <p class="card-text">Python script using a custom wordlist to discover hidden subdomains and paths.</p>
+            <ul class="card-list">
+              <li>Custom wordlist-based discovery</li>
+              <li>Simple & lightweight</li>
+              <li>Custom User-Agent support</li>
+            </ul>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="https://github.com/PavinDas/PavinDas/releases/download/Resume/PavinDas.pdf" target="_blank"
+            class="btn btn-primary">
+            ↓ Download CV
+          </a>
+        </div>
       </div>
+    </section>
 
-      <div class="skills-grid">
-        <div class="skill glass">
-          <div class="skill-head">
-            <span>OWASP Top 10</span>
-            <span>95%</span>
-          </div>
-          <div class="skill-bar"><span style="width: 95%"></span></div>
+    <!-- Services Section -->
+    <section id="services">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow"><span class="prompt">&gt;</span> SERVICES</p>
+          <h2 class="section-title"><span class="prompt">$</span> ./services.sh</h2>
         </div>
-
-        <div class="skill glass">
-          <div class="skill-head">
-            <span>Business Logic Testing</span>
-            <span>95%</span>
+        <div class="cards-grid">
+          <a target="_blank"
+            class="card glass-strong card-link animate-fade-in-up" style="animation-delay: 0s">
+            <span class="external-icon">↗</span>
+            <div class="card-title"><span class="icon">🌐</span> Web Application Testing</div>
+            <p class="card-text">Manual and automated security testing for modern web apps.</p>
+          </a>
+          <a target="_blank"
+            class="card glass-strong card-link animate-fade-in-up" style="animation-delay: 0.1s">
+            <span class="external-icon">↗</span>
+            <div class="card-title"><span class="icon">🔍</span> Secure Code Review</div>
+            <p class="card-text">Identify insecure patterns before they reach production.</p>
+          </a>
+          <div class="card glass-strong animate-fade-in-up" style="animation-delay: 0.2s">
+            <div class="card-title"><span class="icon">🛡️</span> Vulnerability Assessment</div>
+            <p class="card-text">End-to-end assessments with prioritized remediation steps.</p>
           </div>
-          <div class="skill-bar"><span style="width: 95%"></span></div>
-        </div>
-
-        <div class="skill glass">
-          <div class="skill-head">
-            <span>Auth & Session Security</span>
-            <span>90%</span>
-          </div>
-          <div class="skill-bar"><span style="width: 90%"></span></div>
-        </div>
-
-        <div class="skill glass">
-          <div class="skill-head">
-            <span>Insecure Coding Patterns</span>
-            <span>85%</span>
-          </div>
-          <div class="skill-bar"><span style="width: 85%"></span></div>
-        </div>
-
-        <div class="skill glass">
-          <div class="skill-head">
-            <span>Vulnerability Reporting</span>
-            <span>85%</span>
-          </div>
-          <div class="skill-bar"><span style="width: 85%"></span></div>
-        </div>
-
-        <div class="skill glass">
-          <div class="skill-head">
-            <span>PoC Creation</span>
-            <span>80%</span>
-          </div>
-          <div class="skill-bar"><span style="width: 80%"></span></div>
         </div>
       </div>
     </section>
 
-    <section class="section section-cta-strip">
-      <div class="cta-strip glass">
-        <h2>I'm <span>available</span> for freelancing</h2>
-        <a href="#contact-section" class="btn primary">Hire Me</a>
+    <!-- Skills Section -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow"><span class="prompt">&gt;</span> SKILLS</p>
+          <h2 class="section-title"><span class="prompt">$</span> cat skills.json</h2>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0s">
+            <div class="skill-header">
+              <span class="name"><span class="hash">#</span> OWASP Top 10</span>
+              <span class="percent">95%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" data-width="95"></div>
+            </div>
+          </div>
+          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.1s">
+            <div class="skill-header">
+              <span class="name"><span class="hash">#</span> Business Logic Testing</span>
+              <span class="percent">95%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" data-width="95"></div>
+            </div>
+          </div>
+          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.2s">
+            <div class="skill-header">
+              <span class="name"><span class="hash">#</span> Auth & Session Security</span>
+              <span class="percent">90%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" data-width="90"></div>
+            </div>
+          </div>
+          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.3s">
+            <div class="skill-header">
+              <span class="name"><span class="hash">#</span> Insecure Coding Patterns</span>
+              <span class="percent">85%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" data-width="85"></div>
+            </div>
+          </div>
+          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.4s">
+            <div class="skill-header">
+              <span class="name"><span class="hash">#</span> Vulnerability Reporting</span>
+              <span class="percent">85%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" data-width="85"></div>
+            </div>
+          </div>
+          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.5s">
+            <div class="skill-header">
+              <span class="name"><span class="hash">#</span> PoC Creation</span>
+              <span class="percent">80%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" data-width="80"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="contact-section" class="section">
-      <div class="section-header center">
-        <p class="section-eyebrow">Contact</p>
-        <h2 class="section-title">Contact Me</h2>
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <div class="cta-box glass-strong">
+        <h2>I'm <span class="highlight">available</span> for freelancing</h2>
+        <a href="#contact" class="btn btn-primary">Hire Me</a>
       </div>
+    </div>
 
-      <div class="contact-grid">
-        <div class="contact-info glass">
-          <div class="contact-item">
-            <h3>Address</h3>
-            <p>HustleHub Tech Park, Somasundarapalaya, Bengaluru</p>
-          </div>
-          <div class="contact-item">
-            <h3>GitHub</h3>
-            <p>
-              <a href="https://github.com/PavinDas" target="_blank">PavinDas</a>
-            </p>
-          </div>
-          <div class="contact-item">
-            <h3>Email</h3>
-            <p>
-              <a href="mailto:pavindas007@gmail.com">pavindas007@gmail.com</a>
-            </p>
-          </div>
-          <div class="contact-item">
-            <h3>Website</h3>
-            <p>
-              <a href="https://pavindas.github.io" target="_blank"
-                >pavindas.io</a
-              >
-            </p>
-          </div>
-          <div class="contact-item">
-            <h3>LinkedIn</h3>
-            <p>
-              <a href="https://linkedin.com/in/pavin-das" target="_blank"
-                >pavin-das</a
-              >
-            </p>
-          </div>
-          <div class="contact-item">
-            <h3>TryHackMe</h3>
-            <p>
-              <a href="https://tryhackme.com/p/pavindas" target="_blank"
-                >pavindas</a
-              >
-            </p>
-          </div>
-          <div class="contact-item">
-            <h3>Instagram</h3>
-            <p>
-              <a href="https://instagram.com/pavin__das" target="_blank"
-                >pavin__das</a
-              >
-            </p>
-          </div>
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow"><span class="prompt">&gt;</span> CONTACT</p>
+          <h2 class="section-title"><span class="prompt">$</span> ./connect.sh</h2>
         </div>
-
-        <form id="contact-form" class="contact-form glass">
-          <div class="form-group">
-            <label for="name">Your Name</label>
-            <input id="name" name="name" type="text" required />
+        <div class="contact-grid">
+          <div class="contact-info glass-strong">
+            <div class="contact-item">
+              <h3>Address</h3>
+              <p>HustleHub Tech Park, Somasundarapalaya, Bengaluru</p>
+            </div>
+            <div class="contact-item">
+              <h3>GitHub</h3>
+              <p><a href="https://github.com/PavinDas" target="_blank">PavinDas</a></p>
+            </div>
+            <div class="contact-item">
+              <h3>Email</h3>
+              <p><a href="mailto:pavindas007@gmail.com">pavindas007@gmail.com</a></p>
+            </div>
+            <div class="contact-item">
+              <h3>Website</h3>
+              <p><a href="https://pavindas.github.io" target="_blank">pavindas.io</a></p>
+            </div>
+            <div class="contact-item">
+              <h3>LinkedIn</h3>
+              <p><a href="https://linkedin.com/in/pavin-das" target="_blank">pavin-das</a></p>
+            </div>
+            <div class="contact-item">
+              <h3>TryHackMe</h3>
+              <p><a href="https://tryhackme.com/p/pavindas" target="_blank">pavindas</a></p>
+            </div>
+            <div class="contact-item">
+              <h3>Instagram</h3>
+              <p><a href="https://instagram.com/pavin__das" target="_blank">pavin__das</a></p>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="email">Your Email</label>
-            <input id="email" name="email" type="email" required />
-          </div>
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <input id="subject" name="subject" type="text" required />
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="btn primary full">Send Message</button>
-          <p class="form-status" id="form-status"></p>
-        </form>
+          <form id="contactForm" class="contact-form glass-strong">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Your Email</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" required />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+            <p class="form-status" id="formStatus"></p>
+          </form>
+        </div>
       </div>
     </section>
+  </main>
 
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-about">
-          <h3>About</h3>
-          <div class="footer-social">
-            <a href="https://twitter.com/pavin__das" target="_blank">Twitter</a>
-            <a href="https://github.com/PavinDas" target="_blank">GitHub</a>
-            <a href="https://instagram.com/pavin__das" target="_blank"
-              >Instagram</a
-            >
-          </div>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h3>About</h3>
+        <div class="social-links">
+          <a href="https://twitter.com/pavin__das" target="_blank">Twitter</a>
+          <a href="https://github.com/PavinDas" target="_blank">GitHub</a>
+          <a href="https://instagram.com/pavin__das" target="_blank">Instagram</a>
         </div>
-
+      </div>
+      <div class="footer-section">
+        <h3>Links</h3>
         <div class="footer-links">
-          <h3>Links</h3>
-          <a href="#home-section">Home</a>
-          <a href="#about-section">About</a>
-          <a href="#services-section">Services</a>
-          <a href="#resume-section">Projects</a>
-          <a href="#contact-section">Contact</a>
+          <a href="#hero">Home</a>
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
         </div>
-
+      </div>
+      <div class="footer-section">
+        <h3>Services</h3>
         <div class="footer-links">
-          <h3>Services</h3>
           <span>Network Security</span>
           <span>Threat Intelligence</span>
           <span>Intrusion Detection</span>
           <span>Security Incident Handling</span>
           <span>Risk Management</span>
         </div>
-
-        <div class="footer-contact">
-          <h3>Have a Question?</h3>
-          <p>HustleHub Tech Park, Somasundarapalaya, Bengaluru</p>
-          <p>
-            <a href="mailto:pavindas007@gmail.com">pavindas007@gmail.com</a>
-          </p>
+      </div>
+      <div class="footer-section">
+        <h3>Have a Question?</h3>
+        <div class="footer-links">
+          <span>HustleHub Tech Park, Somasundarapalaya, Bengaluru</span>
+          <a href="mailto:pavindas007@gmail.com">pavindas007@gmail.com</a>
         </div>
       </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> All rights reserved | <a href="https://pavindas.github.io/"
+          target="_blank">PavinDas</a></p>
+    </div>
+  </footer>
+<script src="script.js"></script>
+</body>
 
-      <div class="footer-bottom">
-        <p>
-          &copy; <span id="year"></span> All rights reserved |
-          <a href="https://pavindas.github.io/" target="_blank">PavinDas</a>
-        </p>
-      </div>
-    </footer>
-
-    <script src="script.js"></script>
-  </body>
 </html>
