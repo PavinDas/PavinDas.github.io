@@ -1147,3 +1147,11 @@
         color: rgb(224, 255, 224);
         text-decoration: none;
     }
+
+        span{
+        color: rgb(224, 255, 224);
+            a{
+        color: rgb(188, 205, 188);
+        
+    }
+    }

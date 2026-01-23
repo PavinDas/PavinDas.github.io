@@ -30,25 +30,23 @@
 
 Building a Home SOC Lab with VirtualBox, Wazuh, and Shuffle
 <br>
-<h2> Introduction</h2>
+<h2>Introduction</h2>
 In this guide, I’ll walk you through the process of creating a home lab for a <b> Security Operations Center (SOC) </b> using Oracle VirtualBox.
 
 The goal is to detect malicious activity, improve incident response, and automate actions to cut down response time and reduce manual work.
 
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uHJ7eJSy05CeMCrl30cxA.jpeg" alt="Lab diagram">
 
-<h3> The lab simulates a realistic cybersecurity environment with:</h3>
-<ul>
+<h3>The lab simulates a realistic cybersecurity environment with:</h3><ul>
 <li>A Kali Linux attacker machine (outside the firewall)</li>
 <li>A Windows 10 host machine</li>
 <li>An Ubuntu defense machine</li>
-<li>An OPNsense firewall</li>
-</ul>
+<li>An OPNsense firewall</li></ul>
 
 The goal is to demonstrate log monitoring and automated incident response using <b> Wazuh SIEM, Shuffle SOAR,</b> and<b> Jira</b> for ticketing.
 
 <br>
-<h2> How it works:</h2>
+<h2>How it works:</h2>
 <ul>
 <li>Wazuh agents collect logs from network and endpoints.</li>
 <li>The logs are sent to Wazuh (SIEM) for analysis.</li>
@@ -59,59 +57,62 @@ The goal is to demonstrate log monitoring and automated incident response using 
 </ul>
 
 <br>
-<h2> Virtual Environment Setup</h2>
-<h3> 1. Kali Linux (Attacker Machine)</h3>
+<h2>Virtual Environment Setup</h2>
+<h3>1. Kali Linux (Attacker Machine)</h3>
 Create a virtual machine in VirtualBox with the following settings:
-OS Type: Linux
-Version: Debian (64-bit)
-RAM: Minimum 2 GB (4 GB recommended)
-Hard Disk: Use a pre-downloaded Kali .vdi image
-Network: Bridged Adapter
+
+<li>OS Type: Linux</li>
+<li>Version: Debian (64-bit)</li>
+<li>RAM: Minimum 2 GB (4 GB recommended)</li>
+<li>Hard Disk: Use a pre-downloaded Kali .vdi image</li>
+<li>Network: Bridged Adapter</li>
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*5mz9-TVFyjs9ftWB2GTsMQ.png" alt="">
 <br>
 <h3>2. OPNsense (Firewall)</h3>
 Create another VM for the firewall:
-Type: BSD
-Version: FreeBSD (64-bit)
-RAM: 3 GB
-Disk: 10–20 GB
-Network Adapters:
-Adapter 1: Bridged (WAN)
-Adapter 2: Internal Network (LAN, named intnet)
+
+<li>Type: BSD</li>
+<li>Version: FreeBSD (64-bit)</li>
+<li>RAM: 3 GB</li>
+<li>Disk: 10–20 GB</li>
+<li>Network Adapters:</li>
+<li>Adapter 1: Bridged (WAN)</li>
+<li>Adapter 2: Internal Network (LAN, named intnet)</li>
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*GuaxD5VoGgWWzSrhkELqKQ.png" alt="">
 <br>
 <h3>3. Windows (Host Machine)</h3>
-Name: Win10
-Type: Microsoft Windows
-Version: Windows 10 (64-bit)
-RAM: 3 GB
-Disk: Minimum 40 GB
-Network: Internal Network (intnet)
+<li>Name: Win10</li>
+<li>Type: Microsoft Windows</li>
+<li>Version: Windows 10 (64-bit)</li>
+<li>RAM: 3 GB</li>
+<li>Disk: Minimum 40 GB</li>
+<li>Network: Internal Network (intnet)</li>
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*O5V7Y9bNtYsQRyz9hLTdNQ.png" alt="">
 
 <b>Install Sysmon</b>
-Download from Microsoft Sysinternals: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Download Sysmon</a>
+
+<article class="glass-strong blog-article" style="padding:2rem">Download from Microsoft Sysinternals: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Download Sysmon</a></article>
 
 Install with basic config:
-<i> > Sysmon64.exe -i</i>
+<article class="glass-strong blog-article" style="padding:2rem"> > Sysmon64.exe -i</article>
 
 Sysmon running in PowerShell
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*CDwkCqpHyghsrTSV-Z217g.png" alt="">
 <br>
 <h3>4. Ubuntu (Defense Machine)</h3>
-Name: Ubuntu
-Type: Linux
-Version: Ubuntu (64-bit)
-RAM: 4 GB
-Disk: Minimum 40 GB
-Network: Internal Network (intnet)
+<li>Name: Ubuntu</li>
+<li>Type: Linux</li>
+<li>Version: Ubuntu (64-bit)</li>
+<li>RAM: 4 GB</li>
+<li>Disk: Minimum 40 GB</li>
+<li>Network: Internal Network (intnet)</li>
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eaKr3Q04-Z0alQuTOLXlGQ.png" alt="">
 
 <br>
-<h2> Wazuh Setup (SIEM)</h2>
+<h2>Wazuh Setup (SIEM)</h2>
 We’ll use Wazuh Cloud to collect and analyze logs.
 
-Visit: <a href="https://console.cloud.wazuh.com/">Wazuh Cloud Console</a>
+<article class="glass-strong blog-article" style="padding:2rem">Visit: <a href="https://console.cloud.wazuh.com/">Wazuh Cloud Console</a></article>
 Create an account and log in.
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9DMInq5HZcxMyFIYWWWw1A.png" alt="">
 
@@ -131,13 +132,13 @@ Copy the PowerShell command and run it as admin on the Windows VM.
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*xuyCgMU-L40r6PE34J3DPA.png" alt="">
 
 Start the agent.
-<i> > NET START WazuhSvc</i>
+<article class="glass-strong blog-article" style="padding:2rem"> > NET START WazuhSvc</article>
 
 <hr>
 <br>
 <h2>Creating Alerting Rule</h2> 
 
-<h3> In Wazuh → Alerting:</h3>
+<h3>In Wazuh → Alerting:</h3>
 Name: Failed Login Monitor
 Type: Per query monitor
 Frequency: Every 1 minute
@@ -162,8 +163,7 @@ Sign up and log in.
 Create new workflow
 
 <br>
-<h3>Workflow Steps</h3>
-<ul>
+<h3>Workflow Steps</h3><ul>
 <li><b>Webhook Trigger</b> → Copy the URL and paste it into Wazuh’s webhook fiels.</li> 
 <li>Repeat back to me: Collect alert data.</li> 
 <li>Check Cache Contains: Store alert IDs to prevent duplication.</li> 
@@ -171,8 +171,7 @@ Create new workflow
 </ul>
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*KDB60mhnzFl_z42i5K1V4A.png" alt="">
 
-<h3>Jira Integration</h3>
-<ul>
+<h3>Jira Integration</h3><ul>
 <li>Create a Jira Cloud account via Atlassian.</li>
 <li>Set up a project</li>
 <li>Generate an API key.</li>
@@ -185,11 +184,7 @@ Create new workflow
 And we’re done! This lab is a <b>basic beginner friendly setup</b> to help you understand SOC concepts. It’s not meant for production, but it’s a great way to take that first step into the SOC journey.
 
 Setting up and analyzing this environment gave me a better understanding of how security operations work in practice from detection and investigation to response. I hope this walkthrough helps others who are building their own labs or exploring the SOC workflow.
-
-
-
 </pre>
-
                 </article>
             </div>
         </section>

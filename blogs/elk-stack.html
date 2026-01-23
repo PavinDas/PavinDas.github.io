@@ -1,53 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ELK Stack Setup – Pavin Das</title>
-  <link rel="stylesheet" href="../styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELK Stack Setup – Pavin Das</title>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
-<canvas id="particles"></canvas>
+    <canvas id="particles"></canvas>
 
-<header>
-  <div class="nav-container">
-    <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
-    <nav>
-      <a href="../blog.html" class="nav-link">← Back to Blogs</a>
-    </nav>
-  </div>
-</header>
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
+            <nav>
+                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
+            </nav>
+        </div>
+    </header>
 
-<main>
-<section>
-  <div class="container">
-    <article class="glass-strong" style="padding:2rem">
-      <h1 class="section-title">ELK Stack Setup and Configuration Guide</h1>
+    <main>
+        <section>
+            <div class="container">
+                <article class="glass-strong blog-article" style="padding:2rem">
+                    <h1 class="section-title">ELK Stack Setup & Configuration Guide</h1>
 
-      <img src="https://miro.medium.com/v2/resize:fit:1400/1*vZDu4Bwj2GxQh8t1IjDq4w.png"
-           style="width:100%;border-radius:12px;margin:1.5rem 0">
+                    <pre class="blog-content">
 
-<pre class="card-text">
 This guide provides step-by-step instructions to set up the ELK Stack (Elasticsearch, Logstash, Kibana) for log management and analysis. It covers installation, configuration, data ingestion, log parsing, and visualization.
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*vZDu4Bwj2GxQh8t1IjDq4w.png"
+           style="width:100%;border-radius:12px;margin:1.5rem 0">
+<br> 
+<h2>Prerequisites</h2>
+<ul>
+<li>Operating System: Ubuntu 20.04 (or similar Linux distribution)</li>
+<li>Java: OpenJDK 11 or 17 (required for Elasticsearch and Logstash)</li>
+<li>Minimum Hardware: 4GB RAM, 2 CPU cores, 20GB disk space</li>
+<li>Network: Ports 9200 (Elasticsearch), 5044 (Logstash), 5601 (Kibana) open</li>
+</ul>
 
-Prerequisites
+<h2>Install Elasticsearch</h2>
+Elasticsearch stores and indexes logs for fast searching.
 
-Operating System: Ubuntu 20.04 (or similar Linux distribution)
-Java: OpenJDK 11 or 17
-Minimum Hardware: 4GB RAM, 2 CPU cores, 20GB disk space
-Network: Ports 9200, 5044, 5601 open
+<h3>Install Java</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo apt update
+ > sudo apt install openjdk-11-jdk -y
+ > java -version </article>
 
-Step 1: Install Elasticsearch
-...
-[CONTENT CONTINUES EXACTLY AS PROVIDED]
+<h3>Add Elasticsearch Repository</h3>
+<article class="glass-strong blog-article" style="padding:2rem">> wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch |  sudo  gpg  --dearmor  -o  /usr/share/keyrings/elasticsearch-keyring.gpg</i>
+ 
+ > echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main"  |  sudo  tee  /etc/apt/sources.list.d/elastic-8.x.list
+</article>
+<h3>Install Elasticsearch</h3> 
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo apt update
+ > sudo apt install elasticsearch -y</article>
+
+<h3>Configure Elasticsearch</h3>
+Edit <span>/etc/elasticsearch/elasticsearch.yml:</span>
+
+<article class="glass-strong blog-article" style="padding:2rem">cluster.name:  elk-cluster
+node.name:  node-1
+network.host:  127.0.0.1
+http.port:  9200</article>
+
+<h3>Start and Enable Elasticsearch</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo systemctl start elasticsearch
+ > sudo systemctl enable elasticsearch</i></article>
+
+<h3>Verify Installation</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > curl -X GET "http://localhost:9200"</article>
+
+Expected output: <span>JSON response with cluster details.</span>
+
+<br>
+<h2>Install Logstash</h2>
+Logstash processes and parses logs before sending them to Elasticsearch.
+
+<h3>Install Logstash</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo apt install logstash -y</article>
+
+<h3>Configure Logstash</h3>
+Create a sample configuration file at <span>/etc/logstash/conf.d/logstash-sample.conf:</span>
+
+<article class="glass-strong blog-article" style="padding:2rem"><span>input {
+    file {
+        path  => "/var/log/app.log"
+        start_position  => "beginning"
+    }
+}
+
+filter {
+    grok {
+        match  => { "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:loglevel} %{GREEDYDATA:message}" }
+    }
+}
+
+output {
+    elasticsearch {
+        hosts  => ["http://localhost:9200"]
+        index  => "logs-%{+YYYY.MM.dd}"
+    }
+    stdout { codec  => rubydebug }
+}</span></article>
+
+<h3>Test Configuration</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo /usr/share/logstash/bin/logstash --config.test_and_exit -f /etc/logstash/conf.d/logstash-sample.conf</article>
+<h3>Start and Enable Logstash</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo systemctl start logstash
+ > sudo systemctl enable logstash</article>
+
+ <br>
+<h2>Install Kibana</h2>
+Kibana provides a web interface for visualizing and analyzing logs.
+
+<h3>Install Kibana</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> apt install kibana -y </article>
+
+<h3>Configure Kibana</h3>
+Edit <span>/etc/kibana/kibana.yml:</span>
+<article class="glass-strong blog-article" style="padding:2rem">server.port:  5601
+server.host:  "127.0.0.1"
+elasticsearch.hosts: ["http://localhost:9200"]</article>
+
+<h3>Start and Enable Kibana</h3>
+<article class="glass-strong blog-article" style="padding:2rem"> > sudo systemctl start kibana
+ > sudo systemctl enable kibana</article>
+
+<h3>Access Kibana</h3>
+Open a browser and navigate to <a href="http://localhost:5601">http://localhost:5601</a>. Log in with default credentials (if security is enabled, configure users via Elasticsearch).
+
+<h2>Data Ingestion and Log Parsing</h2>
+Sample Log File: <span>Create /var/log/app.log with sample logs:</span>
+<article class="glass-strong blog-article" style="padding:2rem">2025-05-31T13:45:00+05:30 INFO Application started successfully
+2025-05-31T13:45:01+05:30 ERROR Failed to connect to database</article>
+
+<b>Logstash Processing:</b> Logstash reads app.log, parses it using the grok filter, and sends it to Elasticsearch.
+
+<b>Index Creation:</b> Logs are stored in Elasticsearch under indices like logs-2025.05.31.
+
+<br>
+<h2>Visualization in Kibana</h2>
+<h3>Access Kibana: Go to <a href="http://localhost:5601">http://localhost:5601</a>.</h3>
+<h3>Create Index Pattern:</h3><ul>
+<li>Navigate to Management > Stack Management > Index Patterns.</li>
+<li>Create a pattern: <span>logs-*</span>.</li>
+<li>Set <span>@timestamp</span> as the time field.</li></ul>
+
+<h3>Create Visualizations:</h3><ul>
+<li>Go to Visualize > Create Visualization.</li>
+<li>Choose a chart (e.g., Vertical Bar).</li>
+<li>Select index pattern <span>logs-*</span>.</li>
+<li>Example: Plot log levels (e.g., INFO, ERROR) over time.</li>
+<li>Y-axis: Count</li>
+<li>X-axis: <span>@timestamp</span> (bucket by hour)</li></ul>
+
+<h3>Create Dashboard</h3><ul>
+<li>Go to Dashboard > Create Dashboard</li>
+<li>Add your visualization.</li>
+<li>Save and view your log analysis dashboard.</li></ul>
+
+<h2>Troubleshooting</h2><ul>
+<li><b>Elasticsearch not running:</b> Check status with <span>sudo systemctl status elasticsearch</span>.</li>
+<li><b>Logstash errors:</b> View logs at <span>/var/log/logstash/logstash-plain.log</span>.</li>
+<li><b>Kibana access issues:</b> Ensure <span>server.host</span> is correct and port 5601 is open.</li></ul>
+
+<h2>Next Steps</h2>
+<li><b>Enable security:</b> Configure X-Pack security in Elasticsearch and Kibana.</li>
+<li><b>Scale:</b> Add more nodes to Elasticsearch for a cluster setup.</li>
+<li><b>Ingest more data:</b> Configure Logstash inputs for other sources (e.g., syslog, beats).</li>
 </pre>
 
-    </article>
-  </div>
-</section>
-</main>
+                </article>
+            </div>
+        </section>
+    </main>
 
-<script src="../script.js"></script>
+    <script src="../script.js"></script>
 </body>
+
 </html>
