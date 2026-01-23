@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home SOC Lab – Pavin Das</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
+            <nav>
+                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <article class="glass-strong blog-article" style="padding:2rem">
+                    <h1 class="section-title">Building a Home SOC Lab with Wazuh and Shuffle</h1>
+
+                    <pre class="blog-content">
+
+Building a Home SOC Lab with VirtualBox, Wazuh, and Shuffle
+<br>
+<h2> Introduction</h2>
+In this guide, I’ll walk you through the process of creating a home lab for a <b> Security Operations Center (SOC) </b> using Oracle VirtualBox.
+
+The goal is to detect malicious activity, improve incident response, and automate actions to cut down response time and reduce manual work.
+
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uHJ7eJSy05CeMCrl30cxA.jpeg" alt="Lab diagram">
+
+<h3> The lab simulates a realistic cybersecurity environment with:</h3>
+<ul>
+<li>A Kali Linux attacker machine (outside the firewall)</li>
+<li>A Windows 10 host machine</li>
+<li>An Ubuntu defense machine</li>
+<li>An OPNsense firewall</li>
+</ul>
+
+The goal is to demonstrate log monitoring and automated incident response using <b> Wazuh SIEM, Shuffle SOAR,</b> and<b> Jira</b> for ticketing.
+
+<br>
+<h2> How it works:</h2>
+<ul>
+<li>Wazuh agents collect logs from network and endpoints.</li>
+<li>The logs are sent to Wazuh (SIEM) for analysis.</li>
+<li>If something suspicious is found (like a brute-force attack), Wazuh raises an alert.</li>
+<li>That alert triggers a webhook in Shuffle SOAR to kick off automated actions.</li>
+<li>A Jira ticket is created to keep track of the incident.</li>
+<li>If needed, the IP behind the attack gets blocked automatically in the OPNsense Firewall.</li>
+</ul>
+
+<br>
+<h2> Virtual Environment Setup</h2>
+<h3> 1. Kali Linux (Attacker Machine)</h3>
+Create a virtual machine in VirtualBox with the following settings:
+OS Type: Linux
+Version: Debian (64-bit)
+RAM: Minimum 2 GB (4 GB recommended)
+Hard Disk: Use a pre-downloaded Kali .vdi image
+Network: Bridged Adapter
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*5mz9-TVFyjs9ftWB2GTsMQ.png" alt="">
+<br>
+<h3>2. OPNsense (Firewall)</h3>
+Create another VM for the firewall:
+Type: BSD
+Version: FreeBSD (64-bit)
+RAM: 3 GB
+Disk: 10–20 GB
+Network Adapters:
+Adapter 1: Bridged (WAN)
+Adapter 2: Internal Network (LAN, named intnet)
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*GuaxD5VoGgWWzSrhkELqKQ.png" alt="">
+<br>
+<h3>3. Windows (Host Machine)</h3>
+Name: Win10
+Type: Microsoft Windows
+Version: Windows 10 (64-bit)
+RAM: 3 GB
+Disk: Minimum 40 GB
+Network: Internal Network (intnet)
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*O5V7Y9bNtYsQRyz9hLTdNQ.png" alt="">
+
+<b>Install Sysmon</b>
+Download from Microsoft Sysinternals: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Download Sysmon</a>
+
+Install with basic config:
+<i> > Sysmon64.exe -i</i>
+
+Sysmon running in PowerShell
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*CDwkCqpHyghsrTSV-Z217g.png" alt="">
+<br>
+<h3>4. Ubuntu (Defense Machine)</h3>
+Name: Ubuntu
+Type: Linux
+Version: Ubuntu (64-bit)
+RAM: 4 GB
+Disk: Minimum 40 GB
+Network: Internal Network (intnet)
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eaKr3Q04-Z0alQuTOLXlGQ.png" alt="">
+
+<br>
+<h2> Wazuh Setup (SIEM)</h2>
+We’ll use Wazuh Cloud to collect and analyze logs.
+
+Visit: <a href="https://console.cloud.wazuh.com/">Wazuh Cloud Console</a>
+Create an account and log in.
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9DMInq5HZcxMyFIYWWWw1A.png" alt="">
+
+Click Create New Environment, name it, select a region.
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*pNHhJGQua5MeHzZEpPNY2w.png" alt="">
+
+Open the environment dashboard and click Open Wazuh.
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*4PKLpjyctyu3KYAwHTkSBQ.png" alt="">
+
+Deploy the agent:
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*78nQFKLc0Cz3xd1l7VuwZQ.png" alt="">
+
+Choose Windows
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*vmVKtO2nCiDezcN03Bm8rg.png" alt="">
+
+Copy the PowerShell command and run it as admin on the Windows VM.
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*xuyCgMU-L40r6PE34J3DPA.png" alt="">
+
+Start the agent.
+<i> > NET START WazuhSvc</i>
+
+<hr>
+<br>
+<h2>Creating Alerting Rule</h2> 
+
+<h3> In Wazuh → Alerting:</h3>
+Name: Failed Login Monitor
+Type: Per query monitor
+Frequency: Every 1 minute
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*wQZAsF7H7FqkYXGyWKpwgw.png" alt="">
+Index: wazuh-alerts
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*d38t4Wihb0fNZ3ud_zl7EQ.png" alt="">
+Query: rule.id = 60122
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*SM9vpk-zG-9c72FlmE-_Lg.png" alt="">
+Trigger: Count IS ABOVE 5
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*f8-OTcnC0lwFTuQQKiSMpw.png" alt="">
+Link the previously created notification channel
+
+Set the message body for webhook parsing
+
+<hr>
+
+<h2>Shuffle Setup (SIEM)</h2> 
+Visit <a href="https://shuffler.io/">Shuffle Cloud</a>
+Sign up and log in.
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eH6uimqxvdKp2cQ9198NPQ.png" alt="">
+
+Create new workflow
+
+<br>
+<h3>Workflow Steps</h3>
+<ul>
+<li><b>Webhook Trigger</b> → Copy the URL and paste it into Wazuh’s webhook fiels.</li> 
+<li>Repeat back to me: Collect alert data.</li> 
+<li>Check Cache Contains: Store alert IDs to prevent duplication.</li> 
+<li>Logic Check → If alert ID is new, raise a Jira ticket. It already processed. stop the flow.</li> 
+</ul>
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*KDB60mhnzFl_z42i5K1V4A.png" alt="">
+
+<h3>Jira Integration</h3>
+<ul>
+<li>Create a Jira Cloud account via Atlassian.</li>
+<li>Set up a project</li>
+<li>Generate an API key.</li>
+<li>Authenticate in Shuffle’s Jira App using → Jira email | API key | Project ID | Issue Type</li>
+</ul>
+<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*8tamqmHynFidAN0wcdObrw.png" alt="">
+
+<hr>
+
+And we’re done! This lab is a <b>basic beginner friendly setup</b> to help you understand SOC concepts. It’s not meant for production, but it’s a great way to take that first step into the SOC journey.
+
+Setting up and analyzing this environment gave me a better understanding of how security operations work in practice from detection and investigation to response. I hope this walkthrough helps others who are building their own labs or exploring the SOC workflow.
+
+
+
+</pre>
+
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>

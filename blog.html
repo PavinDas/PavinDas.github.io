@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pavin Das – Blogs</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">PAVIN<span>DAS</span></a>
+            <nav id="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="blog.html" class="nav-link active">Blog</a>
+            </nav>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-eyebrow"><span class="prompt">&gt;</span> BLOGS</p>
+                    <h2 class="section-title"><span class="prompt">$</span> ls ~/blogs</h2>
+                </div>
+
+                <div class="blog-grid">
+
+                    <a href="blogs/cia-triad.html" class="blog-card glass-strong animate-fade-in-up">
+                        <span class="prompt">&gt;</span>
+                        <h3>The CIA Triad</h3>
+                        <p>Cybersecurity Fundamentals</p>
+                    </a>
+
+                    <a href="blogs/elk-stack.html" class="blog-card glass-strong animate-fade-in-up"
+                        style="animation-delay:.1s">
+                        <span class="prompt">&gt;</span>
+                        <h3>ELK Stack Setup & Configuration</h3>
+                        <p>Logging · SIEM · Blue Team</p>
+                    </a>
+
+                    <a href="blogs/soc-lab.html" class="blog-card glass-strong animate-fade-in-up"
+                        style="animation-delay:.2s">
+                        <span class="prompt">&gt;</span>
+                        <h3>Building a Home SOC Lab</h3>
+                        <p>Wazuh · Shuffle · Detection</p>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> Pavin Das</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
