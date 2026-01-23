@@ -1,9 +1,9 @@
-// Particle Background
+//? Particle Background
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
 let mouse = { x: null, y: null };
-const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+const chars = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽゃゅょぁぃぅぇぉっャュョァィゥェォッヴファフィフェフォティディトゥドゥチェシェジェ02ガギグゲゴザジズゼゾ03ダヂヅデドバビブベボ04パピプペポ';
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -17,7 +17,7 @@ function createParticle() {
         speed: 0.5 + Math.random() * 2,
         size: 10 + Math.random() * 8,
         char: chars[Math.floor(Math.random() * chars.length)],
-        opacity: 0.1 + Math.random() * 0.4
+        opacity: 0.1 + Math.random() * 0.8
     };
 }
 
@@ -36,14 +36,14 @@ function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     particles.forEach(p => {
-        // Mouse interaction
+        //? Mouse interaction
         if (mouse.x && mouse.y) {
             const dx = mouse.x - p.x;
             const dy = mouse.y - p.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 150) {
-                p.x -= dx * 0.02;
-                p.y -= dy * 0.02;
+                p.x -= dx * 0.05;
+                p.y -= dy * 0.05;
             }
         }
 
@@ -76,7 +76,7 @@ window.addEventListener('mouseout', () => {
 init();
 animate();
 
-// Typing Animation
+//? Typing Animation
 const typedEl = document.getElementById('typedText');
 const fullText = 'Security Engineer';
 let charIndex = 0;
@@ -90,7 +90,7 @@ function typeText() {
 }
 typeText();
 
-// Mobile Nav Toggle
+//? Mobile Nav Toggle
 const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -107,7 +107,7 @@ navLinks.forEach(link => {
     });
 });
 
-// Active Nav on Scroll
+//? Active Nav on Scroll
 const sections = document.querySelectorAll('section[id]');
 
 function updateActiveNav() {
@@ -130,7 +130,7 @@ function updateActiveNav() {
 
 window.addEventListener('scroll', updateActiveNav);
 
-// Skill Bar Animation
+//? Skill Bar Animation
 const skillBars = document.querySelectorAll('.skill-bar-fill');
 let skillsAnimated = false;
 

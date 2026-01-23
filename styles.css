@@ -36,6 +36,10 @@
         line-height: 1.6;
     }
 
+    body::-webkit-scrollbar{
+        display: none;
+    }
+
     /* Particle Canvas */
     #particles {
         position: fixed;
