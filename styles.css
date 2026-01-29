@@ -36,7 +36,7 @@
         line-height: 1.6;
     }
 
-    body::-webkit-scrollbar{
+    body::-webkit-scrollbar {
         display: none;
     }
 
@@ -1147,15 +1147,136 @@
             line-height: 1.7;
         }
     }
-    a{
+
+    a {
         color: rgb(224, 255, 224);
         text-decoration: none;
     }
 
-        span{
+    span {
         color: rgb(224, 255, 224);
-            a{
-        color: rgb(188, 205, 188);
-        
+
+        a {
+            color: rgb(188, 205, 188);
+
+        }
     }
+
+    /* =========================================
+   NEW SKILLS SECTION DESIGN
+   ========================================= */
+
+    .skills-category-container {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+
+    .skill-category-title {
+        font-size: 1.25rem;
+        color: var(--text);
+        margin-bottom: 1.5rem;
+        padding-left: 1rem;
+        border-left: 2px solid var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .skill-category-title .prompt {
+        color: var(--primary);
+        margin-right: 0.5rem;
+    }
+
+    .new-skills-grid {
+        display: grid;
+        /* Flexible grid that fits as many 140px cards as possible */
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 1rem;
+    }
+
+    .skill-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 0.5rem;
+        border-radius: var(--radius);
+        transition: all var(--transition);
+        cursor: default;
+        text-align: center;
+        /* Aspect ratio mainly for aesthetic consistency */
+        aspect-ratio: 1/1;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .skill-icon {
+        font-size: 2.25rem;
+        margin-bottom: 0.75rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Initial state: low saturation/opacity */
+        filter: grayscale(100%) opacity(0.5);
+        /* Some icons need to be visible even if grayscale (like white ones) */
+    }
+
+    /* Specific adjustments for colored icons that disappear when grayscale */
+    .skill-card .skill-icon[style*="color: #fff"] {
+        filter: opacity(0.5);
+    }
+
+    .skill-name {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        transition: color var(--transition);
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Hover Effects */
+    .skill-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary);
+        box-shadow: 0 10px 30px -10px rgba(0, 255, 136, 0.15);
+    }
+
+    .skill-card:hover .skill-icon {
+        /* Restore color and opacity */
+        filter: grayscale(0%) opacity(1);
+        transform: scale(1.1) translateY(-5px);
+    }
+
+    .skill-card:hover .skill-name {
+        color: var(--text);
+    }
+
+    /* Responsive constraints */
+    @media (max-width: 768px) {
+        .new-skills-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .skill-card {
+            padding: 1rem;
+            aspect-ratio: auto;
+            min-height: 120px;
+        }
+
+        .skill-icon {
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .new-skills-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
     }

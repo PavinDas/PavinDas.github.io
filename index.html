@@ -24,6 +24,7 @@
     href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
   <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -275,64 +276,235 @@
     <section id="skills">
       <div class="container">
         <div class="section-header">
-          <p class="section-eyebrow"><span class="prompt">&gt;</span> SKILLS</p>
-          <h2 class="section-title"><span class="prompt">$</span> cat skills.json</h2>
+          <p class="section-eyebrow"><span class="prompt">&gt;</span> TECHNOLOGIES</p>
+          <h2 class="section-title"><span class="prompt">$</span> ls ./skills/</h2>
         </div>
-        <div class="skills-grid">
-          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0s">
-            <div class="skill-header">
-              <span class="name"><span class="hash">#</span> OWASP Top 10</span>
-              <span class="percent">95%</span>
+
+        <div class="skills-category-container">
+
+          <h3 class="skill-category-title"><span class="prompt">#</span> Programming & Scripting</h3>
+          <div class="new-skills-grid">
+            <!-- Python -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-python-plain colored skill-icon"></i>
+              <span class="skill-name">Python</span>
             </div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" data-width="95"></div>
+            <!-- Bash -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-bash-plain skill-icon" style="color: #4EAA25;"></i>
+              <span class="skill-name">Bash</span>
             </div>
-          </div>
-          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.1s">
-            <div class="skill-header">
-              <span class="name"><span class="hash">#</span> Business Logic Testing</span>
-              <span class="percent">95%</span>
+            <!-- Dart -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-dart-plain colored skill-icon"></i>
+              <span class="skill-name">Dart</span>
             </div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" data-width="95"></div>
+            <!-- Java -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-java-plain colored skill-icon"></i>
+              <span class="skill-name">Java</span>
             </div>
-          </div>
-          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.2s">
-            <div class="skill-header">
-              <span class="name"><span class="hash">#</span> Auth & Session Security</span>
-              <span class="percent">90%</span>
+            <!-- JavaScript -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-javascript-plain colored skill-icon"></i>
+              <span class="skill-name">JavaScript</span>
             </div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" data-width="90"></div>
+            <!-- C -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-c-plain colored skill-icon"></i>
+              <span class="skill-name">C</span>
             </div>
-          </div>
-          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.3s">
-            <div class="skill-header">
-              <span class="name"><span class="hash">#</span> Insecure Coding Patterns</span>
-              <span class="percent">85%</span>
+            <!-- HTML -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-html5-plain colored skill-icon"></i>
+              <span class="skill-name">HTML</span>
             </div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" data-width="85"></div>
-            </div>
-          </div>
-          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.4s">
-            <div class="skill-header">
-              <span class="name"><span class="hash">#</span> Vulnerability Reporting</span>
-              <span class="percent">85%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" data-width="85"></div>
-            </div>
-          </div>
-          <div class="skill-item glass-strong animate-fade-in-up" style="animation-delay: 0.5s">
-            <div class="skill-header">
-              <span class="name"><span class="hash">#</span> PoC Creation</span>
-              <span class="percent">80%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" data-width="80"></div>
+            <!-- CSS -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-css3-plain colored skill-icon"></i>
+              <span class="skill-name">CSS</span>
             </div>
           </div>
+
+          <h3 class="skill-category-title"><span class="prompt">#</span> Offensive Security</h3>
+          <div class="new-skills-grid">
+            <!-- BurpSuite -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-bug skill-icon" style="color: #ff6633;"></i>
+              <span class="skill-name">BurpSuite</span>
+            </div>
+            <!-- Nmap -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-network-wired skill-icon" style="color: #4EAA25;"></i>
+              <span class="skill-name">Nmap</span>
+            </div>
+            <!-- Wireshark -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-water skill-icon" style="color: #00a1e0;"></i>
+              <span class="skill-name">Wireshark</span>
+            </div>
+            <!-- Metasploit -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-bomb skill-icon" style="color: #171616;"></i>
+              <span class="skill-name">Metasploit</span>
+            </div>
+            <!-- OWASP ZAP -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-bolt skill-icon" style="color: #005fa4;"></i>
+              <span class="skill-name">OWASP ZAP</span>
+            </div>
+            <!-- SQLmap -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-database skill-icon" style="color: #e67e22;"></i>
+              <span class="skill-name">SQLmap</span>
+            </div>
+            <!-- XSSer -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-code skill-icon" style="color: #e74c3c;"></i>
+              <span class="skill-name">XSSer</span>
+            </div>
+            <!-- ffuf -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-search skill-icon" style="color: #f1c40f;"></i>
+              <span class="skill-name">ffuf</span>
+            </div>
+            <!-- Recon-ng -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-binoculars skill-icon" style="color: #95a5a6;"></i>
+              <span class="skill-name">Recon-ng</span>
+            </div>
+            <!-- Tor -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-mask skill-icon" style="color: #7d4698;"></i>
+              <span class="skill-name">Tor</span>
+            </div>
+          </div>
+
+          <!-- Defensive -->
+          <h3 class="skill-category-title"><span class="prompt">#</span> Defensive Security</h3>
+          <div class="new-skills-grid">
+            <!-- SIEM -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-chart-pie skill-icon" style="color: #2ecc71;"></i>
+              <span class="skill-name">SIEM</span>
+            </div>
+            <!-- SOAR -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-cogs skill-icon" style="color: #3498db;"></i>
+              <span class="skill-name">SOAR</span>
+            </div>
+            <!-- IDS/IPS -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-shield-halved skill-icon" style="color: #e74c3c;"></i>
+              <span class="skill-name">IDS/IPS</span>
+            </div>
+            <!-- Firewall -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-fire skill-icon" style="color: #d35400;"></i>
+              <span class="skill-name">Firewall</span>
+            </div>
+            <!-- EDR/XDR -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-desktop skill-icon" style="color: #9b59b6;"></i>
+              <span class="skill-name">EDR/XDR</span>
+            </div>
+            <!-- Malware -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-skull skill-icon" style="color: #c0392b;"></i>
+              <span class="skill-name">Malware Analysis</span>
+            </div>
+            <!-- VPN/Proxy -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-user-secret skill-icon" style="color: #34495e;"></i>
+              <span class="skill-name">VPN/Proxy</span>
+            </div>
+          </div>
+
+          <!-- Tools & Frameworks -->
+          <h3 class="skill-category-title"><span class="prompt">#</span> Tools & Frameworks</h3>
+          <div class="new-skills-grid">
+            <!-- Git -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-git-plain colored skill-icon"></i>
+              <span class="skill-name">Git</span>
+            </div>
+            <!-- Github -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-github-original skill-icon" style="color: #ffffff;"></i>
+              <span class="skill-name">Github</span>
+            </div>
+            <!-- Jira -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-jira-plain colored skill-icon"></i>
+              <span class="skill-name">Jira</span>
+            </div>
+            <!-- OWASP Top 10 -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-list-ol skill-icon" style="color: #3498db;"></i>
+              <span class="skill-name">OWASP Top 10</span>
+            </div>
+            <!-- CVE/CWE -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-exclamation-triangle skill-icon" style="color: #f1c40f;"></i>
+              <span class="skill-name">CVE/CWE</span>
+            </div>
+            <!-- Flutter -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-flutter-plain skill-icon"></i>
+              <span class="skill-name">Flutter</span>
+            </div>
+            <!-- Flask -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-flask-original skill-icon"></i>
+              <span class="skill-name">Flask</span>
+            </div>
+            <!-- Firebase -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-firebase-plain skill-icon"></i>
+              <span class="skill-name">Firebase</span>
+            </div>
+            <!-- PostgreSQL -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-postgresql-plain skill-icon"></i>
+              <span class="skill-name">PostgreSQL</span>
+            </div>
+            <!-- MongoDB -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-mongodb-plain skill-icon"></i>
+              <span class="skill-name">MongoDB</span>
+            </div>
+          </div>
+
+          <!-- OS -->
+          <h3 class="skill-category-title"><span class="prompt">#</span> Operating Systems</h3>
+          <div class="new-skills-grid">
+            <!-- Parrot -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-crow skill-icon" style="color: #1abc9c;"></i>
+              <span class="skill-name">Parrot OS</span>
+            </div>
+            <!-- Kali -->
+            <div class="skill-card glass-strong">
+              <i class="fas fa-dragon skill-icon" style="color: #3498db;"></i>
+              <span class="skill-name">Kali Linux</span>
+            </div>
+            <!-- Windows -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-windows8-original skill-icon"></i>
+              <span class="skill-name">Windows</span>
+            </div>
+            <!-- Mac -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-apple-original skill-icon"></i>
+              <span class="skill-name">macOS</span>
+            </div>
+            <!-- Ubuntu -->
+            <div class="skill-card glass-strong">
+              <i class="devicon-ubuntu-plain colored skill-icon"></i>
+              <span class="skill-name">Ubuntu</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
