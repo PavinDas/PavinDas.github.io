@@ -1280,3 +1280,35 @@
             gap: 0.75rem;
         }
     }
+
+    /* Image Styling for Cards */
+    .card-image-container {
+        width: calc(100% + 3rem);
+        /* Full width including parent's 1.5rem padding on both sides */
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+        /* Pull to top, left, right edges */
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.3);
+        /* Slightly darker bg for the header area */
+        border-radius: var(--radius) var(--radius) 0 0;
+        padding: 0;
+    }
+
+    .card-image-outline {
+        width: 60%;
+        /* Minimal icon size */
+        height: 60%;
+        object-fit: contain;
+        opacity: 0.9;
+        transition: all var(--transition);
+    }
+
+    .card:hover .card-image-outline {
+        opacity: 1;
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px var(--primary));
+    }
