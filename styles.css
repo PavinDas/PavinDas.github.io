@@ -1299,9 +1299,8 @@
     }
 
     .card-image-outline {
-        width: 60%;
-        /* Minimal icon size */
-        height: 60%;
+        width: 95%;
+        height: 100%;
         object-fit: contain;
         opacity: 0.9;
         transition: all var(--transition);
@@ -1310,5 +1309,4 @@
     .card:hover .card-image-outline {
         opacity: 1;
         transform: scale(1.1);
-        filter: drop-shadow(0 0 8px var(--primary));
     }
