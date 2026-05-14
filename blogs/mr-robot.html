@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Robot – Penetration Test Report | Pavin Das</title>
+    <meta name="description"
+        content="A full penetration test walkthrough of the Mr. Robot CTF machine covering enumeration, exploitation, and privilege escalation.">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
+            <nav>
+                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <article class="glass-strong blog-article" style="padding:2rem">
+                    <center>
+                        <h1 class="section-title">Penetration Test Report: Mr. Robot</h1>
+                    </center>
+
+                    <pre class="blog-content">
+                        <center><span>A full penetration test walkthrough of the Mr. Robot CTF machine</span></center>
+
+<h2>Target Information</h2>
+<li><b>Application name:</b> <span>Mr Robot</span></li>
+<li><b>IP address:</b> <span>192.168.1.41</span> <i>(Note: Your target IP may differ)</i></li>
+To find your specific target machine's IP address on your local network, you can run a quick Nmap ping sweep. Just replace the subnet below with your own network range:
+
+<article class="glass-strong blog-article" style="padding:2rem">> nmap -sn 192.168.1.0/24</article>
+
+<h2>Testing Details</h2>
+<h3>Tools used:</h3>
+<li>Nmap</li>
+<li>Dirb</li>
+<li>Burp Suite CE</li>
+<li>Netcat</li>
+
+<h3>Websites used:</h3>
+<li><a href="https://www.revshells.com/" target="_blank">https://www.revshells.com/</a></li>
+<li><a href="https://gtfobins.org/" target="_blank">https://gtfobins.org/</a></li>
+<li><a href="https://crackstation.net/" target="_blank">https://crackstation.net/</a></li>
+<hr>
+
+
+<h2>Findings</h2>
+
+<h3><span>1 Sensitive Information Disclosure</span></h3>
+→ A02:2021 - Cryptographic Failure
+
+Sensitive endpoints and credentials were exposed via publicly accessible files.
+
+<b>Affected:</b>
+<li>/robots.txt</li>
+<li>/license</li>
+
+<b>Impact:</b>
+An attacker can gain initial access without bruteforce.
+
+<b>Mitigation:</b>
+<li>Remove sensitive data from public files</li>
+<li>Restrict access using authentication</li>
+<li>Avoid storing credentials in public files</li>
+<br>
+<h3><span>2 Insecure WordPress Configuration</span></h3>
+→ A05:2021 - Security Misconfiguration
+
+The WordPress theme editor was enabled, allowing direct modification of PHP files.
+
+<b>Impact:</b>
+Leads to Remote Code Execution (RCE).
+
+<b>Mitigation:</b>
+<li>Disable theme/plugin editor</li>
+<article class="glass-strong blog-article" style="padding:2rem">define('DISALLOW_FILE_EDIT', true);</article>
+<li>Restrict admin panel access</li>
+<br>
+<h3><span>3 Remote Code Execution</span></h3>
+→ A03:2021 - Injection
+
+The attacker executed arbitrary commands on the server via reverse shell.
+
+<b>Impact:</b>
+Full control over application and system operations.
+
+<b>Mitigation:</b>
+<li>Input validation</li>
+<li>Disable dangerous PHP functions</li>
+<li>Use Web Application Firewall</li>
+<br>
+<h3><span>4 Privilege Escalation via SUID Binary</span></h3>
+→ A05:2021 - Security Misconfiguration
+
+SUID enabled Nmap binary allowed privilege escalation.
+
+<b>Impact:</b>
+Complete system takeover.
+
+<b>Mitigation:</b>
+<li>Remove unnecessary SUID permissions</li>
+<article class="glass-strong blog-article" style="padding:2rem">> chmod -s /usr/bin/nmap</article>
+<li>Regular privilege audits</li>
+<hr>
+<br>
+
+<h2>Steps to Reproduce</h2>
+
+<h3><span>1. Scanning</span></h3>
+<b>Tool used:</b> Nmap
+
+<article class="glass-strong blog-article" style="padding:2rem">> nmap -sV -sC 192.168.1.41</article>
+<img src="/images/mr-robot/1.png" alt="">
+
+Port 80 is open, which indicates a web server is running on this machine. So I opened the IP address in a browser.
+<img src="/images/mr-robot/2.png" alt="">
+
+<h3><span>2. Directory Enumeration</span></h3>
+<b>Tool used:</b> dirb
+
+<article class="glass-strong blog-article" style="padding:2rem">> dirb http://192.168.1.41/ -o dirbResult.txt
+> grep "CODE:200" dirbResult.txt</article>
+
+Used dirb to enumerate all subdirectories and pages and saved the output to a file. And used grep to extract only the URLs with status code 200 from the dirb output file.
+<img src="/images/mr-robot/3.png" alt="">
+<br>
+<h3><span>Gathering Key 1 of 3</span></h3>
+Sent requests to each endpoint and examined the responses using Burp Suite.
+<img src="/images/mr-robot/4.png" alt="">
+
+<b>/robots.txt</b> exposes the path to access key 1 of 3.
+<img src="/images/mr-robot/5.png" alt="">
+
+Used the exposed path from robots.txt to retrieve key 1 of 3.
+<img src="/images/mr-robot/6.png" alt="">
+<b>Key 1 of 3:</b>
+
+<article class="glass-strong blog-article" style="padding:2rem"><span>073403c8a58a1f80d943455fb30724b9</span></article>
+
+<br>
+
+<h3><span>Gathering Key 2 of 3</span></h3>
+Found an encoded credential pair in <b>/license</b> and decoded it using Burp Decoder.
+<img src="/images/mr-robot/7.png" alt="">
+
+<b>Credential:</b> 
+
+<article class="glass-strong blog-article" style="padding:2rem">elliot:ER28-0652</article>
+
+Navigated to <b>/wp-login.php</b>.
+<img src="/images/mr-robot/8.png" alt="">
+
+Used previously captured credentials on the login page. And the login succeeded.
+<img src="/images/mr-robot/9.png" alt="">
+
+The file at <b>http://192.168.1.35/wp-admin/theme-editor.php?file=404.php&theme=twentyfifteen</b> was editable. Referenced <a href="https://www.revshells.com/" target="_blank">revshells.com</a> to select a suitable reverse shell payload and replaced the existing code with the reverse shell.
+<img src="/images/mr-robot/10.png" alt="">
+
+Started a netcat listener to catch the reverse shell.
+<img src="/images/mr-robot/11.png" alt="">
+
+The payload was placed in <b>404.php</b>, which executes on a 404 (wrong path); an arbitrary non-existent path was requested to trigger it.
+<img src="/images/mr-robot/12.png" alt="">
+
+Connection established and reverse shell obtained.
+<img src="/images/mr-robot/13.png" alt="">
+
+Logged in as <b>daemon</b>; current working directory: <b>/</b>.
+Navigated to <b>/home/robot</b>.
+<img src="/images/mr-robot/14.png" alt="">
+
+Attempted to read <b>key-2-of-3.txt</b> from <b>/home/robot</b> but user <b>daemon</b> doesn't have the permission to access the file.
+<img src="/images/mr-robot/15.png" alt="">
+
+Opened <b>password.raw-md5</b> (accessible to daemon). It contained a username and an MD5-hashed password.
+<img src="/images/mr-robot/16.png" alt="">
+
+Used CrackStation to recover the plaintext password from the MD5 hash.
+<img src="/images/mr-robot/17.png" alt="">
+
+<b>Credential:</b>
+
+<article class="glass-strong blog-article" style="padding:2rem">robot:abcdefghijklmnopqrstuvwxyz</article>
+
+Logged in as <b>robot</b> using the recovered credentials.
+<img src="/images/mr-robot/18.png" alt="">
+
+<b>key-2-of-3.txt</b> is now accessible and was opened.
+<img src="/images/mr-robot/19.png" alt="">
+<b>Key 2 of 3:</b>
+
+<article class="glass-strong blog-article" style="padding:2rem"><span>822c73956184f694993bede3eb39f959</span></article>
+
+<br>
+
+<h3><span>Gathering Key 3 of 3</span></h3>
+There is nothing else in user account. So escalation to root is required.
+
+Unable to perform required actions as root, so searched for files runnable with root privileges to leverage for escalation.
+
+<article class="glass-strong blog-article" style="padding:2rem">> find / -perm -u=s -type f 2>/dev/null</article>
+<img src="/images/mr-robot/20.png" alt="">
+
+The list included Nmap, so <a href="https://gtfobins.org/" target="_blank">gtfobins.org</a> was consulted to learn how to perform privilege escalation using Nmap.
+<img src="/images/mr-robot/21.png" alt="">
+Obtained admin access.
+<img src="/images/mr-robot/22.png" alt="">
+
+Navigated to <b>/root</b>, opened <b>key-3-of-3.txt</b>, and retrieved the final key.
+<img src="/images/mr-robot/23.png" alt="">
+<b>Key 3 of 3:</b>
+
+<article class="glass-strong blog-article" style="padding:2rem"><span>04787ddef27c3dee1ee161b21670b4e4</span></article>
+
+<hr>
+<br>
+
+<h2><span>Conclusion</span></h2>
+Thank you for taking the time to read through this walkthrough!
+
+If you are following along, I highly encourage you to use this walkthrough as a reference and try rooting the machine yourself. Hands-on practice is the best way to learn, so try to explore and experiment without copying every step directly.
+
+<b><span>Best of luck on your hacking journey!</span></b>
+                    </pre>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>
