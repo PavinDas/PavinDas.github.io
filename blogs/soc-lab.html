@@ -23,8 +23,10 @@
     <main>
         <section>
             <div class="container">
-                <article class="glass-strong blog-article" style="padding:2rem">
-                    <center><h1 class="section-title">Building a Home SOC Lab with Wazuh and Shuffle</h1></center>
+                <article class="glass-strong blog-article">
+                    <center>
+                        <h1 class="section-title">Building a Home SOC Lab with Wazuh and Shuffle</h1>
+                    </center>
 
                     <pre class="blog-content">
                         <center><span>Building a Home SOC Lab with VirtualBox, Wazuh, and Shuffle</span></center>
@@ -90,10 +92,10 @@ Create another VM for the firewall:
 
 <b>Install Sysmon</b>
 
-<article class="glass-strong blog-article" style="padding:2rem">Download from Microsoft Sysinternals: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Download Sysmon</a></article>
+<article class="glass-strong blog-article">Download from Microsoft Sysinternals: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Download Sysmon</a></article>
 
 Install with basic config:
-<article class="glass-strong blog-article" style="padding:2rem"> > Sysmon64.exe -i</article>
+<article class="glass-strong blog-article"> > Sysmon64.exe -i</article>
 
 Sysmon running in PowerShell
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*CDwkCqpHyghsrTSV-Z217g.png" alt="">
@@ -111,7 +113,7 @@ Sysmon running in PowerShell
 <h2>Wazuh Setup (SIEM)</h2>
 We’ll use Wazuh Cloud to collect and analyze logs.
 
-<article class="glass-strong blog-article" style="padding:2rem">Visit: <a href="https://console.cloud.wazuh.com/">Wazuh Cloud Console</a></article>
+<article class="glass-strong blog-article">Visit: <a href="https://console.cloud.wazuh.com/">Wazuh Cloud Console</a></article>
 Create an account and log in.
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9DMInq5HZcxMyFIYWWWw1A.png" alt="">
 
@@ -131,7 +133,7 @@ Copy the PowerShell command and run it as admin on the Windows VM.
 <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*xuyCgMU-L40r6PE34J3DPA.png" alt="">
 
 Start the agent.
-<article class="glass-strong blog-article" style="padding:2rem"> > NET START WazuhSvc</article>
+<article class="glass-strong blog-article"> > NET START WazuhSvc</article>
 
 <hr>
 <br>
