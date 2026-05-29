@@ -1418,15 +1418,60 @@
 		        box-shadow: 0 0 32px rgba(0, 255, 136, 0.16), inset 0 0 20px rgba(0, 255, 136, 0.1);
 		    }
 
-		    .blog-auto-scroll.is-active .blog-auto-toggle {
-		        background: var(--primary);
-		        color: var(--bg);
-		        box-shadow: 0 0 24px rgba(0, 255, 136, 0.45);
-		    }
+			    .blog-auto-scroll.is-active .blog-auto-toggle {
+			        background: var(--primary);
+			        color: var(--bg);
+			        box-shadow: 0 0 24px rgba(0, 255, 136, 0.45);
+			    }
 
-		    @media (max-width: 1120px) {
-		        .blog-scrollbar {
-		            --control-size: 34px;
+			    .blog-scroll-top-button {
+			        position: fixed;
+			        left: 50%;
+			        bottom: 1.75rem;
+			        z-index: 95;
+			        width: 46px;
+			        height: 46px;
+			        display: inline-flex;
+			        align-items: center;
+			        justify-content: center;
+			        border: 1px solid rgba(0, 255, 136, 0.34);
+			        border-radius: 50%;
+			        background:
+			            radial-gradient(circle at 50% 30%, rgba(224, 255, 224, 0.12), transparent 48%),
+			            rgba(0, 12, 7, 0.86);
+			        color: var(--primary);
+			        font-family: inherit;
+			        font-size: 1.15rem;
+			        cursor: pointer;
+			        opacity: 0;
+			        pointer-events: none;
+			        box-shadow: 0 0 24px rgba(0, 255, 136, 0.16), inset 0 0 16px rgba(0, 255, 136, 0.08);
+			        backdrop-filter: blur(16px);
+			        -webkit-backdrop-filter: blur(16px);
+			        transform: translate(-50%, 14px) scale(0.9);
+			        transition: opacity var(--transition), transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+			    }
+
+			    .blog-scroll-top-button.is-visible {
+			        opacity: 1;
+			        pointer-events: auto;
+			        transform: translate(-50%, 0) scale(1);
+			    }
+
+			    .blog-scroll-top-button:hover,
+			    .blog-scroll-top-button:focus-visible {
+			        border-color: var(--primary);
+			        background:
+			            radial-gradient(circle at 50% 30%, rgba(224, 255, 224, 0.22), transparent 50%),
+			            rgba(0, 255, 136, 0.12);
+			        box-shadow: 0 0 34px rgba(0, 255, 136, 0.32), inset 0 0 18px rgba(0, 255, 136, 0.12);
+			        outline: none;
+			        transform: translate(-50%, -2px) scale(1.04);
+			    }
+
+			    @media (max-width: 1120px) {
+			        .blog-scrollbar {
+			            --control-size: 34px;
 		            top: 5.75rem;
 		            bottom: 1.25rem;
 		            right: 0.75rem;
@@ -1466,10 +1511,16 @@
 		            min-height: 30px;
 		        }
 
-		        .blog-auto-toggle {
-		            min-height: 46px;
-		        }
-		    }
+			        .blog-auto-toggle {
+			            min-height: 46px;
+			        }
+
+			        .blog-scroll-top-button {
+			            width: 42px;
+			            height: 42px;
+			            bottom: 1.15rem;
+			        }
+			    }
 
 	    a {
 	        color: rgb(224, 255, 224);

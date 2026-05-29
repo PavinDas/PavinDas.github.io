@@ -385,11 +385,18 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
         slowerButton.setAttribute('aria-label', 'Decrease auto scroll speed');
         slowerButton.textContent = '-';
 
+        const scrollTopButton = document.createElement('button');
+        scrollTopButton.className = 'blog-scroll-top-button';
+        scrollTopButton.type = 'button';
+        scrollTopButton.setAttribute('aria-label', 'Scroll to top');
+        scrollTopButton.textContent = '↑';
+
         track.appendChild(thumb);
         scrollbar.append(upButton, track, downButton);
         autoControls.append(fasterButton, autoButton, slowerButton);
         document.body.appendChild(scrollbar);
         document.body.appendChild(autoControls);
+        document.body.appendChild(scrollTopButton);
 
         let thumbHeight = 44;
         let animationFrame = null;
@@ -477,6 +484,39 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
 
         const scrollByPage = (direction) => {
             smoothScrollTo(window.scrollY + direction * window.innerHeight * 0.72);
+        };
+
+        const smoothScrollTop = () => {
+            stopAutoScroll();
+            stopButtonHold();
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+
+            const start = window.scrollY;
+            if (start < 1) return;
+
+            const duration = clamp(start * 0.16, 260, 620);
+            const startTime = performance.now();
+
+            const animateTopScroll = (now) => {
+                const elapsed = now - startTime;
+                const progress = clamp(elapsed / duration, 0, 1);
+                const eased = 1 - Math.pow(1 - progress, 4);
+
+                window.scrollTo(0, start * (1 - eased));
+
+                if (progress < 1) {
+                    animationFrame = requestAnimationFrame(animateTopScroll);
+                } else {
+                    window.scrollTo(0, 0);
+                    animationFrame = null;
+                }
+            };
+
+            animationFrame = requestAnimationFrame(animateTopScroll);
+        };
+
+        const updateScrollTopButton = () => {
+            scrollTopButton.classList.toggle('is-visible', window.scrollY > 280);
         };
 
         const updateAutoSpeedState = () => {
@@ -606,6 +646,10 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
         autoButton.addEventListener('pointerdown', toggleAutoScroll);
         slowerButton.addEventListener('pointerdown', (event) => changeAutoScrollSpeed(-1, event));
         fasterButton.addEventListener('pointerdown', (event) => changeAutoScrollSpeed(1, event));
+        scrollTopButton.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            smoothScrollTop();
+        });
 
         track.addEventListener('pointerdown', (event) => {
             if (event.target === thumb) return;
@@ -655,7 +699,10 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
             thumb.addEventListener('pointercancel', onPointerUp);
         });
 
-        window.addEventListener('scroll', updateThumb, { passive: true });
+        window.addEventListener('scroll', () => {
+            updateThumb();
+            updateScrollTopButton();
+        }, { passive: true });
         window.addEventListener('resize', () => {
             positionScrollbar();
             updateThumb();
@@ -663,6 +710,7 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
 
         positionScrollbar();
         updateThumb();
+        updateScrollTopButton();
         updateAutoSpeedState();
     };
 
