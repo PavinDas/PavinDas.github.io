@@ -49,7 +49,7 @@ Last updated: 2026-05-29
 - [The CIA Triad](https://pavindas.github.io/blogs/cia-triad.html): A narrative guide to the core pillars of cybersecurity: Confidentiality, Integrity, and Availability.
 - [ELK Stack Setup & Configuration Guide](https://pavindas.github.io/blogs/elk-stack.html): Step-by-step setup of Elasticsearch, Logstash, and Kibana on Ubuntu for log management.
 - [Building a Home SOC Lab with Wazuh and Shuffle](https://pavindas.github.io/blogs/soc-lab.html): Detailed walkthrough of setting up a SOC lab using VirtualBox, OPNsense, Wazuh, and Shuffle.
-- [Penetration Test Report: Mr. Robot](https://pavindas.github.io/blogs/mr-robot.html): Full CTF walkthrough covering enumeration, WordPress theme editing exploitation (RCE), and privilege escalation via SUID Nmap.
+- [Penetration Test Report: Mr. Robot](https://pavindas.github.io/blogs/mr-robot.html): Full CTF walkthrough of mr.robot CTF machine covering enumeration, WordPress theme editing exploitation (RCE), and privilege escalation via SUID Nmap.
 
 ---
 

@@ -82,6 +82,8 @@ const fullText = 'Security Engineer';
 let charIndex = 0;
 
 function typeText() {
+    if (!typedEl) return;
+
     if (charIndex < fullText.length) {
         typedEl.textContent = fullText.substring(0, charIndex + 1);
         charIndex++;
@@ -95,15 +97,17 @@ const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
 const navLinks = document.querySelectorAll('.nav-link');
 
-navToggle.addEventListener('click', () => {
-    navToggle.classList.toggle('open');
-    nav.classList.toggle('open');
-});
+if (navToggle && nav) {
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');
+        nav.classList.toggle('open');
+    });
+}
 
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        navToggle.classList.remove('open');
-        nav.classList.remove('open');
+        navToggle?.classList.remove('open');
+        nav?.classList.remove('open');
     });
 });
 
@@ -136,6 +140,8 @@ let skillsAnimated = false;
 
 function animateSkills() {
     const skillsSection = document.getElementById('skills');
+    if (!skillsSection) return;
+
     const rect = skillsSection.getBoundingClientRect();
 
     if (rect.top < window.innerHeight * 0.7 && !skillsAnimated) {
@@ -151,30 +157,35 @@ function animateSkills() {
 window.addEventListener('scroll', animateSkills);
 
 // Footer Year
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+}
 
 // Contact Form
 const form = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    formStatus.textContent = 'Sending...';
+if (form && formStatus) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formStatus.textContent = 'Sending...';
 
-    const endpoint = 'https://script.google.com/macros/s/AKfycbyGa1nqAkSnZd9fAsNSS0zKtlz9poTIgHftJsgr0kwb2eakwm7kY8khU0hiEEQp_s83/exec';
-    const formData = new FormData(form);
+        const endpoint = 'https://script.google.com/macros/s/AKfycbyGa1nqAkSnZd9fAsNSS0zKtlz9poTIgHftJsgr0kwb2eakwm7kY8khU0hiEEQp_s83/exec';
+        const formData = new FormData(form);
 
-    try {
-        const res = await fetch(endpoint, { method: 'POST', body: formData });
-        if (!res.ok) throw new Error('Network error');
-        formStatus.textContent = 'Form submitted successfully!';
-        formStatus.style.color = '#00ff88';
-        form.reset();
-    } catch (err) {
-        formStatus.textContent = 'Something went wrong. Please try again.';
-        formStatus.style.color = '#ff4444';
-    }
-});
+        try {
+            const res = await fetch(endpoint, { method: 'POST', body: formData });
+            if (!res.ok) throw new Error('Network error');
+            formStatus.textContent = 'Form submitted successfully!';
+            formStatus.style.color = '#00ff88';
+            form.reset();
+        } catch (err) {
+            formStatus.textContent = 'Something went wrong. Please try again.';
+            formStatus.style.color = '#ff4444';
+        }
+    });
+}
 
 // Fade-in animation on scroll
 const observerOptions = { threshold: 0.1 };
@@ -190,3 +201,112 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
     el.style.animationPlayState = 'paused';
     observer.observe(el);
 });
+
+(function() {
+    const initBlogCounters = () => {
+        const BLOG_NAMESPACE = 'pavindas.github.io';
+        const API_BASE = 'https://abacus.jasoncameron.dev';
+        const FETCH_OPTS = { method: 'GET', mode: 'cors', cache: 'no-store' };
+
+        const formatCount = (num) => {
+            const count = Number(num) || 0;
+            if (count >= 1_000_000) return (count / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (count >= 1_000) return (count / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+            return String(count);
+        };
+
+        const fetchJSON = (url) => fetch(url, FETCH_OPTS).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        });
+
+        const getCount = (blogId) => {
+            return fetchJSON(`${API_BASE}/get/${BLOG_NAMESPACE}/${blogId}`)
+                .then(data => Number(data.value) || 0);
+        };
+
+        const hitCount = (blogId) => {
+            return fetchJSON(`${API_BASE}/hit/${BLOG_NAMESPACE}/${blogId}`)
+                .then(data => Number(data.value) || 1);
+        };
+
+        const setCount = (element, value) => {
+            if (element) element.textContent = formatCount(value);
+        };
+
+        const updateBlogCards = () => {
+            document.querySelectorAll('.blog-card[data-blog]').forEach(card => {
+                const blogId = card.dataset.blog;
+                const countEl = card.querySelector('.view-count');
+                if (!blogId || !countEl) return;
+
+                getCount(blogId)
+                    .then(count => setCount(countEl, count))
+                    .catch(error => {
+                        console.error(`Error fetching view count for ${blogId}:`, error);
+                        setCount(countEl, 0);
+                    });
+            });
+        };
+
+        const initArticleCounter = () => {
+            const blogMatch = window.location.pathname.match(/\/blogs\/([^/]+)\.html$/);
+            if (!blogMatch) return;
+
+            const blogId = blogMatch[1];
+            const countEl = document.getElementById('blog-page-views');
+            const countedKey = `blog_view_counted_${blogId}`;
+            let countRecorded = sessionStorage.getItem(countedKey) === 'true';
+
+            getCount(blogId)
+                .then(count => setCount(countEl, count))
+                .catch(error => {
+                    console.error(`Error fetching view count for ${blogId}:`, error);
+                    setCount(countEl, 0);
+                });
+
+            if (countRecorded) return;
+
+            const hasReachedBottom = () => {
+                const scrollPosition = window.scrollY + window.innerHeight;
+                const pageHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight
+                );
+
+                return scrollPosition >= pageHeight - 80;
+            };
+
+            const recordViewAfterFullRead = () => {
+                if (countRecorded || !hasReachedBottom()) return;
+
+                countRecorded = true;
+                sessionStorage.setItem(countedKey, 'true');
+
+                hitCount(blogId)
+                    .then(count => setCount(countEl, count))
+                    .catch(error => {
+                        countRecorded = false;
+                        sessionStorage.removeItem(countedKey);
+                        console.error(`Error recording view for ${blogId}:`, error);
+                    });
+
+                window.removeEventListener('scroll', recordViewAfterFullRead);
+                window.removeEventListener('resize', recordViewAfterFullRead);
+            };
+
+            window.addEventListener('scroll', recordViewAfterFullRead, { passive: true });
+            window.addEventListener('resize', recordViewAfterFullRead);
+            recordViewAfterFullRead();
+        };
+
+        updateBlogCards();
+        initArticleCounter();
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBlogCounters);
+    } else {
+        initBlogCounters();
+    }
+})();
