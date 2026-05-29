@@ -257,6 +257,7 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
             const countEl = document.getElementById('blog-page-views');
             const countedKey = `blog_view_counted_${blogId}`;
             let countRecorded = sessionStorage.getItem(countedKey) === 'true';
+            let readerScrolled = false;
 
             getCount(blogId)
                 .then(count => setCount(countEl, count))
@@ -277,8 +278,19 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
                 return scrollPosition >= pageHeight - 80;
             };
 
+            const markReaderScrolled = () => {
+                readerScrolled = true;
+                recordViewAfterFullRead();
+            };
+
+            const markReaderScrolledFromControl = (event) => {
+                if (event.target.closest('.blog-scrollbar')) {
+                    markReaderScrolled();
+                }
+            };
+
             const recordViewAfterFullRead = () => {
-                if (countRecorded || !hasReachedBottom()) return;
+                if (countRecorded || !readerScrolled || !hasReachedBottom()) return;
 
                 countRecorded = true;
                 sessionStorage.setItem(countedKey, 'true');
@@ -293,11 +305,18 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
 
                 window.removeEventListener('scroll', recordViewAfterFullRead);
                 window.removeEventListener('resize', recordViewAfterFullRead);
+                window.removeEventListener('wheel', markReaderScrolled);
+                window.removeEventListener('touchmove', markReaderScrolled);
+                window.removeEventListener('keydown', markReaderScrolled);
+                document.removeEventListener('pointerdown', markReaderScrolledFromControl);
             };
 
             window.addEventListener('scroll', recordViewAfterFullRead, { passive: true });
             window.addEventListener('resize', recordViewAfterFullRead);
-            recordViewAfterFullRead();
+            window.addEventListener('wheel', markReaderScrolled, { passive: true });
+            window.addEventListener('touchmove', markReaderScrolled, { passive: true });
+            window.addEventListener('keydown', markReaderScrolled);
+            document.addEventListener('pointerdown', markReaderScrolledFromControl);
         };
 
         updateBlogCards();
@@ -308,5 +327,233 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
         document.addEventListener('DOMContentLoaded', initBlogCounters);
     } else {
         initBlogCounters();
+    }
+})();
+
+(function() {
+    const initBlogScrollbar = () => {
+        const isBlogPost = /\/blogs\/[^/]+\.html$/.test(window.location.pathname);
+        const article = document.querySelector('.blog-article');
+        if (!isBlogPost || !article) return;
+
+        document.body.classList.add('blog-read-page');
+
+        const scrollbar = document.createElement('aside');
+        scrollbar.className = 'blog-scrollbar';
+        scrollbar.setAttribute('aria-label', 'Blog scroll controls');
+
+        const upButton = document.createElement('button');
+        upButton.className = 'blog-scrollbar-button';
+        upButton.type = 'button';
+        upButton.setAttribute('aria-label', 'Scroll up');
+        upButton.textContent = '↑';
+
+        const track = document.createElement('div');
+        track.className = 'blog-scrollbar-track';
+
+        const thumb = document.createElement('button');
+        thumb.className = 'blog-scrollbar-thumb';
+        thumb.type = 'button';
+        thumb.setAttribute('aria-label', 'Drag to scroll blog');
+
+        const downButton = document.createElement('button');
+        downButton.className = 'blog-scrollbar-button';
+        downButton.type = 'button';
+        downButton.setAttribute('aria-label', 'Scroll down');
+        downButton.textContent = '↓';
+
+        track.appendChild(thumb);
+        scrollbar.append(upButton, track, downButton);
+        document.body.appendChild(scrollbar);
+
+        let thumbHeight = 44;
+        let animationFrame = null;
+        let holdDelay = null;
+        let holdFrame = null;
+
+        const getMaxScroll = () => Math.max(
+            document.documentElement.scrollHeight - window.innerHeight,
+            0
+        );
+
+        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+        const positionScrollbar = () => {
+            const articleRect = article.getBoundingClientRect();
+            const scrollbarWidth = scrollbar.offsetWidth || 42;
+            const gap = 22;
+            const minRight = 12;
+            const desiredRight = window.innerWidth - articleRect.right - gap - scrollbarWidth;
+            const right = clamp(desiredRight, minRight, Math.max(minRight, window.innerWidth - scrollbarWidth - minRight));
+
+            document.documentElement.style.setProperty('--blog-scrollbar-right', `${right}px`);
+        };
+
+        const updateThumb = () => {
+            const maxScroll = getMaxScroll();
+            const trackHeight = track.clientHeight;
+
+            if (!maxScroll || !trackHeight) {
+                scrollbar.classList.add('is-disabled');
+                thumb.style.height = '100%';
+                thumb.style.transform = 'translate(-50%, 0)';
+                return;
+            }
+
+            scrollbar.classList.remove('is-disabled');
+            thumbHeight = clamp((window.innerHeight / document.documentElement.scrollHeight) * trackHeight, 44, trackHeight);
+
+            const progress = window.scrollY / maxScroll;
+            const thumbTop = progress * (trackHeight - thumbHeight);
+
+            thumb.style.height = `${thumbHeight}px`;
+            thumb.style.transform = `translate(-50%, ${thumbTop}px)`;
+        };
+
+        const smoothScrollTo = (target) => {
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+
+            const start = window.scrollY;
+            const maxScroll = getMaxScroll();
+            const end = clamp(target, 0, maxScroll);
+            const distance = end - start;
+
+            if (Math.abs(distance) < 1) return;
+
+            const duration = clamp(Math.abs(distance) * 0.45, 380, 780);
+            const startTime = performance.now();
+
+            const animateScroll = (now) => {
+                const elapsed = now - startTime;
+                const progress = clamp(elapsed / duration, 0, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                window.scrollTo(0, start + distance * eased);
+
+                if (progress < 1) {
+                    animationFrame = requestAnimationFrame(animateScroll);
+                } else {
+                    animationFrame = null;
+                }
+            };
+
+            animationFrame = requestAnimationFrame(animateScroll);
+        };
+
+        const scrollByPage = (direction) => {
+            smoothScrollTo(window.scrollY + direction * window.innerHeight * 0.72);
+        };
+
+        const stopButtonHold = () => {
+            if (holdDelay) {
+                clearTimeout(holdDelay);
+                holdDelay = null;
+            }
+
+            if (holdFrame) {
+                cancelAnimationFrame(holdFrame);
+                holdFrame = null;
+            }
+        };
+
+        const startButtonHold = (button, direction, event) => {
+            event.preventDefault();
+            button.setPointerCapture(event.pointerId);
+            stopButtonHold();
+            scrollByPage(direction);
+
+            const continuousScroll = () => {
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                    animationFrame = null;
+                }
+
+                window.scrollBy(0, direction * 7);
+                holdFrame = requestAnimationFrame(continuousScroll);
+            };
+
+            holdDelay = setTimeout(() => {
+                holdDelay = null;
+                continuousScroll();
+            }, 240);
+
+            const stop = () => {
+                stopButtonHold();
+                if (button.hasPointerCapture(event.pointerId)) {
+                    button.releasePointerCapture(event.pointerId);
+                }
+                button.removeEventListener('pointerup', stop);
+                button.removeEventListener('pointercancel', stop);
+                button.removeEventListener('lostpointercapture', stop);
+            };
+
+            button.addEventListener('pointerup', stop);
+            button.addEventListener('pointercancel', stop);
+            button.addEventListener('lostpointercapture', stop);
+        };
+
+        upButton.addEventListener('pointerdown', (event) => startButtonHold(upButton, -1, event));
+        downButton.addEventListener('pointerdown', (event) => startButtonHold(downButton, 1, event));
+
+        track.addEventListener('pointerdown', (event) => {
+            if (event.target === thumb) return;
+            event.preventDefault();
+
+            const maxScroll = getMaxScroll();
+            const rect = track.getBoundingClientRect();
+            const clickY = event.clientY - rect.top - thumbHeight / 2;
+            const progress = clamp(clickY / Math.max(rect.height - thumbHeight, 1), 0, 1);
+
+            smoothScrollTo(maxScroll * progress);
+        });
+
+        thumb.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            thumb.setPointerCapture(event.pointerId);
+            scrollbar.classList.add('is-dragging');
+
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+
+            const maxScroll = getMaxScroll();
+            const trackRect = track.getBoundingClientRect();
+            const startY = event.clientY;
+            const startScroll = window.scrollY;
+            const scrollPerPixel = maxScroll / Math.max(trackRect.height - thumbHeight, 1);
+
+            const onPointerMove = (moveEvent) => {
+                const deltaY = moveEvent.clientY - startY;
+                window.scrollTo(0, clamp(startScroll + deltaY * scrollPerPixel, 0, maxScroll));
+            };
+
+            const onPointerUp = () => {
+                scrollbar.classList.remove('is-dragging');
+                thumb.releasePointerCapture(event.pointerId);
+                thumb.removeEventListener('pointermove', onPointerMove);
+                thumb.removeEventListener('pointerup', onPointerUp);
+                thumb.removeEventListener('pointercancel', onPointerUp);
+            };
+
+            thumb.addEventListener('pointermove', onPointerMove);
+            thumb.addEventListener('pointerup', onPointerUp);
+            thumb.addEventListener('pointercancel', onPointerUp);
+        });
+
+        window.addEventListener('scroll', updateThumb, { passive: true });
+        window.addEventListener('resize', () => {
+            positionScrollbar();
+            updateThumb();
+        });
+
+        positionScrollbar();
+        updateThumb();
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBlogScrollbar);
+    } else {
+        initBlogScrollbar();
     }
 })();
