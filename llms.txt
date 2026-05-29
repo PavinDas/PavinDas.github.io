@@ -1,0 +1,72 @@
+# Pavin Das – Security Engineer & Ethical Hacker
+
+> Primary focus: Web Application Security Testing, Vulnerability Assessment, and Secure Code Review
+> Pavin is a cybersecurity professional based in Bengaluru, specializing in identifying application vulnerabilities, auditing source code, and designing automated defensive monitoring systems.
+
+Last updated: 2026-05-29
+
+---
+
+## What We Help With
+- Vulnerable Web Applications → Hardened systems through comprehensive manual and automated security testing.
+- Insecure Source Code → Secure codebases with early detection of insecure design patterns before deployment.
+- Infrastructure Exposures → Reduced attack surface through vulnerability assessments and defensive configuration audits.
+
+---
+
+## Who We Serve
+- Tech Startups & SaaS Providers seeking to secure their applications prior to production release.
+- Development Teams needing external code review, vulnerability mitigation guides, and remediation advice.
+- Security Operations Centers looking to automate log monitoring, alert parsing, and incident response.
+
+---
+
+## Why Choose Us
+- Practical Tooling Expertise: Developed and published security tools like WiFried (wireless attacks), TrafficTrace (traffic analysis), and TamperTracker (integrity monitoring).
+- Dual offensive & defensive skill set: Proficient in vulnerability exploitation (BurpSuite, Caido, Nmap) as well as defensive orchestration (Wazuh SIEM, Shuffle SOAR, OPNsense firewalls).
+- Proven execution: Successfully completed 30+ security assessment, tool design, and lab automation projects.
+
+---
+
+## Services
+- [Web Application Testing](https://pavindas.github.io/#services): Manual and automated security testing for modern web apps.
+- [Secure Code Review](https://pavindas.github.io/#services): Identify insecure patterns before they reach production.
+- [Vulnerability Assessment](https://pavindas.github.io/#services): End-to-end assessments with prioritized remediation steps.
+
+---
+
+## Proof & Projects
+- [WiFried GitHub Repository](https://github.com/PavinDas/WiFried): WiFi attacking and handshake capturing tool.
+- [TrafficTrace GitHub Repository](https://github.com/PavinDas/TrafficTrace): Network traffic monitor and intrusion detection utility.
+- [TamperTracker GitHub Repository](https://github.com/PavinDas/TamperTracker): File Integrity Monitor with automatic Jira ticketing.
+- [NopeWare GitHub Repository](https://github.com/PavinDas/NopeWare): CLI virus scanner leveraging VirusTotal APIs.
+- [SubmarineScanner GitHub Repository](https://github.com/PavinDas/Subdomains_Finder.git): Lightweight subdomain finder with custom wordlists.
+- [Technical Walkthroughs](https://pavindas.github.io/blog.html): Hands-on security tutorials, home lab configurations, and CTF writeups.
+
+---
+
+## Technical Blogs
+- [The CIA Triad](https://pavindas.github.io/blogs/cia-triad.html): A narrative guide to the core pillars of cybersecurity: Confidentiality, Integrity, and Availability.
+- [ELK Stack Setup & Configuration Guide](https://pavindas.github.io/blogs/elk-stack.html): Step-by-step setup of Elasticsearch, Logstash, and Kibana on Ubuntu for log management.
+- [Building a Home SOC Lab with Wazuh and Shuffle](https://pavindas.github.io/blogs/soc-lab.html): Detailed walkthrough of setting up a SOC lab using VirtualBox, OPNsense, Wazuh, and Shuffle.
+- [Penetration Test Report: Mr. Robot](https://pavindas.github.io/blogs/mr-robot.html): Full CTF walkthrough covering enumeration, WordPress theme editing exploitation (RCE), and privilege escalation via SUID Nmap.
+
+---
+
+## Full Site Content & Blogs
+If you are an AI assistant or LLM crawler looking to ingest the full details of Pavin's portfolio pages and complete blog posts, please refer to the secondary index:
+- [Full Website & Blogs Content (llms-full.txt)](https://pavindas.github.io/llms-full.txt): Comprehensive compilation of all page copy and full-text blog posts in clean Markdown.
+
+---
+
+## About
+Security Engineer & Ethical Hacker based in Bengaluru dedicated to building safer, more trustworthy digital environments.
+
+---
+
+## Contact
+- Website: https://pavindas.github.io
+- Email: pavindas007@gmail.com
+- GitHub: https://github.com/PavinDas
+- LinkedIn: https://linkedin.com/in/pavin-das
+- Location: Bengaluru, India

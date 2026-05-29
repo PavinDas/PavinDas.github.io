@@ -1,0 +1,519 @@
+# Pavin Das – Full Portfolio and Blog Content
+
+This file contains the complete text contents of all pages and blog posts on Pavin Das's portfolio website.
+
+---
+
+# SECTION 1: Main Portfolio Content
+
+## Bio & Specialization
+Pavin Das is a Security Engineer & Ethical Hacker based in Bengaluru.
+Specializes in:
+- Web Application Security Testing
+- Vulnerability Assessment & Penetration Testing
+- Secure Code Review
+Status: Available for freelance.
+
+## About
+- Name: Pavin Das
+- Location: Bengaluru, India (Zip code: 560102)
+- Email: pavindas007@gmail.com
+- Status: 30+ Completed Projects
+
+## Projects
+
+### 1. WiFried (WiFi Attacking Tool)
+- Description: Python-based tool to scan Wi-Fi networks, perform deauthentication attacks, capture WPA handshakes, and attempt password cracking.
+- Key Features:
+  - List available Wi-Fi interfaces
+  - Enable monitor mode & scan networks
+  - Perform deauth attacks
+  - Capture WPA handshakes
+  - Crack passwords using aircrack-ng
+- Code: https://github.com/PavinDas/WiFried
+
+### 2. TrafficTrace (Network Traffic Monitor)
+- Description: Python-based tool for network traffic analysis, intrusion detection, and log monitoring.
+- Key Features:
+  - Identifies active hosts using ARP
+  - Parses network logs for anomalies
+  - Shows top active IPs & protocols
+  - Detects port scans & exfiltration
+- Code: https://github.com/PavinDas/TrafficTrace
+
+### 3. CoreWatch (Linux System Monitor Tool)
+- Description: Bash script for system health checks, CPU/memory monitoring, and automated backups with rsync.
+- Key Features:
+  - Monitors CPU & memory usage
+  - Logs system health details
+  - Top 5 memory-heavy processes
+  - Checks for system updates
+  - Backups using rsync
+- Code: https://github.com/PavinDas/System_Monitor
+
+### 4. TamperTracker (File Integrity Monitor)
+- Description: Python-based FIM that detects unauthorized file changes and creates Jira incidents automatically.
+- Key Features:
+  - SHA-256 hashing for file tracking
+  - Real-time tamper detection
+  - Auto Jira ticket creation
+  - Configurable monitoring intervals
+- Code: https://github.com/PavinDas/TamperTracker
+
+### 5. NopeWare (Virus Scanner Tool)
+- Description: CLI utility to upload files to VirusTotal, fetch results, and highlight malicious detections.
+- Key Features:
+  - Uploads files for scanning
+  - Shows name, size & SHA-256
+  - Displays AV verdicts
+  - Flags malicious detections
+- Code: https://github.com/PavinDas/NopeWare
+
+### 6. SubmarineScanner (Subdomain Finder Tool)
+- Description: Python script using a custom wordlist to discover hidden subdomains and paths.
+- Key Features:
+  - Custom wordlist-based discovery
+  - Simple & lightweight
+  - Custom User-Agent support
+- Code: https://github.com/PavinDas/Subdomains_Finder.git
+
+## Services
+- Web Application Testing: Manual and automated security testing for modern web apps.
+- Secure Code Review: Identify insecure patterns before they reach production.
+- Vulnerability Assessment: End-to-end assessments with prioritized remediation steps.
+
+## Skills & Technologies
+- Programming & Scripting: Python, Bash, Dart, Java, JavaScript, C, HTML, CSS
+- Offensive Security: BurpSuite, Caido, Nmap, Wireshark, Metasploit, OWASP ZAP, SQLmap, XSSer, ffuf, Recon-ng, Tor
+- Defensive Security: SIEM, SOAR, IDS/IPS, Firewall, EDR/XDR, Malware Analysis, VPN/Proxy
+- Tools & Frameworks: Git, GitHub, Jira, OWASP Top 10, CVE/CWE, Flutter, Flask, Firebase, PostgreSQL, MongoDB
+- Operating Systems: Parrot OS, Kali Linux, Windows, macOS, Ubuntu
+
+## Contact Info & Socials
+- Address: HustleHub Tech Park, Somasundarapalaya, Bengaluru
+- GitHub: https://github.com/PavinDas
+- Email: pavindas007@gmail.com
+- Medium: https://medium.com/@pavin-das
+- LinkedIn: https://linkedin.com/in/pavin-das
+- TryHackMe: https://tryhackme.com/p/pavindas
+- Instagram: https://instagram.com/pavin__das
+- Twitter: https://twitter.com/pavin__das
+
+---
+
+# SECTION 2: Blog Posts
+
+## Blog List
+1. The CIA Triad (blogs/cia-triad.html) - Cybersecurity Fundamentals
+2. ELK Stack Setup & Configuration (blogs/elk-stack.html) - Logging, SIEM, Blue Team
+3. Building a Home SOC Lab (blogs/soc-lab.html) - Wazuh, Shuffle, Detection
+4. Mr. Robot Walkthrough (blogs/mr-robot.html) - CTF, Web Exploitation, Privilege Escalation
+
+---
+
+## Blog 1: The CIA Triad
+URL: https://pavindas.github.io/blogs/cia-triad.html
+Subtitle: The Story of Three Guardians of Cybersecurity
+
+Imagine a kingdom, made with data instead of castles and dragons. In this digital kingdom, important things live: your private messages, medical records, bank transactions and even the selfies you took last summer. All these information live inside the castle of cyberspace.
+
+But like every good kingdom, it need protection.
+
+Enter the three loyal guardians of cybersecurity: Confidentiality, Integrity and Availability. Together, they form what’s known as the CIA Triad.
+
+Let’s meet these guardians one by one.
+
+### 1. Confidentiality: The Secret Keeper
+Confidentiality is like the royal guard standing at the castle gates. It ensures that only the right people get in. Not everyone should know the king’s secrets.
+
+Think about WhatsApp. When you send a message, it’s encrypted. That means no one, not even WhatsApp can read it except the person you’re talking to. That is Confidentiality.
+
+But when this guardian is weak, that will lead to a great disaster. Remember the stories where some random people’s bank details were leaked? That was a confidentiality breach. The castle gates were left open, and the secrets spilled out.
+
+### 2. Integrity: The Truth Protector
+Integrity is the guardian that watches over the library. It makes sure nobody tampers with the records.
+
+Imagine you’re a college student. You submit your exam online. Now, what if someone sneaks in and changes your score from 85 to 45? That’s an attack on integrity. The data was altered, and you could suffer because of it.
+
+Banks rely on integrity too. When you transfer ₹1,000 to your friend, you want that transaction to be accurate. If the amount flipped to ₹100, you will lose trust in the bank.
+
+### 3. Availability: The Reliable Watchman
+Availability is the watchman who makes sure the gates are open when they’re supposed to be. What good is a secure, accurate system if you can’t access it when you need it?
+
+Imagine trying to withdraw money, but the ATM network is down. Or worse, a hospital can’t access patient records in the middle of surgery because of a cyberattack.
+
+That’s a failure of availability.
+
+### Mitigation Methods
+- **Confidentiality:**
+  - Encryption
+  - Strong Authentication (MFA)
+  - Access Controls Lists
+  - Data classification and policies
+- **Integrity:**
+  - Hashing
+  - Digital Signatures
+  - Audit Trails / Logs
+  - File Integrity Monitoring
+- **Availability:**
+  - Redundancy & Backups
+  - DDoS Protection
+  - Failover Systems
+  - Regular Maintenance & Updates
+
+### Conclusion
+Every security system is built on this simple triangle.
+In conclusion, the CIA Triad is a fundamental model in cybersecurity which guides how to protect information. It ensures that sensitive data stays private, accurate, and accessible. Understanding and applying the CIA Triad helps us build safer, more trustworthy digital environments.
+
+---
+
+## Blog 2: ELK Stack Setup & Configuration Guide
+URL: https://pavindas.github.io/blogs/elk-stack.html
+Subtitle: Step by step instructions to set up the ELK Stack for log management and analysis
+
+### Prerequisites
+- Operating System: Ubuntu 20.04 (or similar Linux distribution)
+- Java: OpenJDK 11 or 17 (required for Elasticsearch and Logstash)
+- Minimum Hardware: 4GB RAM, 2 CPU cores, 20GB disk space
+- Network: Ports 9200 (Elasticsearch), 5044 (Logstash), 5601 (Kibana) open
+
+### Install Elasticsearch
+Elasticsearch stores and indexes logs for fast searching.
+
+#### Install Java
+```bash
+sudo apt update
+sudo apt install openjdk-11-jdk -y
+java -version
+```
+
+#### Add Elasticsearch Repository
+```bash
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+```
+
+#### Install Elasticsearch
+```bash
+sudo apt update
+sudo apt install elasticsearch -y
+```
+
+#### Configure Elasticsearch
+Edit `/etc/elasticsearch/elasticsearch.yml`:
+```yaml
+cluster.name: elk-cluster
+node.name: node-1
+network.host: 127.0.0.1
+http.port: 9200
+```
+
+#### Start and Enable Elasticsearch
+```bash
+sudo systemctl start elasticsearch
+sudo systemctl enable elasticsearch
+```
+
+#### Verify Installation
+```bash
+curl -X GET "http://localhost:9200"
+```
+Expected output: JSON response with cluster details.
+
+### Install Logstash
+Logstash processes and parses logs before sending them to Elasticsearch.
+
+#### Install Logstash
+```bash
+sudo apt install logstash -y
+```
+
+#### Configure Logstash
+Create a sample configuration file at `/etc/logstash/conf.d/logstash-sample.conf`:
+```json
+input {
+    file {
+        path  => "/var/log/app.log"
+        start_position  => "beginning"
+    }
+}
+
+filter {
+    grok {
+        match  => { "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:loglevel} %{GREEDYDATA:message}" }
+    }
+}
+
+output {
+    elasticsearch {
+        hosts  => ["http://localhost:9200"]
+        index  => "logs-%{+YYYY.MM.dd}"
+    }
+    stdout { codec  => rubydebug }
+}
+```
+
+#### Test Configuration
+```bash
+sudo /usr/share/logstash/bin/logstash --config.test_and_exit -f /etc/logstash/conf.d/logstash-sample.conf
+```
+
+#### Start and Enable Logstash
+```bash
+sudo systemctl start logstash
+sudo systemctl enable logstash
+```
+
+### Install Kibana
+Kibana provides a web interface for visualizing and analyzing logs.
+
+#### Install Kibana
+```bash
+sudo apt install kibana -y
+```
+
+#### Configure Kibana
+Edit `/etc/kibana/kibana.yml`:
+```yaml
+server.port: 5601
+server.host: "127.0.0.1"
+elasticsearch.hosts: ["http://localhost:9200"]
+```
+
+#### Start and Enable Kibana
+```bash
+sudo systemctl start kibana
+sudo systemctl enable kibana
+```
+
+#### Access Kibana
+Open a browser and navigate to `http://localhost:5601`. Log in with default credentials (if security is enabled, configure users via Elasticsearch).
+
+### Data Ingestion and Log Parsing
+Sample Log File: Create `/var/log/app.log` with sample logs:
+```
+2025-05-31T13:45:00+05:30 INFO Application started successfully
+2025-05-31T13:45:01+05:30 ERROR Failed to connect to database
+```
+- **Logstash Processing:** Logstash reads app.log, parses it using the grok filter, and sends it to Elasticsearch.
+- **Index Creation:** Logs are stored in Elasticsearch under indices like `logs-2025.05.31`.
+
+### Visualization in Kibana
+1. **Access Kibana:** Go to `http://localhost:5601`.
+2. **Create Index Pattern:**
+   - Navigate to Management > Stack Management > Index Patterns.
+   - Create a pattern: `logs-*`.
+   - Set `@timestamp` as the time field.
+3. **Create Visualizations:**
+   - Go to Visualize > Create Visualization.
+   - Choose a chart (e.g., Vertical Bar).
+   - Select index pattern `logs-*`.
+   - Example: Plot log levels (e.g., INFO, ERROR) over time.
+   - Y-axis: Count
+   - X-axis: `@timestamp` (bucket by hour)
+4. **Create Dashboard:**
+   - Go to Dashboard > Create Dashboard.
+   - Add your visualization.
+   - Save and view your log analysis dashboard.
+
+### Troubleshooting
+- **Elasticsearch not running:** Check status with `sudo systemctl status elasticsearch`.
+- **Logstash errors:** View logs at `/var/log/logstash/logstash-plain.log`.
+- **Kibana access issues:** Ensure `server.host` is correct and port 5601 is open.
+
+### Next Steps
+- **Enable security:** Configure X-Pack security in Elasticsearch and Kibana.
+- **Scale:** Add more nodes to Elasticsearch for a cluster setup.
+- **Ingest more data:** Configure Logstash inputs for other sources (e.g., syslog, beats).
+
+---
+
+## Blog 3: Building a Home SOC Lab with Wazuh and Shuffle
+URL: https://pavindas.github.io/blogs/soc-lab.html
+Subtitle: Building a Home SOC Lab with VirtualBox, Wazuh, and Shuffle
+
+### Introduction
+In this guide, I’ll walk you through the process of creating a home lab for a Security Operations Center (SOC) using Oracle VirtualBox.
+The goal is to detect malicious activity, improve incident response, and automate actions to cut down response time and reduce manual work.
+
+The lab simulates a realistic cybersecurity environment with:
+- A Kali Linux attacker machine (outside the firewall)
+- A Windows 10 host machine
+- An Ubuntu defense machine
+- An OPNsense firewall
+
+The goal is to demonstrate log monitoring and automated incident response using Wazuh SIEM, Shuffle SOAR, and Jira for ticketing.
+
+### How it works:
+1. Wazuh agents collect logs from network and endpoints.
+2. The logs are sent to Wazuh (SIEM) for analysis.
+3. If something suspicious is found (like a brute-force attack), Wazuh raises an alert.
+4. That alert triggers a webhook in Shuffle SOAR to kick off automated actions.
+5. A Jira ticket is created to keep track of the incident.
+6. If needed, the IP behind the attack gets blocked automatically in the OPNsense Firewall.
+
+### Virtual Environment Setup
+
+#### 1. Kali Linux (Attacker Machine)
+Create a virtual machine in VirtualBox with the following settings:
+- OS Type: Linux
+- Version: Debian (64-bit)
+- RAM: Minimum 2 GB (4 GB recommended)
+- Hard Disk: Use a pre-downloaded Kali .vdi image
+- Network: Bridged Adapter
+
+#### 2. OPNsense (Firewall)
+Create another VM for the firewall:
+- Type: BSD
+- Version: FreeBSD (64-bit)
+- RAM: 3 GB
+- Disk: 10–20 GB
+- Network Adapters:
+  - Adapter 1: Bridged (WAN)
+  - Adapter 2: Internal Network (LAN, named intnet)
+
+#### 3. Windows (Host Machine)
+- Name: Win10
+- Type: Microsoft Windows
+- Version: Windows 10 (64-bit)
+- RAM: 3 GB
+- Disk: Minimum 40 GB
+- Network: Internal Network (intnet)
+
+**Install Sysmon**
+- Download from Microsoft Sysinternals.
+- Install with basic config: `Sysmon64.exe -i`
+
+#### 4. Ubuntu (Defense Machine)
+- Name: Ubuntu
+- Type: Linux
+- Version: Ubuntu (64-bit)
+- RAM: 4 GB
+- Disk: Minimum 40 GB
+- Network: Internal Network (intnet)
+
+### Wazuh Setup (SIEM)
+We’ll use Wazuh Cloud to collect and analyze logs.
+1. Visit: Wazuh Cloud Console, create an account, and log in.
+2. Click Create New Environment, name it, select a region.
+3. Open the environment dashboard and click Open Wazuh.
+4. Deploy the agent. Choose Windows.
+5. Copy the PowerShell command and run it as admin on the Windows VM.
+6. Start the agent: `NET START WazuhSvc`
+
+### Creating Alerting Rule
+In Wazuh → Alerting:
+- Name: Failed Login Monitor
+- Type: Per query monitor
+- Frequency: Every 1 minute
+- Index: `wazuh-alerts`
+- Query: `rule.id = 60122`
+- Trigger: Count IS ABOVE 5
+- Link the previously created notification channel.
+- Set the message body for webhook parsing.
+
+### Shuffle Setup (SIEM)
+1. Visit Shuffle Cloud, sign up, and log in.
+2. Create new workflow.
+
+#### Workflow Steps
+- **Webhook Trigger:** Copy the URL and paste it into Wazuh’s webhook fields.
+- **Repeat back to me:** Collect alert data.
+- **Check Cache Contains:** Store alert IDs to prevent duplication.
+- **Logic Check:** If alert ID is new, raise a Jira ticket. If already processed, stop the flow.
+
+#### Jira Integration
+- Create a Jira Cloud account via Atlassian.
+- Set up a project and generate an API key.
+- Authenticate in Shuffle’s Jira App using: Jira email | API key | Project ID | Issue Type.
+
+### Conclusion
+And we’re done! This lab is a basic beginner-friendly setup to help you understand SOC concepts. It’s not meant for production, but it’s a great way to take that first step into the SOC journey.
+Setting up and analyzing this environment gave me a better understanding of how security operations work in practice from detection and investigation to response.
+
+---
+
+## Blog 4: Penetration Test Report: Mr. Robot
+URL: https://pavindas.github.io/blogs/mr-robot.html
+Subtitle: A full penetration test walkthrough of the Mr. Robot CTF machine
+
+### Target Information
+- **Application name:** Mr Robot
+- **IP address:** 192.168.1.41 *(Note: Your target IP may differ)*
+
+### Testing Details
+- **Tools used:** Nmap, Dirb, Burp Suite CE, Netcat
+- **Websites used:** revshells.com, gtfobins.org, crackstation.net
+
+### Findings
+
+#### 1. Sensitive Information Disclosure (A02:2021 - Cryptographic Failure)
+Sensitive endpoints and credentials were exposed via publicly accessible files.
+- **Affected:** `/robots.txt`, `/license`
+- **Impact:** An attacker can gain initial access without brute-forcing.
+- **Mitigation:** Remove sensitive data from public files; restrict access using authentication.
+
+#### 2. Insecure WordPress Configuration (A05:2021 - Security Misconfiguration)
+The WordPress theme editor was enabled, allowing direct modification of PHP files.
+- **Impact:** Leads to Remote Code Execution (RCE).
+- **Mitigation:** Disable theme/plugin editor using `define('DISALLOW_FILE_EDIT', true);` and restrict admin panel access.
+
+#### 3. Remote Code Execution (A03:2021 - Injection)
+The attacker executed arbitrary commands on the server via reverse shell.
+- **Impact:** Full control over application and system operations.
+- **Mitigation:** Input validation, disable dangerous PHP functions, use a Web Application Firewall.
+
+#### 4. Privilege Escalation via SUID Binary (A05:2021 - Security Misconfiguration)
+SUID enabled Nmap binary allowed privilege escalation.
+- **Impact:** Complete system takeover.
+- **Mitigation:** Remove unnecessary SUID permissions (`chmod -s /usr/bin/nmap`) and conduct regular privilege audits.
+
+### Steps to Reproduce
+
+#### 1. Scanning
+**Tool used:** Nmap
+```bash
+nmap -sV -sC 192.168.1.41
+```
+Port 80 is open, indicating a web server. Navigated to the IP address in a browser.
+
+#### 2. Directory Enumeration
+**Tool used:** dirb
+```bash
+dirb http://192.168.1.41/ -o dirbResult.txt
+grep "CODE:200" dirbResult.txt
+```
+dirb enumerated all subdirectories, and grep extracted URLs returning status 200.
+
+#### 3. Gathering Key 1 of 3
+Examined responses using Burp Suite. `/robots.txt` exposed the path to retrieve key 1 of 3.
+- **Key 1 of 3:** `073403c8a58a1f80d943455fb30724b9`
+
+#### 4. Gathering Key 2 of 3
+Found an encoded credential pair in `/license` and decoded it using Burp Decoder.
+- **Credential:** `elliot:ER28-0652`
+
+Navigated to `/wp-login.php` and successfully logged in.
+The file at `wp-admin/theme-editor.php?file=404.php&theme=twentyfifteen` was editable. Replaced the contents of `404.php` with a reverse shell from revshells.com.
+Started a netcat listener:
+```bash
+nc -lvnp <port>
+```
+Requested a non-existent path to trigger `404.php` and catch the connection.
+Logged in as `daemon`, navigated to `/home/robot`. Found `key-2-of-3.txt` which daemon couldn't access, and `password.raw-md5` which contained robot's MD5 hashed password.
+Decoded the MD5 hash via CrackStation:
+- **Credential:** `robot:abcdefghijklmnopqrstuvwxyz`
+
+Switched user to `robot` and retrieved key 2.
+- **Key 2 of 3:** `822c73956184f694993bede3eb39f959`
+
+#### 5. Gathering Key 3 of 3
+Escalation to root was required. Searched for SUID files:
+```bash
+find / -perm -u=s -type f 2>/dev/null
+```
+Found Nmap in the list. Leveraged GTFOBins instructions for SUID Nmap privilege escalation (interactive mode) to spawn a root shell. Navigated to `/root` and read `key-3-of-3.txt`.
+- **Key 3 of 3:** `04787ddef27c3dee1ee161b21670b4e4`
+
+### Conclusion
+Use this walkthrough as a reference for learning hands-on pentesting and privilege escalation.
