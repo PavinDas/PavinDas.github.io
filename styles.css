@@ -1191,6 +1191,26 @@
         color: var(--primary);
     }
 
+    .blog-post-meta .blog-views {
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    header nav {
+        align-items: center;
+    }
+
+    header .blog-views {
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+        font-size: 0.85rem;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
     /* ===== BLOG CONTENT FIX ===== */
 
     .blog-article {
