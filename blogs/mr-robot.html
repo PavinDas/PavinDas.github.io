@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Mr. Robot – Penetration Test Report | Pavin Das</title>
     <meta name="description"
         content="A full penetration test walkthrough of the Mr. Robot CTF machine covering enumeration, exploitation, and privilege escalation.">
@@ -53,9 +56,9 @@
 <li>Netcat</li>
 
 <h3>Websites used:</h3>
-<li><a href="https://www.revshells.com/" target="_blank">https://www.revshells.com/</a></li>
-<li><a href="https://gtfobins.org/" target="_blank">https://gtfobins.org/</a></li>
-<li><a href="https://crackstation.net/" target="_blank">https://crackstation.net/</a></li>
+<li><a href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer">https://www.revshells.com/</a></li>
+<li><a href="https://gtfobins.org/" target="_blank" rel="noopener noreferrer">https://gtfobins.org/</a></li>
+<li><a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">https://crackstation.net/</a></li>
 <hr>
 
 
@@ -168,7 +171,7 @@ Navigated to <b>/wp-login.php</b>.
 Used previously captured credentials on the login page. And the login succeeded.
 <img src="/images/mr-robot/9.png" alt="">
 
-The file at <b>http://192.168.1.35/wp-admin/theme-editor.php?file=404.php&theme=twentyfifteen</b> was editable. Referenced <a href="https://www.revshells.com/" target="_blank">revshells.com</a> to select a suitable reverse shell payload and replaced the existing code with the reverse shell.
+The file at <b>http://192.168.1.35/wp-admin/theme-editor.php?file=404.php&theme=twentyfifteen</b> was editable. Referenced <a href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer">revshells.com</a> to select a suitable reverse shell payload and replaced the existing code with the reverse shell.
 <img src="/images/mr-robot/10.png" alt="">
 
 Started a netcat listener to catch the reverse shell.
@@ -216,7 +219,7 @@ Unable to perform required actions as root, so searched for files runnable with 
 <article class="glass-strong blog-article">> find / -perm -u=s -type f 2>/dev/null</article>
 <img src="/images/mr-robot/20.png" alt="">
 
-The list included Nmap, so <a href="https://gtfobins.org/" target="_blank">gtfobins.org</a> was consulted to learn how to perform privilege escalation using Nmap.
+The list included Nmap, so <a href="https://gtfobins.org/" target="_blank" rel="noopener noreferrer">gtfobins.org</a> was consulted to learn how to perform privilege escalation using Nmap.
 <img src="/images/mr-robot/21.png" alt="">
 Obtained admin access.
 <img src="/images/mr-robot/22.png" alt="">
