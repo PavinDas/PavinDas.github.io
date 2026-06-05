@@ -1214,18 +1214,24 @@
     /* ===== BLOG CONTENT FIX ===== */
 
     .blog-article {
+        width: 100%;
         max-width: 900px;
         margin: 0 auto;
         padding: 2rem;
     }
 
     .blog-content {
+        display: block;
+        width: 100%;
+        max-width: 100%;
         white-space: pre-wrap;
         /* preserves formatting BUT wraps */
+        word-break: normal;
         word-wrap: break-word;
         /* legacy support */
         overflow-wrap: break-word;
         /* modern support */
+        overflow-x: hidden;
         font-size: 0.9rem;
         line-height: 1.75;
         color: var(--text);
@@ -1240,6 +1246,10 @@
     }
 
 	    @media (max-width: 768px) {
+	        .blog-article {
+	            padding: 1.5rem;
+	        }
+
 	        .blog-content {
 	            font-size: 0.85rem;
 	            line-height: 1.7;
@@ -1277,6 +1287,7 @@
 	        box-shadow: 0 0 18px rgba(0, 255, 136, 0.08), inset 0 0 12px rgba(0, 255, 136, 0.08);
 	        backdrop-filter: blur(14px);
 	        -webkit-backdrop-filter: blur(14px);
+	        touch-action: manipulation;
 	        transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition), background var(--transition);
 	    }
 
@@ -1302,6 +1313,7 @@
 	        box-shadow: inset 0 0 18px rgba(0, 255, 136, 0.08), 0 0 22px rgba(0, 0, 0, 0.45);
 	        cursor: pointer;
 	        overflow: hidden;
+	        touch-action: none;
 	    }
 
 	    .blog-scrollbar-track::before {
@@ -1336,6 +1348,7 @@
 	        box-shadow: 0 0 18px rgba(0, 255, 136, 0.45), inset 0 0 8px rgba(0, 0, 0, 0.35);
 	        cursor: grab;
 	        transform: translate(-50%, 0);
+	        touch-action: none;
 	        transition: box-shadow var(--transition), width var(--transition);
 	    }
 
@@ -1407,6 +1420,7 @@
 		        line-height: 1;
 		        cursor: pointer;
 		        box-shadow: inset 0 0 12px rgba(0, 255, 136, 0.06);
+		        touch-action: manipulation;
 		        transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition), color var(--transition);
 		    }
 
@@ -1468,6 +1482,7 @@
 			        box-shadow: 0 0 24px rgba(0, 255, 136, 0.16), inset 0 0 16px rgba(0, 255, 136, 0.08);
 			        backdrop-filter: blur(16px);
 			        -webkit-backdrop-filter: blur(16px);
+			        touch-action: manipulation;
 			        transform: translate(-50%, 14px) scale(0.9);
 			        transition: opacity var(--transition), transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
 			    }
@@ -1492,53 +1507,147 @@
 			    @media (max-width: 1120px) {
 			        .blog-scrollbar {
 			            --control-size: 34px;
-		            top: 5.75rem;
-		            bottom: 1.25rem;
-		            right: 0.75rem;
-		        }
+			            top: 5.75rem;
+			            bottom: 1.25rem;
+			            right: 0.75rem;
+			        }
 
-		        .blog-auto-scroll {
-		            --auto-size: 38px;
-		            left: 0.75rem;
-		        }
+			        .blog-auto-scroll {
+			            --auto-size: 38px;
+			            left: 0.75rem;
+			        }
 
-		        .blog-scrollbar-track {
-		            width: 10px;
-		        }
+			        .blog-scrollbar-track {
+			            width: 10px;
+			        }
 
-	        .blog-scrollbar-thumb {
-	            width: 21px;
-	        }
-	    }
+			        .blog-scrollbar-thumb {
+			            width: 21px;
+			        }
+			    }
 
-		    @media (max-width: 680px) {
-		        .blog-scrollbar {
-		            --control-size: 30px;
-		            top: auto;
-		            bottom: 1rem;
-		            height: min(54vh, 360px);
-		            gap: 0.5rem;
-		        }
+			    @media (max-width: 1024px) {
+			        body.blog-read-page section {
+			            padding-left: 2.75rem;
+			            padding-right: 2.75rem;
+			        }
 
-		        .blog-auto-scroll {
-		            --auto-size: 34px;
-		            top: auto;
-		            bottom: 1rem;
-		            transform: none;
-		        }
+			        .blog-scrollbar {
+			            --control-size: 30px;
+			            top: 5.5rem;
+			            right: max(0.35rem, env(safe-area-inset-right)) !important;
+			            bottom: 1.1rem;
+			            width: var(--control-size);
+			            gap: 0.45rem;
+			        }
 
-		        .blog-auto-button {
-		            min-height: 30px;
-		        }
+			        .blog-scrollbar-button {
+			            border-radius: 8px;
+			            font-size: 0.9rem;
+			        }
+
+			        .blog-scrollbar-track {
+			            width: 8px;
+			            min-height: 120px;
+			        }
+
+			        .blog-scrollbar-track::before {
+			            top: 10px;
+			            bottom: 10px;
+			        }
+
+			        .blog-scrollbar-thumb {
+			            width: 18px;
+			            min-height: 48px;
+			        }
+
+			        .blog-scrollbar-thumb:hover,
+			        .blog-scrollbar-thumb:focus-visible,
+			        .blog-scrollbar.is-dragging .blog-scrollbar-thumb {
+			            width: 22px;
+			        }
+
+			        .blog-auto-scroll {
+			            --auto-size: 30px;
+			            left: max(0.35rem, env(safe-area-inset-left)) !important;
+			            top: 50%;
+			            bottom: auto;
+			            width: var(--auto-size);
+			            flex-direction: column;
+			            gap: 0.35rem;
+			            padding: 0.35rem 0.25rem;
+			            border-radius: 10px;
+			            transform: translateY(-50%);
+			        }
+
+			        .blog-auto-scroll::before {
+			            left: 3px;
+			            right: auto;
+			            top: 0.55rem;
+			            bottom: 0.55rem;
+			            width: 2px;
+			            height: auto;
+			            background: linear-gradient(0deg, var(--primary) var(--auto-scroll-level), rgba(255, 255, 255, 0.1) var(--auto-scroll-level));
+			        }
+
+			        .blog-auto-button {
+			            width: 100%;
+			            min-width: 0;
+			            min-height: 30px;
+			            border-radius: 8px;
+			            font-size: 0.8rem;
+			        }
 
 			        .blog-auto-toggle {
+			            width: 100%;
+			            min-width: 0;
 			            min-height: 46px;
+			            writing-mode: vertical-rl;
+			            text-orientation: mixed;
+			            font-size: 0.58rem;
+			            letter-spacing: 0.04em;
+			        }
+
+			        .blog-scroll-top-button {
+			            left: auto;
+			            right: max(0.75rem, env(safe-area-inset-right));
+			            bottom: max(1rem, env(safe-area-inset-bottom));
+			            transform: translateY(14px) scale(0.9);
+			        }
+
+			        .blog-scroll-top-button.is-visible {
+			            transform: translateY(0) scale(1);
+			        }
+
+			        .blog-scroll-top-button:hover,
+			        .blog-scroll-top-button:focus-visible {
+			            transform: translateY(-2px) scale(1.04);
+			        }
+			    }
+
+			    @media (max-width: 680px) {
+			        body.blog-read-page section {
+			            padding-left: 2.35rem;
+			            padding-right: 2.35rem;
+			        }
+
+			        .blog-scrollbar {
+			            --control-size: 28px;
+			            top: 5.25rem;
+			            bottom: 0.85rem;
+			            right: max(0.25rem, env(safe-area-inset-right)) !important;
+			        }
+
+			        .blog-auto-scroll {
+			            --auto-size: 28px;
+			            left: max(0.25rem, env(safe-area-inset-left)) !important;
 			        }
 
 			        .blog-scroll-top-button {
 			            width: 42px;
 			            height: 42px;
-			            bottom: 1.15rem;
+			            bottom: max(0.85rem, env(safe-area-inset-bottom));
+			            right: 2.35rem;
 			        }
 			    }
 
