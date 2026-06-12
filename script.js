@@ -11,13 +11,15 @@ function resize() {
 }
 
 function createParticle() {
+    const opacity = 0.1 + Math.random() * 0.9;          // range: 0.1 → 1.0
+    const speed = 0.5 + ((opacity - 0.1) / 0.9) * 2; // range: 0.5 → 2.5 (proportional to opacity)
     return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height - canvas.height,
-        speed: 0.5 + Math.random() * 2,
+        speed,
         size: 10 + Math.random() * 8,
         char: chars[Math.floor(Math.random() * chars.length)],
-        opacity: 0.1 + Math.random() * 0.8
+        opacity
     };
 }
 
