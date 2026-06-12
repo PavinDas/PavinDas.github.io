@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 Not Found | Pavin Das</title>
+  <meta name="description"
+    content="The requested page could not be found." />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/88970616?v=4" type="image/x-icon" />
+  <link rel="canonical" href="https://pavindas.github.io/404.html" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .error-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+    .error-content {
+      max-width: 600px;
+      width: 100%;
+      padding: 3rem;
+      background: var(--glass-strong-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-strong-border);
+      border-radius: var(--radius);
+    }
+    .error-content h1 {
+      font-size: 8rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .error-content p.subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .error-terminal {
+      text-align: left;
+      margin: 0 auto 3rem auto;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.875rem;
+    }
+    .error-terminal .line {
+      margin-bottom: 0.25rem;
+    }
+    .error-terminal .prompt {
+      color: var(--primary);
+    }
+    .error-terminal .muted {
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="particles"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo">PAVIN<span>DAS</span></a>
+      <nav id="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="/#services" class="nav-link">Services</a>
+        <a href="/#skills" class="nav-link">Skills</a>
+        <a href="/#blog-preview" class="nav-link">Blog</a>
+        <a href="/#contact" class="nav-link">Contact</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="error-container">
+      <div class="error-content animate-fade-in-up">
+        <h1 class="glitch" data-text="404">404</h1>
+        <p class="subtitle">SYSTEM_ERROR: Target not found</p>
+        
+        <div class="error-terminal">
+          <p class="line"><span class="prompt">root@security:~$</span> <span class="muted">curl -I ${REQUEST_URI}</span></p>
+          <p class="line"><span class="prompt">&gt;</span> HTTP/1.1 404 Not Found</p>
+          <p class="line"><span class="prompt">&gt;</span> The requested resource could not be located.</p>
+          <p class="line"><span class="prompt">root@security:~$</span> <span class="muted">echo "Redirecting..."</span></p>
+        </div>
+
+        <a href="/" class="btn btn-primary">
+          <i class="fa-solid fa-house"></i> Return to Base
+        </a>
+      </div>
+    </div>
+  </main>
+
+
+  <script src="/script.js"></script>
+</body>
+
+</html>
