@@ -678,8 +678,10 @@
     /* About Section */
     .about-grid {
         display: grid;
-        grid-template-columns: 0.8fr 1.2fr;
+        grid-template-columns: 1fr;
         gap: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
     }
 
     .about-image {
