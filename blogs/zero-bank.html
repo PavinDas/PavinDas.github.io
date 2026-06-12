@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Zero Bank – Penetration Test Report | Pavin Das</title>
+    <meta name="description"
+        content="A VAPT assessment report on the Zero Bank Web application identifying critical security weaknesses including Broken Access Control, SQL Injection, and CSRF.">
+    <meta name="author" content="Pavin Das">
+    <meta name="keywords" content="Zero Bank, VAPT, Vulnerability Assessment, Penetration Testing, Web Application Security, Broken Access Control, SQL Injection, CSRF, Pavin Das">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
+            <nav>
+                <span class="blog-views"><i class="fa-regular fa-eye"></i> <span id="blog-page-views">Loading...</span>
+                    reads</span>
+                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <article class="glass-strong blog-article">
+                    <center>
+                        <h1 class="section-title">Penetration Test Report: Zero Bank</h1>
+                        <div class="blog-post-subtitle"
+                            style="margin-top: 0.5rem; margin-bottom: 1.5rem; font-size: 1.1rem; color: rgb(224, 255, 224); font-family: inherit; font-weight: 500;">
+                            A VAPT assessment on the Zero Bank Web application
+                        </div>
+                    </center>
+
+                    <pre class="blog-content">
+
+<br>
+<h2>Target Information</h2>
+<li><b>Application name:</b> <span>Zero Bank</span></li>
+<li><b>Application URL:</b> <a href="http://zero.webappsecurity.com/" target="_blank" rel="noopener noreferrer">http://zero.webappsecurity.com/</a></li>
+
+<h2>Testing Details</h2>
+<h3>Tools used:</h3>
+<li>Gobuster</li>
+<li>Burp Suite CE</li>
+<li>Wappalyzer</li>
+
+<h3>Websites used:</h3>
+<li><a href="https://csrfshark.github.io/app/" target="_blank" rel="noopener noreferrer">https://csrfshark.github.io/app/</a></li>
+
+<h3>Approach:</h3>
+<li>Enumeration (Gobuster, Wappalyzer)</li>
+<li>Manual testing (Burp Suite)</li>
+<li>Exploitation & validation</li>
+<hr>
+
+<h2>Technical Findings</h2>
+
+<h3><span>1 Broken Access Control & Sensitive Admin Exposure</span></h3>
+→ A01:2021 - Broken Access Control
+
+The admin panel is accessible without authentication, exposing sensitive user information and administrative functionality.
+
+<b>Affected Endpoints:</b>
+<li>/admin/</li>
+<li>/errors/logs</li>
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/1.gif" alt="">
+<img src="/images/zero-bank/2.png" alt="">
+
+<h3><span>2 Default Credentials Exposure</span></h3>
+→ A07:2021 - Identification and Authentication Failures
+
+The application exposes default credentials through the login help feature.
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/3.png" alt="">
+<article class="glass-strong blog-article">Credentials &gt; username:password</article>
+
+<h3><span>3 Insecure Direct Object Reference (IDOR)</span></h3>
+→ A01:2021 - Broken Access Control
+
+The application does not validate user authorization when accessing account data.
+
+<b>Proof:</b>
+<article class="glass-strong blog-article">/account-activity.html?accountId=1 → accountId=2</article>
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/4.gif" alt="">
+
+<h3><span>4 Cross Site Request Forgery (CSRF)</span></h3>
+→ A01:2021 - Broken Access Control
+
+Sensitive actions (fraud transfer) due to lack of CSRF protection
+
+<b>Proof:</b>
+<article class="glass-strong blog-article">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Form CSRF PoC&lt;/h1&gt;
+        &lt;form method="POST" action="http://zero.webappsecurity.com/bank/transfer-funds-confirm.html"&gt;
+            &lt;input type="hidden" name="fromAccountId" value="1"&gt;
+            &lt;input type="hidden" name="toAccountId" value="1"&gt;
+            &lt;input type="hidden" name="amount" value="500"&gt;
+            &lt;input type="hidden" name="description" value="CSRF"&gt;
+            &lt;input type="submit" value="Submit Request"&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</article>
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/5.gif" alt="">
+
+<h3><span>5 Stored XSS</span></h3>
+→ A03:2021 - Injection
+
+User input is stored and executed in the admin panel without sanitization.
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/6.png" alt="">
+
+<h3><span>6 SQL Injection</span></h3>
+→ A03:2021 - Injection
+
+The payeeId parameter is vulnerable to SQL Injection
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/7.png" alt="">
+
+<h3><span>7 Information Disclosure & Outdated Components</span></h3>
+→ A06:2021 - Vulnerable and Outdated Components
+
+The application exposes server details (Apache Tomcat 7.0.70), which is outdated and contain known vulnerabilities.
+
+<b>Impact:</b>
+<li>Attackers can exploit known CVEs</li>
+<li>Increased attack surface</li>
+
+<b>Evidence:</b>
+<img src="/images/zero-bank/8.png" alt="">
+
+<hr>
+<br>
+
+<h2><span>Conclusion</span></h2>
+Thank you for reading this VAPT assessment report on the Zero Bank application!
+
+Identifying and understanding these critical vulnerabilities such as Broken Access Control and SQL Injection is crucial for maintaining robust application security. I hope this report provides valuable insights into how these flaws are discovered and the potential risks they carry in real world scenarios.
+
+<b><span>Best of luck on your hacking journey!</span></b>
+                    </pre>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>
