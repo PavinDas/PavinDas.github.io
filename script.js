@@ -202,7 +202,7 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
     observer.observe(el);
 });
 
-(function() {
+(function () {
     const initBlogCounters = () => {
         const BLOG_NAMESPACE = 'pavindas.github.io';
         const API_BASE = 'https://abacus.jasoncameron.dev';
@@ -330,7 +330,7 @@ document.querySelectorAll('.animate-fade-in-up').forEach(el => {
     }
 })();
 
-(function() {
+(function () {
     const initBlogScrollbar = () => {
         const isBlogPost = /\/blogs\/[^/]+\.html$/.test(window.location.pathname);
         const article = document.querySelector('.blog-article');

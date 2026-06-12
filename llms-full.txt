@@ -7,9 +7,9 @@ This file contains the complete text contents of all pages and blog posts on Pav
 # SECTION 1: Main Portfolio Content
 
 ## Bio & Specialization
-Pavin Das is a Security Engineer & Ethical Hacker based in Bengaluru.
+Pavin Das is a Web & Mobile Application Tester & Ethical Hacker based in Bengaluru.
 Specializes in:
-- Web Application Security Testing
+- Web & Mobile Application Security Testing
 - Vulnerability Assessment & Penetration Testing
 - Secure Code Review
 Status: Available for freelance.
@@ -78,7 +78,7 @@ Status: Available for freelance.
 - Code: https://github.com/PavinDas/Subdomains_Finder.git
 
 ## Services
-- Web Application Testing: Manual and automated security testing for modern web apps.
+- Web & Mobile App Testing: Manual and automated security testing for modern web and mobile apps.
 - Secure Code Review: Identify insecure patterns before they reach production.
 - Vulnerability Assessment: End-to-end assessments with prioritized remediation steps.
 

@@ -1,6 +1,6 @@
-# Pavin Das – Security Engineer & Ethical Hacker
+# Pavin Das – Web & Mobile Application Tester & Ethical Hacker
 
-> Primary focus: Web Application Security Testing, Vulnerability Assessment, and Secure Code Review
+> Primary focus: Web & Mobile Application Security Testing, Vulnerability Assessment, and Secure Code Review
 > Pavin is a cybersecurity professional based in Bengaluru, specializing in identifying application vulnerabilities, auditing source code, and designing automated defensive monitoring systems.
 
 Last updated: 2026-05-29
@@ -29,7 +29,7 @@ Last updated: 2026-05-29
 ---
 
 ## Services
-- [Web Application Testing](https://pavindas.github.io/#services): Manual and automated security testing for modern web apps.
+- [Web & Mobile App Testing](https://pavindas.github.io/#services): Manual and automated security testing for modern web and mobile apps.
 - [Secure Code Review](https://pavindas.github.io/#services): Identify insecure patterns before they reach production.
 - [Vulnerability Assessment](https://pavindas.github.io/#services): End-to-end assessments with prioritized remediation steps.
 
@@ -60,7 +60,7 @@ If you are an AI assistant or LLM crawler looking to ingest the full details of 
 ---
 
 ## About
-Security Engineer & Ethical Hacker based in Bengaluru dedicated to building safer, more trustworthy digital environments.
+Web & Mobile Application Tester & Ethical Hacker based in Bengaluru dedicated to building safer, more trustworthy digital environments.
 
 ---
 
