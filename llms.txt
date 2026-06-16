@@ -3,7 +3,7 @@
 > Primary focus: Web & Mobile Application Security Testing, Vulnerability Assessment, and Secure Code Review
 > Pavin is a cybersecurity professional based in Bengaluru, specializing in identifying application vulnerabilities, auditing source code, and designing automated defensive monitoring systems.
 
-Last updated: 2026-05-29
+Last updated: 2026-06-16
 
 ---
 
@@ -50,6 +50,8 @@ Last updated: 2026-05-29
 - [ELK Stack Setup & Configuration Guide](https://pavindas.github.io/blogs/elk-stack.html): Step-by-step setup of Elasticsearch, Logstash, and Kibana on Ubuntu for log management.
 - [Building a Home SOC Lab with Wazuh and Shuffle](https://pavindas.github.io/blogs/soc-lab.html): Detailed walkthrough of setting up a SOC lab using VirtualBox, OPNsense, Wazuh, and Shuffle.
 - [Penetration Test Report: Mr. Robot](https://pavindas.github.io/blogs/mr-robot.html): Full CTF walkthrough of mr.robot CTF machine covering enumeration, WordPress theme editing exploitation (RCE), and privilege escalation via SUID Nmap.
+- [Penetration Test Report: LUNA](https://pavindas.github.io/blogs/luna.html): VAPT assessment of the LUNA web application identifying critical vulnerabilities including SSTI, RCE via template injection, XSS, credential exposure, and Docker privilege escalation.
+- [Penetration Test Report: Zero Bank](https://pavindas.github.io/blogs/zero-bank.html): VAPT assessment of the Zero Bank web application identifying Broken Access Control, IDOR, CSRF, Stored XSS, SQL Injection, and outdated components.
 
 ---
 
