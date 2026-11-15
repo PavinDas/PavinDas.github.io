@@ -79,15 +79,7 @@
 
             <!-- Metadata Stats Bar -->
             <div class="article-meta-bar">
-                <div class="meta-author-group">
-                    <img src="../images/about.jpg" alt="Pavin Das" class="meta-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/88970616?v=4'">
-                    <div class="meta-author-details">
-                        <span class="meta-author-name">Pavin Das</span>
-                        <span class="meta-author-role">Security Engineer & Penetration Tester</span>
-                    </div>
-                </div>
-
-                <div class="meta-specs-group">
+<div class="meta-specs-group">
                     <div class="meta-spec-item">
                         <i class="fa-solid fa-bullseye"></i>
                         <span>Target: <strong>Mr. Robot (192.168.1.41)</strong></span>
@@ -100,7 +92,15 @@
                         <i class="fa-solid fa-flag"></i>
                         <span>Objectives: <strong>3 Secret Keys & Root Access</strong></span>
                     </div>
-                </div>
+</div>
+</div>
+
+
+            <div class="hero-scroll-prompt">
+                <a href="#ch-overview" class="hero-scroll-btn">
+                    <span>Explore Investigation</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </a>
             </div>
         </section>
 
@@ -204,9 +204,22 @@
                         <h2 class="chapter-title">Investigation Brief & Target Overview</h2>
                     </header>
 
-                    <div style="text-align: center; margin: 1.5rem 0 2rem;">
-                        <img src="../images/mr-robot/logo.png" alt="Mr Robot CTF Logo" style="max-height: 110px; width: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
-                    </div>
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Mr Robot CTF Logo
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/logo.png" alt="Mr Robot CTF Logo" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure:</strong> Mr Robot CTF Logo
+                        </figcaption>
+                    </figure>
 
                     <p class="chapter-intro-lead">
                         The <strong>Mr. Robot</strong> vulnerable machine is an acclaimed Linux-based boot-to-root challenge themed after the USA Network television series. Designed to emulate real-world misconfigurations, this assessment evaluates web application security, credential hygiene, and Linux privilege containment.

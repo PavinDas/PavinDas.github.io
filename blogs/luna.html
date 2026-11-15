@@ -73,15 +73,7 @@
             </p>
 
             <div class="article-meta-bar">
-                <div class="meta-author-group">
-                    <img src="../images/about.jpg" alt="Pavin Das" class="meta-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/88970616?v=4'">
-                    <div class="meta-author-details">
-                        <span class="meta-author-name">Pavin Das</span>
-                        <span class="meta-author-role">Security Engineer & Penetration Tester</span>
-                    </div>
-                </div>
-
-                <div class="meta-specs-group">
+<div class="meta-specs-group">
                     <div class="meta-spec-item">
                         <i class="fa-solid fa-server"></i>
                         <span>Target: <strong>LUNA (192.168.1.42:5000)</strong></span>
@@ -94,7 +86,15 @@
                         <i class="fa-solid fa-bolt"></i>
                         <span>Vector: <strong>SSTI to Docker Root</strong></span>
                     </div>
-                </div>
+</div>
+</div>
+
+
+            <div class="hero-scroll-prompt">
+                <a href="#luna-overview" class="hero-scroll-btn">
+                    <span>Explore Assessment</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </a>
             </div>
         </section>
 
@@ -185,9 +185,22 @@
                         <h2 class="chapter-title">Target Information & Methodology</h2>
                     </header>
 
-                    <div style="text-align: center; margin: 1.5rem 0 2rem;">
-                        <img src="../images/Luna/Luna.png" alt="LUNA Web Application Banner" style="max-height: 140px; border-radius: 12px; border: 1px solid var(--blog-border);">
-                    </div>
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> LUNA Web Application Banner
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/Luna/Luna.png" alt="LUNA Web Application Banner" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure:</strong> LUNA Web Application Banner
+                        </figcaption>
+                    </figure>
 
                     <div class="callout-box callout-info">
                         <div class="callout-icon"><i class="fa-solid fa-circle-info"></i></div>

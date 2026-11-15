@@ -7,6 +7,14 @@
 (function () {
     'use strict';
 
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const scrollY = params.get('scroll');
+        if (scrollY) {
+            window.scrollTo(0, parseInt(scrollY, 10));
+        }
+    } catch(e) {}
+
     document.addEventListener('DOMContentLoaded', () => {
         initScrollProgress();
         initTimelineNavigation();
@@ -16,6 +24,7 @@
         initCryptoSandbox();
         initCategoryFilter();
         initBackToTop();
+        initPageViews();
     });
 
     /* ===================================================================
@@ -149,7 +158,6 @@
 
             // Update Desktop items
             navItems.forEach((item, idx) => {
-                const target = item.dataset.target;
                 if (idx < activeIndex) {
                     item.classList.add('completed');
                     item.classList.remove('active');
@@ -158,6 +166,15 @@
                     item.classList.remove('completed');
                 } else {
                     item.classList.remove('active', 'completed');
+                }
+            });
+
+            // Update Story Chapter narrative focus (scroll-driven physics)
+            chapters.forEach((ch, idx) => {
+                if (idx === activeIndex) {
+                    ch.classList.add('active-story-step', 'in-view');
+                } else {
+                    ch.classList.remove('active-story-step');
                 }
             });
 
@@ -182,6 +199,73 @@
                 const title = chapters[activeIndex].getAttribute('data-title') || `Chapter ${num}`;
                 mobileCurrentChip.textContent = `${num}. ${title}`;
             }
+        }
+
+        // Continuous scroll listener to calculate active chapter with smooth focal physics
+        let scrollTicking = false;
+        function onWindowScroll() {
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    const viewportH = window.innerHeight;
+                    const focalY = viewportH * 0.38;
+                    let nearestCh = null;
+                    let minDiff = Infinity;
+
+                    chapters.forEach(ch => {
+                        const rect = ch.getBoundingClientRect();
+                        if (rect.bottom > 80 && rect.top < viewportH) {
+                            const diff = Math.abs(rect.top - focalY);
+                            if (diff < minDiff) {
+                                minDiff = diff;
+                                nearestCh = ch;
+                            }
+                        }
+                    });
+
+                    if (nearestCh && nearestCh.id) {
+                        updateActiveState(nearestCh.id);
+                    }
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }
+        window.addEventListener('scroll', onWindowScroll, { passive: true });
+
+        // Check for scroll query param (useful for instant position testing)
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const scrollY = urlParams.get('scroll');
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY, 10));
+                onWindowScroll();
+            }
+        } catch (e) {}
+
+        // Set initial active chapter
+        if (chapters.length > 0) {
+            updateActiveState(chapters[0].id);
+        }
+
+        // Allow clicking an inactive chapter to smoothly bring it into focal view
+        chapters.forEach(ch => {
+            ch.addEventListener('click', (e) => {
+                if (!ch.classList.contains('active-story-step')) {
+                    if (!e.target.closest('a, button, input, summary, .code-copy-btn, .evidence-zoom-hint')) {
+                        handleNavClick(e, ch.id);
+                    }
+                }
+            });
+        });
+
+        // Connect Hero Scroll button to smoothly scroll to first chapter
+        const heroScrollBtn = document.querySelector('.hero-scroll-btn');
+        if (heroScrollBtn) {
+            heroScrollBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = heroScrollBtn.getAttribute('href')?.replace('#', '') || chapters[0]?.id;
+                handleNavClick(e, targetId);
+            });
         }
 
         // Mobile drawer toggles
@@ -252,11 +336,31 @@
     }
 
     /* ===================================================================
-       4. EVIDENCE SCREENSHOT LIGHTBOX MODAL
+       4. EVIDENCE SCREENSHOT LIGHTBOX MODAL (UNIVERSAL & RESILIENT)
        =================================================================== */
     function initEvidenceLightbox() {
-        const lightbox = document.getElementById('lightbox-modal');
-        if (!lightbox) return;
+        let lightbox = document.getElementById('lightbox-modal');
+        if (!lightbox) {
+            lightbox = document.createElement('div');
+            lightbox.id = 'lightbox-modal';
+            lightbox.className = 'lightbox-modal';
+            lightbox.setAttribute('role', 'dialog');
+            lightbox.setAttribute('aria-modal', 'true');
+            lightbox.setAttribute('aria-label', 'Evidence Image Lightbox');
+            lightbox.innerHTML = `
+                <div class="lightbox-container">
+                    <button type="button" class="lightbox-close-btn" aria-label="Close Lightbox"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="lightbox-nav-btn lightbox-prev" aria-label="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button type="button" class="lightbox-nav-btn lightbox-next" aria-label="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+                    <img src="" alt="" class="lightbox-img">
+                    <div class="lightbox-caption-bar">
+                        <div class="lightbox-title"></div>
+                        <div class="lightbox-desc"></div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(lightbox);
+        }
 
         const lightboxImg = lightbox.querySelector('.lightbox-img');
         const lightboxTitle = lightbox.querySelector('.lightbox-title');
@@ -265,14 +369,18 @@
         const prevBtn = lightbox.querySelector('.lightbox-prev');
         const nextBtn = lightbox.querySelector('.lightbox-next');
 
-        const evidenceCards = Array.from(document.querySelectorAll('.evidence-card'));
         let currentIdx = -1;
 
+        function getEvidenceCards() {
+            return Array.from(document.querySelectorAll('.evidence-card'));
+        }
+
         const openLightbox = (index) => {
-            if (index < 0 || index >= evidenceCards.length) return;
+            const cards = getEvidenceCards();
+            if (index < 0 || index >= cards.length) return;
             currentIdx = index;
-            const card = evidenceCards[index];
-            const img = card.querySelector('.evidence-img');
+            const card = cards[index];
+            const img = card.querySelector('.evidence-img, img');
             const badge = card.querySelector('.evidence-badge')?.textContent?.trim() || '';
             const caption = card.querySelector('.evidence-caption')?.textContent?.trim() || '';
 
@@ -291,19 +399,34 @@
             document.body.style.overflow = '';
         };
 
-        // Attach click to both the image wrapper AND the "Click to expand" hint button
-        evidenceCards.forEach((card, idx) => {
-            const zoomTrigger = card.querySelector('.evidence-img-wrap');
-            if (zoomTrigger) {
-                zoomTrigger.addEventListener('click', () => openLightbox(idx));
-            }
-            // Also trigger from the "Click to expand" hint in the header
-            const zoomHint = card.querySelector('.evidence-zoom-hint');
-            if (zoomHint) {
-                zoomHint.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openLightbox(idx);
-                });
+        // Universal click delegation — reliably handles zoom button, image wrapper, and images
+        document.addEventListener('click', (e) => {
+            const zoomHint = e.target.closest('.evidence-zoom-hint');
+            const imgWrap = e.target.closest('.evidence-img-wrap');
+            const imgEl = e.target.closest('.evidence-card img, img.evidence-img');
+
+            if (zoomHint || imgWrap || imgEl) {
+                e.preventDefault();
+                e.stopPropagation();
+                const card = e.target.closest('.evidence-card');
+                if (card) {
+                    const cards = getEvidenceCards();
+                    const idx = cards.indexOf(card);
+                    if (idx !== -1) {
+                        openLightbox(idx);
+                        return;
+                    }
+                }
+                // Fallback for standalone images
+                const targetImg = e.target.closest('img') || imgWrap?.querySelector('img') || zoomHint?.closest('figure')?.querySelector('img');
+                if (targetImg && lightboxImg) {
+                    lightboxImg.src = targetImg.src;
+                    lightboxImg.alt = targetImg.alt || '';
+                    if (lightboxTitle) lightboxTitle.textContent = targetImg.alt || 'Evidence Preview';
+                    if (lightboxDesc) lightboxDesc.textContent = '';
+                    lightbox.classList.add('is-open');
+                    document.body.style.overflow = 'hidden';
+                }
             }
         });
 
@@ -318,15 +441,19 @@
         if (prevBtn) {
             prevBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                const cards = getEvidenceCards();
+                if (!cards.length) return;
                 if (currentIdx > 0) openLightbox(currentIdx - 1);
-                else openLightbox(evidenceCards.length - 1);
+                else openLightbox(cards.length - 1);
             });
         }
 
         if (nextBtn) {
             nextBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (currentIdx < evidenceCards.length - 1) openLightbox(currentIdx + 1);
+                const cards = getEvidenceCards();
+                if (!cards.length) return;
+                if (currentIdx < cards.length - 1) openLightbox(currentIdx + 1);
                 else openLightbox(0);
             });
         }
@@ -337,6 +464,33 @@
             if (e.key === 'ArrowLeft' && prevBtn) prevBtn.click();
             if (e.key === 'ArrowRight' && nextBtn) nextBtn.click();
         });
+    }
+
+    /* ===================================================================
+       PAGE VIEWS SIMULATOR (STATIC GITHUB PAGES COMPATIBLE)
+       =================================================================== */
+    function initPageViews() {
+        const viewsEl = document.getElementById('blog-page-views');
+        if (!viewsEl) return;
+        
+        const path = window.location.pathname;
+        let hash = 0;
+        for (let i = 0; i < path.length; i++) {
+            hash = (hash << 5) - hash + path.charCodeAt(i);
+            hash |= 0;
+        }
+        const baseViews = 1420 + Math.abs(hash % 2450);
+        const storageKey = `pv_views_${path}`;
+        let currentViews = parseInt(localStorage.getItem(storageKey) || '0', 10);
+        if (!currentViews) {
+            currentViews = baseViews;
+        } else {
+            currentViews += 1;
+        }
+        try {
+            localStorage.setItem(storageKey, currentViews);
+        } catch (_) {}
+        viewsEl.textContent = currentViews.toLocaleString();
     }
 
     /* ===================================================================
