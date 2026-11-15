@@ -7,117 +7,358 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>The CIA Triad – Pavin Das</title>
-    <meta name="description" content="A comprehensive breakdown of the CIA Triad (Confidentiality, Integrity, and Availability) and its importance in cybersecurity.">
+    <title>The CIA Triad: Guardians of Cybersecurity – Pavin Das</title>
+    <meta name="description"
+        content="An editorial narrative breaking down the CIA Triad (Confidentiality, Integrity, Availability) and why it forms the bedrock of modern cybersecurity.">
     <link rel="canonical" href="https://pavindas.github.io/blogs/cia-triad.html" />
-    <link rel="stylesheet" href="../styles.css">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../blog.css">
     <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
 </head>
 
-<body>
+<body class="blog-article-page">
+    <div id="scroll-progress-bar"></div>
     <canvas id="particles"></canvas>
 
-    <header>
-        <div class="nav-container">
-            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
-            <nav>
-                <span class="blog-views"><i class="fa-regular fa-eye"></i> <span id="blog-page-views">Loading...</span> reads</span>
-                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
-            </nav>
+    <header class="blog-header">
+        <div class="blog-nav-inner">
+            <div class="blog-nav-left">
+                <a href="../index.html" class="blog-brand">PAVIN<span>DAS</span></a>
+                <span class="blog-brand-divider">/</span>
+                <span class="blog-brand-context">Security Fundamentals</span>
+            </div>
+            <div class="blog-nav-right">
+                <span class="blog-views-badge">
+                    <i class="fa-regular fa-eye"></i>
+                    <span id="blog-page-views">Loading...</span> reads
+                </span>
+                <a href="../blog.html" class="blog-nav-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>All Articles</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section>
-            <div class="container">
-                <article class="glass-strong blog-article">
-                    <center>
-                        <h1 class="section-title">The CIA Triad</h1>
-                        <div class="blog-post-subtitle" style="margin-top: 0.5rem; margin-bottom: 1.5rem; font-size: 1.1rem; color: rgb(224, 255, 224); font-family: inherit; font-weight: 500;">
-                            The Story of Three Guardians of Cybersecurity
-                        </div>
-                    </center>
+    <div class="article-page-wrap">
+        <section class="article-hero">
+            <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>/</span>
+                <a href="../blog.html">Blogs</a>
+                <span>/</span>
+                <span style="color:var(--blog-green);">The CIA Triad</span>
+            </nav>
 
-                    <pre class="blog-content">
+            <div class="article-category-pill">
+                <i class="fa-solid fa-shield-cat"></i>
+                <span>Cybersecurity Fundamentals · InfoSec Model · Defensive Strategy</span>
+            </div>
 
-Let me tell you a story.
+            <h1 class="article-main-title">The CIA Triad: The Story of Three Guardians</h1>
+            <p class="article-subtitle">
+                Imagine a digital kingdom forged from bytes, financial records, and private communications. Discover the three loyal guardians — Confidentiality, Integrity, and Availability — who defend the cyberspace castle against catastrophe.
+            </p>
 
-Imagine a kingdom, made with data instead of castles and dragons. In this digital kingdom, important things live: your private messages, medical records, bank transactions and even the selfies you took last summer. All these information live inside the castle of cyberspace.
+            <div class="article-meta-bar">
+                <div class="meta-author-group">
+                    <img src="../images/about.jpg" alt="Pavin Das" class="meta-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/88970616?v=4'">
+                    <div class="meta-author-details">
+                        <span class="meta-author-name">Pavin Das</span>
+                        <span class="meta-author-role">Security Engineer & Researcher</span>
+                    </div>
+                </div>
 
-But like every good kingdom, it need protection.
-
-Enter the three loyal guardians of cybersecurity: Confidentiality, Integrity and Availability. Together, they form what’s known as the CIA Triad.
-
-Let’s meet these guardians one by one.
-
-<br>
-
-<h2>1. Confidentiality: The Secret Keeper</h2>
-
-Confidentiality is like the royal guard standing at the castle gates. It ensures that only the right people get in. Not everyone should know the king’s secrets.
-
-Think about WhatsApp. When you send a message, it’s encrypted. That means no one, not even WhatsApp can read it except the person you’re talking to. That is Confidentiality.
-
-But when this guardian is weak, that will lead to a great disaster. Remember the stories where some random people’s bank details were leaked? That was a confidentiality breach. The castle gates were left open, and the secrets spilled out.
-
-<br>
-
-<h2>2. Integrity: The Truth Protector</h2>
-
-Integrity is the guardian that watches over the library. It makes sure nobody tampers with the records.
-
-Imagine you’re a collage student. You submit your exam online. Now, what if someone sneaks in and changes your score from 85 to 45? That’s an attack on integrity. The data was altered, and you could suffer because of it.
-
-Banks rely on integrity too. When you transfer ₹1,000 to your friend, you want that transaction to be accurate. If the amount flipped to ₹100, you will lose trust in the bank.
-
-<br>
-
-<h2>3. Availability: The Reliable Watchman</h2>
-
-Availability is the watchman who makes sure the gates are open when they’re supposed to be. What goot is a secure, accurate system if you can’t access it when you need it?
-
-Imagine trying to withdraw money, but the ATM network is down. Or worse, a hospital can’t access patient records in the middle of surgery because of a cyberattack.
-
-That’s a failure of availability.
-
-<br>
-
-<h2>Mitgation methods</h2>
-<h3>Confidentiality:</h3>
-<li>Encryption</li>
-<li>Strong Authentication ( MFA)</li>
-<li>Access Controls Lists</li>
-<li>Data classification and policies</li>
-
-<h3>Integrity :</h3>
-<li>Hashing</li>
-<li>Digital Signatures</li>
-<li>Audit Trails / Logs</li>
-<li>File Integrity Monitoring</li>
-
-<h3>Availability:</h3>
-<li>Redundancy & Backups</li>
-<li>DDoS Protection</li>
-<li>Failover Systems</li>
-<li>Regular Maintenance & Updates</li>
-
-<br>
-
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*u3fv0rOiM706-VXEOOKHYg.png" alt="">
-
-Every security system is built on this simple triangle.
-
-In conclusion, CIA Triad is a fundamental model in cybersecurity. Which guides how to protect information. It ensures that sensitive data stays private, accurate and accessible. Understanding and applying the CIA Triad helps us build safer, more trustworthy digital environments.
-
-Thank you for reading. If you have any questions, please let me know!
-  </pre>
-                </article>
+                <div class="meta-specs-group">
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Est. Read: <strong>6 min</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-shapes"></i>
+                        <span>Core Pillars: <strong>3 Digital Guardians</strong></span>
+                    </div>
+                </div>
             </div>
         </section>
-    </main>
+
+        <main class="article-layout-grid">
+            <aside class="timeline-nav-wrapper" aria-label="Table of Contents Timeline">
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <span class="timeline-header-title">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Story Chapters</span>
+                        </span>
+                        <span class="timeline-progress-pill reading-percent-val">0%</span>
+                    </div>
+
+                    <div class="timeline-track-container">
+                        <div class="timeline-guide-line">
+                            <div class="timeline-guide-line-progress"></div>
+                        </div>
+
+                        <nav id="timeline-nav-items">
+                            <a href="#cia-intro" class="timeline-nav-item active" data-target="cia-intro">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">01</span>
+                                <span class="timeline-label">The Digital Kingdom</span>
+                            </a>
+                            <a href="#cia-confidentiality" class="timeline-nav-item" data-target="cia-confidentiality">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">02</span>
+                                <span class="timeline-label">1. Confidentiality</span>
+                            </a>
+                            <a href="#cia-integrity" class="timeline-nav-item" data-target="cia-integrity">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">03</span>
+                                <span class="timeline-label">2. Integrity</span>
+                            </a>
+                            <a href="#cia-availability" class="timeline-nav-item" data-target="cia-availability">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">04</span>
+                                <span class="timeline-label">3. Availability</span>
+                            </a>
+                            <a href="#cia-mitigation" class="timeline-nav-item" data-target="cia-mitigation">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">05</span>
+                                <span class="timeline-label">Mitigation Methods</span>
+                            </a>
+                            <a href="#cia-conclusion" class="timeline-nav-item" data-target="cia-conclusion">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">06</span>
+                                <span class="timeline-label">Conclusion</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div class="timeline-footer">
+                        <button type="button" class="timeline-action-btn js-back-to-top">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>Back to Top</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <article class="article-content-flow">
+                
+                <!-- SECTION 01 -->
+                <section class="story-chapter" id="cia-intro" data-number="01" data-title="The Digital Kingdom">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-feather"></i> Chapter 01 // Introduction
+                        </span>
+                        <h2 class="chapter-title">Let Me Tell You a Story</h2>
+                    </header>
+
+                    <p class="chapter-intro-lead">
+                        Imagine a kingdom, made with data instead of stone castles and mythical dragons. In this digital kingdom, life’s most critical artifacts reside: your private messages, medical records, bank transactions, and even the selfies you took last summer. All these treasures live inside the castle of cyberspace.
+                    </p>
+
+                    <p>
+                        But like every prosperous kingdom, it demands unwavering protection. Enter the three loyal guardians of cybersecurity: <strong>Confidentiality, Integrity, and Availability</strong>. Together, they form what the security community knows as the <strong>CIA Triad</strong>.
+                    </p>
+
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <img src="../images/cia-removebg-preview.png" alt="CIA Triad Guardians" style="max-height: 200px; filter: drop-shadow(0 15px 30px rgba(0,255,136,0.15));">
+                    </div>
+                </section>
+
+                <!-- SECTION 02 -->
+                <section class="story-chapter" id="cia-confidentiality" data-number="02" data-title="Confidentiality">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-user-secret"></i> Chapter 02 // Guardian 1
+                        </span>
+                        <h2 class="chapter-title">1. Confidentiality: The Secret Keeper</h2>
+                    </header>
+
+                    <p>
+                        <strong>Confidentiality</strong> is like the royal guard posted at the castle drawbridge. It guarantees that only the authorized individuals enter through the gate. Not every traveler deserves access to the king’s private journals.
+                    </p>
+
+                    <p>
+                        Consider modern secure messaging applications like WhatsApp or Signal. When you send a message, it is cryptographically encrypted end-to-end. That means no eavesdropper — not even the service provider's servers — can inspect the content except the intended recipient. That is confidentiality in action.
+                    </p>
+
+                    <div class="callout-box callout-warning">
+                        <div class="callout-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">When Confidentiality Fails</div>
+                            <p class="callout-text">
+                                When this guardian falls asleep, catastrophe ensues. Think of incidents where sensitive customer databases or financial credentials leak onto dark web forums. The castle gates were left unlocked, and the crown jewels spilled into public view.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 03 -->
+                <section class="story-chapter" id="cia-integrity" data-number="03" data-title="Integrity">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-book-bookmark"></i> Chapter 03 // Guardian 2
+                        </span>
+                        <h2 class="chapter-title">2. Integrity: The Truth Protector</h2>
+                    </header>
+
+                    <p>
+                        <strong>Integrity</strong> is the guardian stationed inside the grand library. It ensures that no intruder tampers with the ledger, erases historical logs, or rewrites decrees.
+                    </p>
+
+                    <p>
+                        Imagine you are a university student submitting your final exam online. What if an adversary intercepts the packet and alters your score from 85 to 45? That is a direct breach of integrity. The data was modified without authorization, altering reality.
+                    </p>
+
+                    <p>
+                        Financial institutions depend fundamentally on integrity. When you initiate a wire transfer of ₹1,000 to a colleague, you require mathematically verifiable assurance that the transaction amount will not flip to ₹100 or ₹10,000 in transit. If transaction records cannot be trusted, commerce collapses.
+                    </p>
+                </section>
+
+                <!-- SECTION 04 -->
+                <section class="story-chapter" id="cia-availability" data-number="04" data-title="Availability">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-door-open"></i> Chapter 04 // Guardian 3
+                        </span>
+                        <h2 class="chapter-title">3. Availability: The Reliable Watchman</h2>
+                    </header>
+
+                    <p>
+                        <strong>Availability</strong> is the watchman who makes sure the gates swing open when legitimate citizens need to enter. What value is an impenetrable fortress if the doors are welded shut and the citizens starve outside?
+                    </p>
+
+                    <p>
+                        Imagine approaching an ATM during an emergency only to discover the entire banking network is offline. Or far more critically: a surgical team is unable to retrieve emergency patient allergy history because hospital infrastructure is paralyzed by ransomware.
+                    </p>
+
+                    <p>
+                        That is an acute breakdown of availability. Data must be accessible precisely when it is required.
+                    </p>
+                </section>
+
+                <!-- SECTION 05 -->
+                <section class="story-chapter" id="cia-mitigation" data-number="05" data-title="Mitigation Methods">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-shield-halved"></i> Chapter 05 // Defense
+                        </span>
+                        <h2 class="chapter-title">Defensive Controls & Mitigation Framework</h2>
+                    </header>
+
+                    <p>
+                        Every reliable cyber defense architecture balances specific countermeasures across all three pillars:
+                    </p>
+
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1.25rem; margin: 2rem 0;">
+                        
+                        <div class="vulnerability-card severity-high" style="margin:0;">
+                            <h3 style="color:#ffffff; margin:0 0 0.75rem;"><i class="fa-solid fa-lock" style="color:var(--blog-green); margin-right:0.4rem;"></i> Confidentiality</h3>
+                            <ul>
+                                <li>End-to-End & At-Rest Encryption</li>
+                                <li>Multi-Factor Authentication (MFA)</li>
+                                <li>Role-Based Access Control (RBAC)</li>
+                                <li>Data Classification Policies</li>
+                            </ul>
+                        </div>
+
+                        <div class="vulnerability-card severity-critical" style="margin:0;">
+                            <h3 style="color:#ffffff; margin:0 0 0.75rem;"><i class="fa-solid fa-fingerprint" style="color:var(--blog-cyan); margin-right:0.4rem;"></i> Integrity</h3>
+                            <ul>
+                                <li>Cryptographic Hashing (SHA-256)</li>
+                                <li>Digital Signatures & PKI</li>
+                                <li>Append-Only Audit Trails & SIEM</li>
+                                <li>File Integrity Monitoring (FIM)</li>
+                            </ul>
+                        </div>
+
+                        <div class="vulnerability-card severity-medium" style="margin:0;">
+                            <h3 style="color:#ffffff; margin:0 0 0.75rem;"><i class="fa-solid fa-server" style="color:var(--blog-amber); margin-right:0.4rem;"></i> Availability</h3>
+                            <ul>
+                                <li>Geographic Redundancy & Backups</li>
+                                <li>DDoS Scrubbing & Rate Limiting</li>
+                                <li>High-Availability Automated Failover</li>
+                                <li>Disaster Recovery Orchestration</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 2.5rem 0 1.5rem;">
+                        <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*u3fv0rOiM706-VXEOOKHYg.png" alt="CIA Triad Triangle Illustration" style="max-height: 240px; border-radius: 12px; border: 1px solid var(--blog-border);">
+                    </div>
+                </section>
+
+                <!-- SECTION 06 -->
+                <section class="story-chapter" id="cia-conclusion" data-number="06" data-title="Conclusion">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-graduation-cap"></i> Chapter 06 // Retrospective
+                        </span>
+                        <h2 class="chapter-title">Conclusion: The Bedrock of InfoSec</h2>
+                    </header>
+
+                    <p class="chapter-intro-lead">
+                        Every security control, firewall rule, cryptographic cipher, and compliance policy in modern enterprise defense is mapped directly onto this simple triangle.
+                    </p>
+
+                    <p>
+                        The CIA Triad guides our engineering decisions. It ensures that sensitive data stays private, accurate, and accessible when called upon. By balancing these three guardians, we build more resilient, trustworthy digital ecosystems.
+                    </p>
+
+                    <div class="callout-box callout-tip" style="margin-top:2rem;">
+                        <div class="callout-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Author's Note</div>
+                            <p class="callout-text">
+                                Thank you for reading through this story! Whether designing enterprise architectures or testing web applications, keep the three guardians in mind. Feel free to connect or share your thoughts!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </article>
+        </main>
+    </div>
+
+    <!-- Mobile Drawer & Bottom Bar -->
+    <div class="mobile-toc-bar" id="mobile-toc-bar">
+        <div class="mobile-toc-status">
+            <span class="mobile-toc-chip" id="mobile-current-chapter">01. The Digital Kingdom</span>
+            <span style="color:var(--blog-text-faint);">•</span>
+            <span class="reading-percent-val" style="color:var(--blog-text-muted);">0%</span>
+        </div>
+        <button type="button" class="mobile-toc-toggle-btn" id="mobile-toc-open-btn">
+            <i class="fa-solid fa-list-ol"></i> Chapters
+        </button>
+    </div>
+
+    <div class="mobile-toc-drawer" id="mobile-toc-drawer">
+        <div class="mobile-drawer-sheet">
+            <div class="mobile-drawer-header">
+                <span class="mobile-drawer-title">Story Chapters</span>
+                <button type="button" class="mobile-drawer-close" id="mobile-drawer-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mobile-drawer-list" id="mobile-drawer-list"></div>
+        </div>
+    </div>
+
+    <footer style="border-top:1px solid var(--blog-border-subtle); padding: 3rem 1.5rem; text-align: center; color: var(--blog-text-faint); font-family: var(--blog-font-mono); font-size: 0.85rem; position: relative; z-index: 1;">
+        <div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <p>&copy; <span id="year">2026</span> Pavin Das. All rights reserved.</p>
+            <p style="font-size: 0.78rem;">Cybersecurity Portfolio & Technical Research</p>
+        </div>
+    </footer>
 
     <script src="../script.js"></script>
+    <script src="../blog.js"></script>
 </body>
 
 </html>

@@ -7,201 +7,478 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>Home SOC Lab – Pavin Das</title>
-    <meta name="description" content="A detailed walkthrough on building a personal Home SOC Lab using Wazuh, Shuffle, and TheHive for advanced threat detection and response.">
+    <title>Home SOC Lab with Wazuh & Shuffle – Pavin Das</title>
+    <meta name="description"
+        content="A detailed walkthrough on building a personal Home SOC Lab using Wazuh, Shuffle SOAR, and OPNsense for advanced threat detection and automated response.">
     <link rel="canonical" href="https://pavindas.github.io/blogs/soc-lab.html" />
-    <link rel="stylesheet" href="../styles.css">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../blog.css">
     <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
 </head>
 
-<body>
+<body class="blog-article-page">
+    <div id="scroll-progress-bar"></div>
     <canvas id="particles"></canvas>
 
-    <header>
-        <div class="nav-container">
-            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
-            <nav>
-                <span class="blog-views"><i class="fa-regular fa-eye"></i> <span id="blog-page-views">Loading...</span> reads</span>
-                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
-            </nav>
+    <header class="blog-header">
+        <div class="blog-nav-inner">
+            <div class="blog-nav-left">
+                <a href="../index.html" class="blog-brand">PAVIN<span>DAS</span></a>
+                <span class="blog-brand-divider">/</span>
+                <span class="blog-brand-context">Blue Team Engineering</span>
+            </div>
+            <div class="blog-nav-right">
+                <span class="blog-views-badge">
+                    <i class="fa-regular fa-eye"></i>
+                    <span id="blog-page-views">Loading...</span> reads
+                </span>
+                <a href="../blog.html" class="blog-nav-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>All Articles</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section>
-            <div class="container">
-                <article class="glass-strong blog-article">
-                    <center>
-                        <h1 class="section-title">Building a Home SOC Lab with Wazuh and Shuffle</h1>
-                        <div class="blog-post-subtitle" style="margin-top: 0.5rem; margin-bottom: 1.5rem; font-size: 1.1rem; color: rgb(224, 255, 224); font-family: inherit; font-weight: 500;">
-                            Building a Home SOC Lab with VirtualBox, Wazuh, and Shuffle
-                        </div>
-                    </center>
+    <div class="article-page-wrap">
+        <section class="article-hero">
+            <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>/</span>
+                <a href="../blog.html">Blogs</a>
+                <span>/</span>
+                <span style="color:var(--blog-green);">Home SOC Lab</span>
+            </nav>
 
-                    <pre class="blog-content">
+            <div class="article-category-pill">
+                <i class="fa-solid fa-tower-broadcast"></i>
+                <span>Blue Team · SIEM / SOAR · Threat Detection · Lab Architecture</span>
+            </div>
 
-<h2>Introduction</h2>
-In this guide, I’ll walk you through the process of creating a home lab for a <b> Security Operations Center (SOC) </b> using Oracle VirtualBox.
+            <h1 class="article-main-title">Building a Home SOC Lab with Wazuh & Shuffle</h1>
+            <p class="article-subtitle">
+                A hands-on architecture guide to constructing a Security Operations Center laboratory in VirtualBox. Simulating real-world attacks, monitoring telemetry with Wazuh SIEM, and executing automated remediation pipelines with Shuffle SOAR and OPNsense.
+            </p>
 
-The goal is to detect malicious activity, improve incident response, and automate actions to cut down response time and reduce manual work.
+            <div class="article-meta-bar">
+                <div class="meta-author-group">
+                    <img src="../images/about.jpg" alt="Pavin Das" class="meta-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/88970616?v=4'">
+                    <div class="meta-author-details">
+                        <span class="meta-author-name">Pavin Das</span>
+                        <span class="meta-author-role">Security Engineer & Blue Team Researcher</span>
+                    </div>
+                </div>
 
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uHJ7eJSy05CeMCrl30cxA.jpeg" alt="Lab diagram">
-
-<h3>The lab simulates a realistic cybersecurity environment with:</h3><ul>
-<li>A Kali Linux attacker machine (outside the firewall)</li>
-<li>A Windows 10 host machine</li>
-<li>An Ubuntu defense machine</li>
-<li>An OPNsense firewall</li></ul>
-
-The goal is to demonstrate log monitoring and automated incident response using <b> Wazuh SIEM, Shuffle SOAR,</b> and<b> Jira</b> for ticketing.
-
-<br>
-<h2>How it works:</h2>
-<ul>
-<li>Wazuh agents collect logs from network and endpoints.</li>
-<li>The logs are sent to Wazuh (SIEM) for analysis.</li>
-<li>If something suspicious is found (like a brute-force attack), Wazuh raises an alert.</li>
-<li>That alert triggers a webhook in Shuffle SOAR to kick off automated actions.</li>
-<li>A Jira ticket is created to keep track of the incident.</li>
-<li>If needed, the IP behind the attack gets blocked automatically in the OPNsense Firewall.</li>
-</ul>
-
-<br>
-<h2>Virtual Environment Setup</h2>
-<h3>1. Kali Linux (Attacker Machine)</h3>
-Create a virtual machine in VirtualBox with the following settings:
-
-<li>OS Type: Linux</li>
-<li>Version: Debian (64-bit)</li>
-<li>RAM: Minimum 2 GB (4 GB recommended)</li>
-<li>Hard Disk: Use a pre-downloaded Kali .vdi image</li>
-<li>Network: Bridged Adapter</li>
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*5mz9-TVFyjs9ftWB2GTsMQ.png" alt="">
-<br>
-<h3>2. OPNsense (Firewall)</h3>
-Create another VM for the firewall:
-
-<li>Type: BSD</li>
-<li>Version: FreeBSD (64-bit)</li>
-<li>RAM: 3 GB</li>
-<li>Disk: 10–20 GB</li>
-<li>Network Adapters:</li>
-<li>Adapter 1: Bridged (WAN)</li>
-<li>Adapter 2: Internal Network (LAN, named intnet)</li>
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*GuaxD5VoGgWWzSrhkELqKQ.png" alt="">
-<br>
-<h3>3. Windows (Host Machine)</h3>
-<li>Name: Win10</li>
-<li>Type: Microsoft Windows</li>
-<li>Version: Windows 10 (64-bit)</li>
-<li>RAM: 3 GB</li>
-<li>Disk: Minimum 40 GB</li>
-<li>Network: Internal Network (intnet)</li>
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*O5V7Y9bNtYsQRyz9hLTdNQ.png" alt="">
-
-<b>Install Sysmon</b>
-
-<article class="glass-strong blog-article">Download from Microsoft Sysinternals: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Download Sysmon</a></article>
-
-Install with basic config:
-<article class="glass-strong blog-article"> > Sysmon64.exe -i</article>
-
-Sysmon running in PowerShell
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*CDwkCqpHyghsrTSV-Z217g.png" alt="">
-<br>
-<h3>4. Ubuntu (Defense Machine)</h3>
-<li>Name: Ubuntu</li>
-<li>Type: Linux</li>
-<li>Version: Ubuntu (64-bit)</li>
-<li>RAM: 4 GB</li>
-<li>Disk: Minimum 40 GB</li>
-<li>Network: Internal Network (intnet)</li>
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eaKr3Q04-Z0alQuTOLXlGQ.png" alt="">
-
-<br>
-<h2>Wazuh Setup (SIEM)</h2>
-We’ll use Wazuh Cloud to collect and analyze logs.
-
-<article class="glass-strong blog-article">Visit: <a href="https://console.cloud.wazuh.com/">Wazuh Cloud Console</a></article>
-Create an account and log in.
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9DMInq5HZcxMyFIYWWWw1A.png" alt="">
-
-Click Create New Environment, name it, select a region.
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*pNHhJGQua5MeHzZEpPNY2w.png" alt="">
-
-Open the environment dashboard and click Open Wazuh.
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*4PKLpjyctyu3KYAwHTkSBQ.png" alt="">
-
-Deploy the agent:
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*78nQFKLc0Cz3xd1l7VuwZQ.png" alt="">
-
-Choose Windows
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*vmVKtO2nCiDezcN03Bm8rg.png" alt="">
-
-Copy the PowerShell command and run it as admin on the Windows VM.
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*xuyCgMU-L40r6PE34J3DPA.png" alt="">
-
-Start the agent.
-<article class="glass-strong blog-article"> > NET START WazuhSvc</article>
-
-<hr>
-<br>
-<h2>Creating Alerting Rule</h2> 
-
-<h3>In Wazuh → Alerting:</h3>
-Name: Failed Login Monitor
-Type: Per query monitor
-Frequency: Every 1 minute
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*wQZAsF7H7FqkYXGyWKpwgw.png" alt="">
-Index: wazuh-alerts
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*d38t4Wihb0fNZ3ud_zl7EQ.png" alt="">
-Query: rule.id = 60122
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*SM9vpk-zG-9c72FlmE-_Lg.png" alt="">
-Trigger: Count IS ABOVE 5
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*f8-OTcnC0lwFTuQQKiSMpw.png" alt="">
-Link the previously created notification channel
-
-Set the message body for webhook parsing
-
-<hr>
-
-<h2>Shuffle Setup (SIEM)</h2> 
-Visit <a href="https://shuffler.io/">Shuffle Cloud</a>
-Sign up and log in.
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eH6uimqxvdKp2cQ9198NPQ.png" alt="">
-
-Create new workflow
-
-<br>
-<h3>Workflow Steps</h3><ul>
-<li><b>Webhook Trigger</b> → Copy the URL and paste it into Wazuh’s webhook fiels.</li> 
-<li>Repeat back to me: Collect alert data.</li> 
-<li>Check Cache Contains: Store alert IDs to prevent duplication.</li> 
-<li>Logic Check → If alert ID is new, raise a Jira ticket. It already processed. stop the flow.</li> 
-</ul>
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*KDB60mhnzFl_z42i5K1V4A.png" alt="">
-
-<h3>Jira Integration</h3><ul>
-<li>Create a Jira Cloud account via Atlassian.</li>
-<li>Set up a project</li>
-<li>Generate an API key.</li>
-<li>Authenticate in Shuffle’s Jira App using → Jira email | API key | Project ID | Issue Type</li>
-</ul>
-<img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*8tamqmHynFidAN0wcdObrw.png" alt="">
-
-<hr>
-
-And we’re done! This lab is a <b>basic beginner friendly setup</b> to help you understand SOC concepts. It’s not meant for production, but it’s a great way to take that first step into the SOC journey.
-
-Setting up and analyzing this environment gave me a better understanding of how security operations work in practice from detection and investigation to response. I hope this walkthrough helps others who are building their own labs or exploring the SOC workflow.
-</pre>
-                </article>
+                <div class="meta-specs-group">
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>Platform: <strong>VirtualBox + Wazuh Cloud</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Est. Read: <strong>11 min</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                        <span>Stack: <strong>Wazuh · Shuffle · Jira · OPNsense</strong></span>
+                    </div>
+                </div>
             </div>
         </section>
-    </main>
+
+        <main class="article-layout-grid">
+            <aside class="timeline-nav-wrapper" aria-label="Table of Contents Timeline">
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <span class="timeline-header-title">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Lab Blueprint</span>
+                        </span>
+                        <span class="timeline-progress-pill reading-percent-val">0%</span>
+                    </div>
+
+                    <div class="timeline-track-container">
+                        <div class="timeline-guide-line">
+                            <div class="timeline-guide-line-progress"></div>
+                        </div>
+
+                        <nav id="timeline-nav-items">
+                            <a href="#soc-overview" class="timeline-nav-item active" data-target="soc-overview">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">01</span>
+                                <span class="timeline-label">Architecture Overview</span>
+                            </a>
+                            <a href="#soc-vms" class="timeline-nav-item" data-target="soc-vms">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">02</span>
+                                <span class="timeline-label">Virtual Environment Setup</span>
+                            </a>
+                            <a href="#soc-wazuh" class="timeline-nav-item" data-target="soc-wazuh">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">03</span>
+                                <span class="timeline-label">Wazuh SIEM Setup</span>
+                            </a>
+                            <a href="#soc-rules" class="timeline-nav-item" data-target="soc-rules">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">04</span>
+                                <span class="timeline-label">Alerting Rules</span>
+                            </a>
+                            <a href="#soc-shuffle" class="timeline-nav-item" data-target="soc-shuffle">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">05</span>
+                                <span class="timeline-label">Shuffle SOAR Automation</span>
+                            </a>
+                            <a href="#soc-jira" class="timeline-nav-item" data-target="soc-jira">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">06</span>
+                                <span class="timeline-label">Jira Ticketing Integration</span>
+                            </a>
+                            <a href="#soc-conclusion" class="timeline-nav-item" data-target="soc-conclusion">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">07</span>
+                                <span class="timeline-label">Summary & Takeaways</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div class="timeline-footer">
+                        <button type="button" class="timeline-action-btn js-back-to-top">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>Back to Top</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <article class="article-content-flow">
+                
+                <!-- SECTION 01 -->
+                <section class="story-chapter" id="soc-overview" data-number="01" data-title="Architecture Overview">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-network-wired"></i> Section 01 // Blueprint
+                        </span>
+                        <h2 class="chapter-title">Introduction & Operational Workflow</h2>
+                    </header>
+
+                    <p class="chapter-intro-lead">
+                        In this guide, I’ll walk you through the process of creating a home lab for a <strong>Security Operations Center (SOC)</strong> using Oracle VirtualBox. The goal is to detect malicious activity, improve incident response, and automate actions to cut down response time and reduce manual work.
+                    </p>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-diagram-project"></i> Diagram // Home SOC Lab Topology</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap diagram-canvas">
+                            <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uHJ7eJSy05CeMCrl30cxA.jpeg" alt="Home SOC Lab Architecture Diagram" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 1:</strong> Complete architecture: Kali Linux Attacker, OPNsense Firewall, Windows 10 Host with Sysmon, and Ubuntu Defense Node connected to Wazuh and Shuffle.
+                        </figcaption>
+                    </figure>
+
+                    <h3>Environment Components & Workflow</h3>
+                    <ul>
+                        <li><strong>Kali Linux:</strong> Attacker machine located outside the firewall.</li>
+                        <li><strong>Windows 10 Host:</strong> Client machine equipped with Microsoft Sysmon for granular endpoint telemetry.</li>
+                        <li><strong>Ubuntu Machine:</strong> Defense and server host within the internal subnet.</li>
+                        <li><strong>OPNsense Firewall:</strong> Gateway filtering traffic between bridged WAN and the internal network.</li>
+                        <li><strong>Wazuh (SIEM):</strong> Aggregates and correlates logs from network and endpoints.</li>
+                        <li><strong>Shuffle (SOAR):</strong> Receives webhooks on critical alerts to trigger automated containment and ticketing.</li>
+                    </ul>
+
+                    <div class="callout-box callout-info">
+                        <div class="callout-icon"><i class="fa-solid fa-gears"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Automated Detection & Containment Cycle</div>
+                            <p class="callout-text">
+                                1. Wazuh agents forward real-time logs to Wazuh Cloud.<br>
+                                2. Rule correlations detect malicious activity (e.g., brute-force attacks).<br>
+                                3. An alert triggers a webhook payload directly into Shuffle SOAR.<br>
+                                4. Shuffle checks cache to eliminate duplicate alerts and logs a Jira incident ticket.<br>
+                                5. The offending IP is automatically dispatched to OPNsense to block traffic.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02 -->
+                <section class="story-chapter" id="soc-vms" data-number="02" data-title="Virtual Environment Setup">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-server"></i> Section 02 // Virtualization
+                        </span>
+                        <h2 class="chapter-title">Virtual Environment Provisioning</h2>
+                    </header>
+
+                    <h3>1. Kali Linux (Attacker Machine)</h3>
+                    <ul>
+                        <li><strong>OS Type:</strong> Linux, Debian (64-bit)</li>
+                        <li><strong>RAM:</strong> 2 GB to 4 GB</li>
+                        <li><strong>Network:</strong> Bridged Adapter</li>
+                    </ul>
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Kali Linux Setup</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*5mz9-TVFyjs9ftWB2GTsMQ.png" alt="Kali Linux VM Settings" class="evidence-img"></div>
+                    </figure>
+
+                    <h3>2. OPNsense (Firewall Appliance)</h3>
+                    <ul>
+                        <li><strong>Type:</strong> BSD / FreeBSD (64-bit), 3 GB RAM, 10–20 GB Disk</li>
+                        <li><strong>Adapter 1:</strong> Bridged (WAN)</li>
+                        <li><strong>Adapter 2:</strong> Internal Network (LAN, named <code>intnet</code>)</li>
+                    </ul>
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">OPNsense Firewall Setup</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*GuaxD5VoGgWWzSrhkELqKQ.png" alt="OPNsense VM Settings" class="evidence-img"></div>
+                    </figure>
+
+                    <h3>3. Windows 10 Host & Sysmon</h3>
+                    <p>Internal network adapter connected to <code>intnet</code>.</p>
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Windows 10 VM Configuration</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*O5V7Y9bNtYsQRyz9hLTdNQ.png" alt="Windows 10 VM Settings" class="evidence-img"></div>
+                    </figure>
+
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <span class="terminal-title">Sysmon Installation (PowerShell Admin)</span>
+                            <button type="button" class="code-copy-btn"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd">Sysmon64.exe -i</div>
+                        </div>
+                    </div>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Sysmon Active Telemetry</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*CDwkCqpHyghsrTSV-Z217g.png" alt="Sysmon service running in PowerShell" class="evidence-img"></div>
+                    </figure>
+
+                    <h3>4. Ubuntu (Defense Node)</h3>
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Ubuntu VM Setup</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eaKr3Q04-Z0alQuTOLXlGQ.png" alt="Ubuntu VM Settings" class="evidence-img"></div>
+                    </figure>
+                </section>
+
+                <!-- SECTION 03 -->
+                <section class="story-chapter" id="soc-wazuh" data-number="03" data-title="Wazuh SIEM Setup">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-cloud"></i> Section 03 // SIEM Ingestion
+                        </span>
+                        <h2 class="chapter-title">Wazuh Cloud SIEM & Agent Deployment</h2>
+                    </header>
+
+                    <p>
+                        We utilize the <a href="https://console.cloud.wazuh.com/" target="_blank" rel="noopener noreferrer">Wazuh Cloud Console</a> to establish a centralized analytics and log repository:
+                    </p>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Wazuh Console Creation</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9DMInq5HZcxMyFIYWWWw1A.png" alt="Wazuh Console creation" class="evidence-img"></div>
+                    </figure>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Environment Activation</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*pNHhJGQua5MeHzZEpPNY2w.png" alt="Creating new environment" class="evidence-img"></div>
+                    </figure>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Dashboard Dashboard Launch</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*4PKLpjyctyu3KYAwHTkSBQ.png" alt="Opening Wazuh Dashboard" class="evidence-img"></div>
+                    </figure>
+
+                    <p>Deploying the Wazuh Agent on Windows:</p>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Windows Agent Deployment</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*vmVKtO2nCiDezcN03Bm8rg.png" alt="Choosing Windows Agent" class="evidence-img"></div>
+                    </figure>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">PowerShell Deployment Command</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*xuyCgMU-L40r6PE34J3DPA.png" alt="Running agent installer script in PowerShell" class="evidence-img"></div>
+                    </figure>
+
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <span class="terminal-title">Start Wazuh Agent Service</span>
+                            <button type="button" class="code-copy-btn"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd">NET START WazuhSvc</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 04 -->
+                <section class="story-chapter" id="soc-rules" data-number="04" data-title="Alerting Rules">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-bell"></i> Section 04 // Detection Logic
+                        </span>
+                        <h2 class="chapter-title">Configuring Custom Alerting Rules in Wazuh</h2>
+                    </header>
+
+                    <p>
+                        In <strong>Wazuh → Alerting</strong>, create a custom monitor to detect repeated authentication failures:
+                    </p>
+
+                    <ul>
+                        <li><strong>Monitor Name:</strong> Failed Login Monitor</li>
+                        <li><strong>Type:</strong> Per query monitor (Frequency: 1 minute)</li>
+                        <li><strong>Index:</strong> <code>wazuh-alerts</code></li>
+                        <li><strong>Query Filter:</strong> <code>rule.id = 60122</code></li>
+                        <li><strong>Trigger Condition:</strong> Count IS ABOVE 5</li>
+                    </ul>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Alert Monitor Configuration</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*wQZAsF7H7FqkYXGyWKpwgw.png" alt="Configuring monitor" class="evidence-img"></div>
+                    </figure>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Threshold Trigger Definition</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*f8-OTcnC0lwFTuQQKiSMpw.png" alt="Setting trigger threshold" class="evidence-img"></div>
+                    </figure>
+                </section>
+
+                <!-- SECTION 05 -->
+                <section class="story-chapter" id="soc-shuffle" data-number="05" data-title="Shuffle SOAR Automation">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-shuffle"></i> Section 05 // SOAR Pipeline
+                        </span>
+                        <h2 class="chapter-title">Automated Orchestration with Shuffle SOAR</h2>
+                    </header>
+
+                    <p>
+                        Sign in to <a href="https://shuffler.io/" target="_blank" rel="noopener noreferrer">Shuffle Cloud</a> and create an incident response workflow:
+                    </p>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Shuffle Workflow Setup</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*eH6uimqxvdKp2cQ9198NPQ.png" alt="Shuffle workflow console" class="evidence-img"></div>
+                    </figure>
+
+                    <h3>Automated Workflow Pipeline</h3>
+                    <ul>
+                        <li><strong>Webhook Trigger:</strong> Ingests the JSON alert payload from Wazuh.</li>
+                        <li><strong>Data Parser:</strong> Extracts timestamps, attacker IP, and target host.</li>
+                        <li><strong>Cache Deduplication:</strong> Verifies alert IDs to prevent duplicate alerts.</li>
+                        <li><strong>Ticketing Dispatch:</strong> Automatically creates an issue in Jira.</li>
+                    </ul>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Shuffle Automation Graph</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*KDB60mhnzFl_z42i5K1V4A.png" alt="Shuffle workflow graph" class="evidence-img"></div>
+                    </figure>
+                </section>
+
+                <!-- SECTION 06 -->
+                <section class="story-chapter" id="soc-jira" data-number="06" data-title="Jira Ticketing Integration">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-ticket"></i> Section 06 // ITSM Integration
+                        </span>
+                        <h2 class="chapter-title">Incident Tracking via Jira Cloud</h2>
+                    </header>
+
+                    <p>
+                        Authenticate Jira Cloud within Shuffle using an API token to generate structured tickets automatically upon verified attack alerts:
+                    </p>
+
+                    <figure class="evidence-card">
+                        <div class="evidence-header"><span class="evidence-badge">Jira Integration Parameters</span></div>
+                        <div class="evidence-img-wrap"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*8tamqmHynFidAN0wcdObrw.png" alt="Jira app configuration in Shuffle" class="evidence-img"></div>
+                    </figure>
+                </section>
+
+                <!-- SECTION 07 -->
+                <section class="story-chapter" id="soc-conclusion" data-number="07" data-title="Summary & Takeaways">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-graduation-cap"></i> Section 07 // Retrospective
+                        </span>
+                        <h2 class="chapter-title">Conclusion & Learning Takeaways</h2>
+                    </header>
+
+                    <p class="chapter-intro-lead">
+                        Setting up and analyzing this environment demonstrates how security operations function in practice: bridging telemetry collection, automated detection, threat containment, and cross-team incident tracking.
+                    </p>
+
+                    <div class="callout-box callout-tip" style="margin-top:2rem;">
+                        <div class="callout-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Author's Note</div>
+                            <p class="callout-text">
+                                This lab provides a realistic sandbox for practicing detection engineering and SIEM/SOAR integration. Keep experimenting, test new Sigma/YARA rules, and continue expanding your blue team defense capabilities!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </article>
+        </main>
+    </div>
+
+    <!-- Mobile Drawer & Bottom Bar -->
+    <div class="mobile-toc-bar" id="mobile-toc-bar">
+        <div class="mobile-toc-status">
+            <span class="mobile-toc-chip" id="mobile-current-chapter">01. Architecture Overview</span>
+            <span style="color:var(--blog-text-faint);">•</span>
+            <span class="reading-percent-val" style="color:var(--blog-text-muted);">0%</span>
+        </div>
+        <button type="button" class="mobile-toc-toggle-btn" id="mobile-toc-open-btn">
+            <i class="fa-solid fa-list-ol"></i> Blueprint
+        </button>
+    </div>
+
+    <div class="mobile-toc-drawer" id="mobile-toc-drawer">
+        <div class="mobile-drawer-sheet">
+            <div class="mobile-drawer-header">
+                <span class="mobile-drawer-title">Lab Blueprint</span>
+                <button type="button" class="mobile-drawer-close" id="mobile-drawer-close-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="mobile-drawer-list" id="mobile-drawer-list"></div>
+        </div>
+    </div>
+
+    <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Evidence Image Lightbox">
+        <div class="lightbox-container">
+            <button type="button" class="lightbox-close-btn" aria-label="Close Lightbox"><i class="fa-solid fa-xmark"></i></button>
+            <button type="button" class="lightbox-nav-btn lightbox-prev" aria-label="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+            <button type="button" class="lightbox-nav-btn lightbox-next" aria-label="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+            <img src="" alt="" class="lightbox-img">
+            <div class="lightbox-caption-bar">
+                <div class="lightbox-title"></div>
+                <div class="lightbox-desc"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="border-top:1px solid var(--blog-border-subtle); padding: 3rem 1.5rem; text-align: center; color: var(--blog-text-faint); font-family: var(--blog-font-mono); font-size: 0.85rem; position: relative; z-index: 1;">
+        <div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <p>&copy; <span id="year">2026</span> Pavin Das. All rights reserved.</p>
+            <p style="font-size: 0.78rem;">Cybersecurity Portfolio & Technical Research</p>
+        </div>
+    </footer>
 
     <script src="../script.js"></script>
+    <script src="../blog.js"></script>
 </body>
 
 </html>

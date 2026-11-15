@@ -2,124 +2,267 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>Pavin Das – Blogs</title>
+    <title>Pavin Das – Security Research, Walkthroughs & Technical Stories</title>
+    <meta name="description"
+        content="Explore offensive security research, penetration testing walkthroughs, VAPT reports, and Blue Team engineering guides by Pavin Das.">
 
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Base and Editorial Blog Stylesheets -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="blog.css">
     <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
 </head>
 
-<body>
+<body class="blog-page">
+    <!-- Matrix Falling Particle Canvas (identical to main portfolio homepage) -->
     <canvas id="particles"></canvas>
 
-    <header>
-        <div class="nav-container">
-            <a href="/" class="logo">PAVIN<span>DAS</span></a>
-            <nav id="nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="blog.html" class="nav-link active">Blog</a>
-            </nav>
-            <button class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-            </button>
+    <!-- Reading Progress Bar -->
+    <div id="scroll-progress-bar"></div>
+
+    <!-- Header Navigation -->
+    <header class="blog-header">
+        <div class="blog-nav-inner">
+            <div class="blog-nav-left">
+                <a href="/" class="blog-brand">PAVIN<span>DAS</span></a>
+                <span class="blog-brand-divider">/</span>
+                <span class="blog-brand-context">Technical Intelligence</span>
+            </div>
+            <div class="blog-nav-right">
+                <a href="/" class="blog-nav-link">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a href="blog.html" class="blog-nav-link active">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <span>Articles</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section>
-            <div class="container">
-                <div class="section-header">
-                    <p class="section-eyebrow"><span class="prompt">&gt;</span> BLOGS</p>
-                    <h2 class="section-title"><span class="prompt">$</span> ls ~/blogs</h2>
-                </div>
+    <main class="blog-listing-container">
+        
+        <!-- Hero Section -->
+        <section class="blog-listing-hero">
+            <div class="editorial-eyebrow">
+                <span class="pulse-dot"></span>
+                <span>SECURITY RESEARCH & OFFENSIVE ENGINEERING</span>
+            </div>
+            <h1 class="blog-listing-title">
+                Technical Stories & <span>Security Investigations</span>
+            </h1>
+            <p class="blog-listing-desc">
+                Interactive write-ups, vulnerability breakdowns, and offensive security methodologies. Follow step-by-step investigations through network exploitation, privilege escalation, and modern blue team engineering.
+            </p>
 
-                <div class="blog-grid">
-
-                    <a href="blogs/cia-triad.html" class="blog-card glass-strong animate-fade-in-up"
-                        data-blog="cia-triad">
-                        <span class="prompt">&gt;</span>
-                        <h3>The CIA Triad</h3>
-                        <p>Cybersecurity Fundamentals</p>
-                        <div class="blog-meta">
-                            <span class="blog-views"><i class="fa-regular fa-eye"></i> <span
-                                    class="view-count">Loading...</span> reads</span>
-                        </div>
-                    </a>
-
-                    <a href="blogs/elk-stack.html" class="blog-card glass-strong animate-fade-in-up"
-                        style="animation-delay:.1s" data-blog="elk-stack">
-                        <span class="prompt">&gt;</span>
-                        <h3>ELK Stack Setup & Configuration</h3>
-                        <p>Logging · SIEM · Blue Team</p>
-                        <div class="blog-meta">
-                            <span class="blog-views"><i class="fa-regular fa-eye"></i> <span
-                                    class="view-count">Loading...</span> reads</span>
-                        </div>
-                    </a>
-
-                    <a href="blogs/soc-lab.html" class="blog-card glass-strong animate-fade-in-up"
-                        style="animation-delay:.2s" data-blog="soc-lab">
-                        <span class="prompt">&gt;</span>
-                        <h3>Building a Home SOC Lab</h3>
-                        <p>Wazuh · Shuffle · Detection</p>
-                        <div class="blog-meta">
-                            <span class="blog-views"><i class="fa-regular fa-eye"></i> <span
-                                    class="view-count">Loading...</span> reads</span>
-                        </div>
-                    </a>
-
-                    <a href="blogs/mr-robot.html" class="blog-card glass-strong animate-fade-in-up"
-                        style="animation-delay:.3s" data-blog="mr-robot">
-                        <span class="prompt">&gt;</span>
-                        <h3>Mr. Robot Walkthrough</h3>
-                        <p>CTF · Web Exploitation · Privilege Escalation</p>
-                        <div class="blog-meta">
-                            <span class="blog-views"><i class="fa-regular fa-eye"></i> <span
-                                    class="view-count">Loading...</span> reads</span>
-                        </div>
-                    </a>
-
-                    <a href="blogs/zero-bank.html" class="blog-card glass-strong animate-fade-in-up"
-                        style="animation-delay:.4s" data-blog="zero-bank">
-                        <span class="prompt">&gt;</span>
-                        <h3>Zero Bank VAPT Report</h3>
-                        <p>VAPT · Web Application · Broken Access Control</p>
-                        <div class="blog-meta">
-                            <span class="blog-views"><i class="fa-regular fa-eye"></i> <span
-                                    class="view-count">Loading...</span> reads</span>
-                        </div>
-                    </a>
-
-                    <a href="blogs/luna.html" class="blog-card glass-strong animate-fade-in-up"
-                        style="animation-delay:.5s" data-blog="luna">
-                        <span class="prompt">&gt;</span>
-                        <h3>LUNA VAPT Report</h3>
-                        <p>VAPT · SSTI · RCE · Privilege Escalation</p>
-                        <div class="blog-meta">
-                            <span class="blog-views"><i class="fa-regular fa-eye"></i> <span
-                                    class="view-count">Loading...</span> reads</span>
-                        </div>
-                    </a>
-
-                </div>
+            <!-- Category Filter Bar -->
+            <div class="blog-filter-bar">
+                <button type="button" class="filter-btn active" data-filter="all">
+                    <span>All Investigations</span>
+                    <span class="count">6</span>
+                </button>
+                <button type="button" class="filter-btn" data-filter="ctf">
+                    <i class="fa-solid fa-flag"></i>
+                    <span>CTF Walkthroughs</span>
+                    <span class="count">1</span>
+                </button>
+                <button type="button" class="filter-btn" data-filter="vapt">
+                    <i class="fa-solid fa-shield-virus"></i>
+                    <span>VAPT Assessments</span>
+                    <span class="count">2</span>
+                </button>
+                <button type="button" class="filter-btn" data-filter="blue-team">
+                    <i class="fa-solid fa-tower-broadcast"></i>
+                    <span>Blue Team & SIEM</span>
+                    <span class="count">2</span>
+                </button>
+                <button type="button" class="filter-btn" data-filter="fundamentals">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Fundamentals</span>
+                    <span class="count">1</span>
+                </button>
             </div>
         </section>
+
+        <!-- ALL EDITORIAL ARTICLES GRID (All Cards Share Identical Design) -->
+        <section class="articles-editorial-grid">
+
+            <!-- Card 1: Mr. Robot CTF -->
+            <a href="blogs/mr-robot.html" class="story-card blog-card" data-blog="mr-robot" data-category="ctf">
+                <div class="story-card-banner">
+                    <img src="images/mr-robot/logo.png" alt="Mr Robot Walkthrough Banner" class="story-card-banner-img">
+                </div>
+                <div class="story-card-body">
+                    <div class="story-meta-row">
+                        <span class="story-cat-badge">CTF Walkthrough</span>
+                        <span class="story-read-time"><i class="fa-regular fa-clock"></i> 14 min</span>
+                    </div>
+                    <h3 class="story-card-title">Penetration Test Report: Mr. Robot</h3>
+                    <p class="story-card-summary">
+                        End-to-end boot2root penetration testing report. Uncover hidden paths, WordPress 404 reverse shells, MD5 hash recovery, and SUID-based root privilege escalation.
+                    </p>
+                    <div class="story-card-footer">
+                        <span class="story-views-text">
+                            <i class="fa-regular fa-eye"></i> <span class="view-count">Loading...</span> reads
+                        </span>
+                        <span class="story-action-link">
+                            Read Story <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 2: LUNA VAPT -->
+            <a href="blogs/luna.html" class="story-card blog-card" data-blog="luna" data-category="vapt">
+                <div class="story-card-banner">
+                    <img src="images/Luna/Luna.png" alt="LUNA VAPT Report Banner" class="story-card-banner-img">
+                </div>
+                <div class="story-card-body">
+                    <div class="story-meta-row">
+                        <span class="story-cat-badge">VAPT Assessment</span>
+                        <span class="story-read-time"><i class="fa-regular fa-clock"></i> 12 min</span>
+                    </div>
+                    <h3 class="story-card-title">LUNA VAPT Assessment Report</h3>
+                    <p class="story-card-summary">
+                        Full vulnerability assessment and exploitation chain on the LUNA application, identifying Server-Side Template Injection (SSTI), arbitrary RCE, and Docker group privilege escalation.
+                    </p>
+                    <div class="story-card-footer">
+                        <span class="story-views-text">
+                            <i class="fa-regular fa-eye"></i> <span class="view-count">Loading...</span> reads
+                        </span>
+                        <span class="story-action-link">
+                            Read Report <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 3: Zero Bank VAPT -->
+            <a href="blogs/zero-bank.html" class="story-card blog-card" data-blog="zero-bank" data-category="vapt">
+                <div class="story-card-banner">
+                    <img src="images/zero-bank/2.png" alt="Zero Bank VAPT Banner" class="story-card-banner-img">
+                </div>
+                <div class="story-card-body">
+                    <div class="story-meta-row">
+                        <span class="story-cat-badge">VAPT Assessment</span>
+                        <span class="story-read-time"><i class="fa-regular fa-clock"></i> 10 min</span>
+                    </div>
+                    <h3 class="story-card-title">Zero Bank Security Audit</h3>
+                    <p class="story-card-summary">
+                        Detailed penetration testing report uncovering unauthenticated administrative interfaces, broken access controls, sensitive log exposures, and CSRF vulnerabilities in online banking systems.
+                    </p>
+                    <div class="story-card-footer">
+                        <span class="story-views-text">
+                            <i class="fa-regular fa-eye"></i> <span class="view-count">Loading...</span> reads
+                        </span>
+                        <span class="story-action-link">
+                            Read Report <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 4: Home SOC Lab -->
+            <a href="blogs/soc-lab.html" class="story-card blog-card" data-blog="soc-lab" data-category="blue-team">
+                <div class="story-card-banner">
+                    <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uHJ7eJSy05CeMCrl30cxA.jpeg" alt="SOC Lab Architecture" class="story-card-banner-img">
+                </div>
+                <div class="story-card-body">
+                    <div class="story-meta-row">
+                        <span class="story-cat-badge" style="color:var(--blog-cyan);background:var(--blog-cyan-dim);border-color:rgba(0,229,255,0.25);">Blue Team</span>
+                        <span class="story-read-time"><i class="fa-regular fa-clock"></i> 11 min</span>
+                    </div>
+                    <h3 class="story-card-title">Building a Home SOC Lab</h3>
+                    <p class="story-card-summary">
+                        Step-by-step engineering guide to deploying a complete Security Operations Center using VirtualBox, Wazuh SIEM, Shuffle SOAR automated webhooks, Jira, and OPNsense firewall response rules.
+                    </p>
+                    <div class="story-card-footer">
+                        <span class="story-views-text">
+                            <i class="fa-regular fa-eye"></i> <span class="view-count">Loading...</span> reads
+                        </span>
+                        <span class="story-action-link">
+                            Read Guide <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 5: ELK Stack -->
+            <a href="blogs/elk-stack.html" class="story-card blog-card" data-blog="elk-stack" data-category="blue-team">
+                <div class="story-card-banner">
+                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*vZDu4Bwj2GxQh8t1IjDq4w.png" alt="ELK Stack Architecture" class="story-card-banner-img">
+                </div>
+                <div class="story-card-body">
+                    <div class="story-meta-row">
+                        <span class="story-cat-badge" style="color:var(--blog-cyan);background:var(--blog-cyan-dim);border-color:rgba(0,229,255,0.25);">Blue Team</span>
+                        <span class="story-read-time"><i class="fa-regular fa-clock"></i> 9 min</span>
+                    </div>
+                    <h3 class="story-card-title">ELK Stack Setup & Configuration</h3>
+                    <p class="story-card-summary">
+                        Comprehensive architecture guide for Elasticsearch, Logstash, and Kibana. Configure real-time log pipelines, event parsing filters, and defensive dashboard monitoring.
+                    </p>
+                    <div class="story-card-footer">
+                        <span class="story-views-text">
+                            <i class="fa-regular fa-eye"></i> <span class="view-count">Loading...</span> reads
+                        </span>
+                        <span class="story-action-link">
+                            Read Guide <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 6: The CIA Triad -->
+            <a href="blogs/cia-triad.html" class="story-card blog-card" data-blog="cia-triad" data-category="fundamentals">
+                <div class="story-card-banner">
+                    <img src="images/cia-removebg-preview.png" alt="CIA Triad Guardians" class="story-card-banner-img">
+                </div>
+                <div class="story-card-body">
+                    <div class="story-meta-row">
+                        <span class="story-cat-badge" style="color:var(--blog-amber);background:var(--blog-amber-dim);border-color:rgba(255,179,0,0.25);">Fundamentals</span>
+                        <span class="story-read-time"><i class="fa-regular fa-clock"></i> 6 min</span>
+                    </div>
+                    <h3 class="story-card-title">The CIA Triad: Digital Guardians</h3>
+                    <p class="story-card-summary">
+                        An allegorical journey into the three vital pillars of information security: Confidentiality, Integrity, and Availability. Understand their critical role in protecting modern digital assets.
+                    </p>
+                    <div class="story-card-footer">
+                        <span class="story-views-text">
+                            <i class="fa-regular fa-eye"></i> <span class="view-count">Loading...</span> reads
+                        </span>
+                        <span class="story-action-link">
+                            Read Story <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+        </section>
+
     </main>
 
-    <footer>
-        <div class="footer-bottom">
-            <p>&copy; <span id="year"></span> Pavin Das</p>
+    <!-- Site Footer -->
+    <footer style="border-top:1px solid var(--blog-border-subtle); padding: 3rem 1.5rem; text-align: center; color: var(--blog-text-faint); font-family: var(--blog-font-mono); font-size: 0.85rem; position: relative; z-index: 1;">
+        <div style="max-width: 1480px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <p>&copy; <span id="year">2026</span> Pavin Das. All rights reserved.</p>
+            <p style="font-size: 0.78rem;">Cybersecurity Portfolio & Technical Research</p>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="script.js"></script>
+    <script src="blog.js"></script>
 </body>
 
 </html>

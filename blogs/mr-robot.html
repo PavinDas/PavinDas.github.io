@@ -7,247 +7,1294 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:; img-src 'self' https: data:; connect-src 'self' https://abacus.jasoncameron.dev https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>Mr. Robot – Penetration Test Report | Pavin Das</title>
-    <meta name="description" content="A complete CTF walkthrough and penetration testing report for the Mr. Robot vulnerable machine, covering web exploitation and privilege escalation.">
+    <title>Mr. Robot – Penetration Test Report & Walkthrough | Pavin Das</title>
+    <meta name="description"
+        content="An end-to-end technical penetration testing report and CTF walkthrough for the Mr. Robot vulnerable machine. Complete breakdown of web exploitation, credential discovery, and SUID privilege escalation.">
     <link rel="canonical" href="https://pavindas.github.io/blogs/mr-robot.html" />
     <meta name="author" content="Pavin Das">
-    <meta name="keywords" content="Mr. Robot, CTF, Walkthrough, Penetration Testing, TryHackMe, Boot2Root, Privilege Escalation, Cybersecurity, Pavin Das">
-    <link rel="stylesheet" href="../styles.css">
+    <meta name="keywords"
+        content="Mr. Robot, CTF, Walkthrough, Penetration Testing, Boot2Root, Privilege Escalation, Cybersecurity, Nmap, WordPress, SUID, Pavin Das">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Base and Editorial Blog Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../blog.css">
     <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
 </head>
 
-<body>
+<body class="blog-article-page">
+    <!-- Reading Progress Bar -->
+    <div id="scroll-progress-bar"></div>
+
+    <!-- Subtle Cyber Background Grid -->
     <canvas id="particles"></canvas>
 
-    <header>
-        <div class="nav-container">
-            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
-            <nav>
-                <span class="blog-views"><i class="fa-regular fa-eye"></i> <span id="blog-page-views">Loading...</span> reads</span>
-                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
-            </nav>
+    <!-- Top Navigation Header -->
+    <header class="blog-header">
+        <div class="blog-nav-inner">
+            <div class="blog-nav-left">
+                <a href="../index.html" class="blog-brand">PAVIN<span>DAS</span></a>
+                <span class="blog-brand-divider">/</span>
+                <span class="blog-brand-context">Security Research</span>
+            </div>
+            <div class="blog-nav-right">
+                <span class="blog-views-badge">
+                    <i class="fa-regular fa-eye"></i>
+                    <span id="blog-page-views">Loading...</span> reads
+                </span>
+                <a href="../blog.html" class="blog-nav-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>All Articles</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section>
-            <div class="container">
-                <article class="glass-strong blog-article">
-                    <center>
-                        <h1 class="section-title">Penetration Test Report: Mr. Robot</h1>
-                        <div class="blog-post-subtitle" style="margin-top: 0.5rem; margin-bottom: 1.5rem; font-size: 1.1rem; color: rgb(224, 255, 224); font-family: inherit; font-weight: 500;">
-                            A full penetration test walkthrough of the Mr. Robot CTF machine
-                        </div>
-                    </center>
+    <div class="article-page-wrap">
+        <!-- Hero / Article Header -->
+        <section class="article-hero">
+            <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>/</span>
+                <a href="../blog.html">Blogs</a>
+                <span>/</span>
+                <span style="color:var(--blog-green);">Mr. Robot Walkthrough</span>
+            </nav>
 
-                    <pre class="blog-content">
-                        <center><img src="/images/mr-robot/logo.png" alt=""></center>
+            <div class="article-category-pill">
+                <i class="fa-solid fa-terminal"></i>
+                <span>CTF Walkthrough · Boot2Root · Web Exploitation</span>
+            </div>
 
-<h2>Target Information</h2>
-<li><b>Application name:</b> <span>Mr Robot</span></li>
-<li><b>IP address:</b> <span>192.168.1.41</span> <i>(Note: Your target IP may differ)</i></li>
-<i>[The procedure to find the IP is given below in the walkthrough.]</i>
-<br>
+            <h1 class="article-main-title">Penetration Test Report: Mr. Robot</h1>
+            
+            <p class="article-subtitle">
+                A thorough offensive security investigation of the Mr. Robot vulnerable machine. Follow the progressive attack path through network reconnaissance, sensitive disclosure, reverse shell injection, credential cracking, and SUID-based privilege escalation to complete root takeover.
+            </p>
 
-<h2>Testing Details</h2>
-<h3>Tools used:</h3>
-<li>Nmap</li>
-<li>Dirb</li>
-<li>Burp Suite CE</li>
-<li>Netcat</li>
+            <!-- Metadata Stats Bar -->
+            <div class="article-meta-bar">
+                <div class="meta-author-group">
+                    <img src="../images/about.jpg" alt="Pavin Das" class="meta-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/88970616?v=4'">
+                    <div class="meta-author-details">
+                        <span class="meta-author-name">Pavin Das</span>
+                        <span class="meta-author-role">Security Engineer & Penetration Tester</span>
+                    </div>
+                </div>
 
-<h3>Websites used:</h3>
-<li><a href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer">https://www.revshells.com/</a></li>
-<li><a href="https://gtfobins.org/" target="_blank" rel="noopener noreferrer">https://gtfobins.org/</a></li>
-<li><a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">https://crackstation.net/</a></li>
-<hr>
-
-
-<h2>Findings</h2>
-
-<h3><span>1 Sensitive Information Disclosure</span></h3>
-→ A02:2021 - Cryptographic Failure
-
-Sensitive endpoints and credentials were exposed via publicly accessible files.
-
-<b>Affected:</b>
-<li>/robots.txt</li>
-<li>/license</li>
-
-<b>Impact:</b>
-An attacker can gain initial access without bruteforce.
-
-<b>Mitigation:</b>
-<li>Remove sensitive data from public files</li>
-<li>Restrict access using authentication</li>
-<li>Avoid storing credentials in public files</li>
-<br>
-<h3><span>2 Insecure WordPress Configuration</span></h3>
-→ A05:2021 - Security Misconfiguration
-
-The WordPress theme editor was enabled, allowing direct modification of PHP files.
-
-<b>Impact:</b>
-Leads to Remote Code Execution (RCE).
-
-<b>Mitigation:</b>
-<li>Disable theme/plugin editor</li>
-<article class="glass-strong blog-article">define('DISALLOW_FILE_EDIT', true);</article>
-<li>Restrict admin panel access</li>
-<br>
-<h3><span>3 Remote Code Execution</span></h3>
-→ A03:2021 - Injection
-
-The attacker executed arbitrary commands on the server via reverse shell.
-
-<b>Impact:</b>
-Full control over application and system operations.
-
-<b>Mitigation:</b>
-<li>Input validation</li>
-<li>Disable dangerous PHP functions</li>
-<li>Use Web Application Firewall</li>
-<br>
-<h3><span>4 Privilege Escalation via SUID Binary</span></h3>
-→ A05:2021 - Security Misconfiguration
-
-SUID enabled Nmap binary allowed privilege escalation.
-
-<b>Impact:</b>
-Complete system takeover.
-
-<b>Mitigation:</b>
-<li>Remove unnecessary SUID permissions</li>
-<article class="glass-strong blog-article">> chmod -s /usr/bin/nmap</article>
-<li>Regular privilege audits</li>
-<hr>
-<br>
-
-<h2>Steps to Reproduce</h2>
-
-<h3><span>1. Scanning</span></h3>
-<b>Tool used:</b> Nmap
-
-<article class="glass-strong blog-article">> nmap -sV -sC 192.168.1.41</article>
-<img src="/images/mr-robot/1.png" alt="">
-
-Port 80 is open, which indicates a web server is running on this machine. So I opened the IP address in a browser.
-<img src="/images/mr-robot/2.png" alt="">
-
-<h3><span>2. Directory Enumeration</span></h3>
-<b>Tool used:</b> dirb
-
-<article class="glass-strong blog-article">> dirb http://192.168.1.41/ -o dirbResult.txt
-> grep "CODE:200" dirbResult.txt</article>
-
-Used dirb to enumerate all subdirectories and pages and saved the output to a file. And used grep to extract only the URLs with status code 200 from the dirb output file.
-<img src="/images/mr-robot/3.png" alt="">
-<br>
-<h3><span>Gathering Key 1 of 3</span></h3>
-Sent requests to each endpoint and examined the responses using Burp Suite.
-<img src="/images/mr-robot/4.png" alt="">
-
-<b>/robots.txt</b> exposes the path to access key 1 of 3.
-<img src="/images/mr-robot/5.png" alt="">
-
-Used the exposed path from robots.txt to retrieve key 1 of 3.
-<img src="/images/mr-robot/6.png" alt="">
-<b>Key 1 of 3:</b>
-
-<article class="glass-strong blog-article"><span>073403c8a58a1f80d943455fb30724b9</span></article>
-
-<br>
-
-<h3><span>Gathering Key 2 of 3</span></h3>
-Found an encoded credential pair in <b>/license</b> and decoded it using Burp Decoder.
-<img src="/images/mr-robot/7.png" alt="">
-
-<b>Credential:</b> 
-
-<article class="glass-strong blog-article">elliot:ER28-0652</article>
-
-Navigated to <b>/wp-login.php</b>.
-<img src="/images/mr-robot/8.png" alt="">
-
-Used previously captured credentials on the login page. And the login succeeded.
-<img src="/images/mr-robot/9.png" alt="">
-
-The file at <b>http://192.168.1.35/wp-admin/theme-editor.php?file=404.php&theme=twentyfifteen</b> was editable. Referenced <a href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer">revshells.com</a> to select a suitable reverse shell payload and replaced the existing code with the reverse shell.
-<img src="/images/mr-robot/10.png" alt="">
-
-Started a netcat listener to catch the reverse shell.
-<img src="/images/mr-robot/11.png" alt="">
-
-The payload was placed in <b>404.php</b>, which executes on a 404 (wrong path); an arbitrary non-existent path was requested to trigger it.
-<img src="/images/mr-robot/12.png" alt="">
-
-Connection established and reverse shell obtained.
-<img src="/images/mr-robot/13.png" alt="">
-
-Logged in as <b>daemon</b>; current working directory: <b>/</b>.
-Navigated to <b>/home/robot</b>.
-<img src="/images/mr-robot/14.png" alt="">
-
-Attempted to read <b>key-2-of-3.txt</b> from <b>/home/robot</b> but user <b>daemon</b> doesn't have the permission to access the file.
-<img src="/images/mr-robot/15.png" alt="">
-
-Opened <b>password.raw-md5</b> (accessible to daemon). It contained a username and an MD5-hashed password.
-<img src="/images/mr-robot/16.png" alt="">
-
-Used CrackStation to recover the plaintext password from the MD5 hash.
-<img src="/images/mr-robot/17.png" alt="">
-
-<b>Credential:</b>
-
-<article class="glass-strong blog-article">robot:abcdefghijklmnopqrstuvwxyz</article>
-
-Logged in as <b>robot</b> using the recovered credentials.
-<img src="/images/mr-robot/18.png" alt="">
-
-<b>key-2-of-3.txt</b> is now accessible and was opened.
-<img src="/images/mr-robot/19.png" alt="">
-<b>Key 2 of 3:</b>
-
-<article class="glass-strong blog-article"><span>822c73956184f694993bede3eb39f959</span></article>
-
-<br>
-
-<h3><span>Gathering Key 3 of 3</span></h3>
-There is nothing else in user account. So escalation to root is required.
-
-Unable to perform required actions as root, so searched for files runnable with root privileges to leverage for escalation.
-
-<article class="glass-strong blog-article">> find / -perm -u=s -type f 2>/dev/null</article>
-<img src="/images/mr-robot/20.png" alt="">
-
-The list included Nmap, so <a href="https://gtfobins.org/" target="_blank" rel="noopener noreferrer">gtfobins.org</a> was consulted to learn how to perform privilege escalation using Nmap.
-<img src="/images/mr-robot/21.png" alt="">
-Obtained admin access.
-<img src="/images/mr-robot/22.png" alt="">
-
-Navigated to <b>/root</b>, opened <b>key-3-of-3.txt</b>, and retrieved the final key.
-<img src="/images/mr-robot/23.png" alt="">
-<b>Key 3 of 3:</b>
-
-<article class="glass-strong blog-article"><span>04787ddef27c3dee1ee161b21670b4e4</span></article>
-
-<hr>
-<br>
-
-<h2><span>Conclusion</span></h2>
-Thank you for taking the time to read through this walkthrough!
-
-If you are following along, I highly encourage you to use this walkthrough as a reference and try rooting the machine yourself. Hands-on practice is the best way to learn, so try to explore and experiment without copying every step directly.
-
-<b><span>Best of luck on your hacking journey!</span></b>
-                    </pre>
-                </article>
+                <div class="meta-specs-group">
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>Target: <strong>Mr. Robot (192.168.1.41)</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Est. Read: <strong>14 min</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-flag"></i>
+                        <span>Objectives: <strong>3 Secret Keys & Root Access</strong></span>
+                    </div>
+                </div>
             </div>
         </section>
-    </main>
 
+        <!-- Two-Column Layout: Sticky Timeline Navigation + Main Story Flow -->
+        <main class="article-layout-grid">
+            
+            <!-- DESKTOP STICKY VERTICAL TIMELINE -->
+            <aside class="timeline-nav-wrapper" aria-label="Table of Contents Timeline">
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <span class="timeline-header-title">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Investigation Map</span>
+                        </span>
+                        <span class="timeline-progress-pill reading-percent-val">0%</span>
+                    </div>
+
+                    <div class="timeline-track-container">
+                        <!-- Continuous vertical line with dynamic fill -->
+                        <div class="timeline-guide-line">
+                            <div class="timeline-guide-line-progress"></div>
+                        </div>
+
+                        <!-- Timeline Navigation Items -->
+                        <nav id="timeline-nav-items">
+                            <a href="#ch-overview" class="timeline-nav-item active" data-target="ch-overview">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">01</span>
+                                <span class="timeline-label">Target Overview</span>
+                            </a>
+                            <a href="#ch-recon" class="timeline-nav-item" data-target="ch-recon">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">02</span>
+                                <span class="timeline-label">Initial Reconnaissance</span>
+                            </a>
+                            <a href="#ch-scanning" class="timeline-nav-item" data-target="ch-scanning">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">03</span>
+                                <span class="timeline-label">Port Scanning (Nmap)</span>
+                            </a>
+                            <a href="#ch-enumeration" class="timeline-nav-item" data-target="ch-enumeration">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">04</span>
+                                <span class="timeline-label">Directory Enumeration</span>
+                            </a>
+                            <a href="#ch-key1" class="timeline-nav-item" data-target="ch-key1">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">05</span>
+                                <span class="timeline-label">Key 1: Robots.txt</span>
+                            </a>
+                            <a href="#ch-initial-access" class="timeline-nav-item" data-target="ch-initial-access">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">06</span>
+                                <span class="timeline-label">Initial Access & RCE</span>
+                            </a>
+                            <a href="#ch-lateral" class="timeline-nav-item" data-target="ch-lateral">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">07</span>
+                                <span class="timeline-label">Lateral Movement (Key 2)</span>
+                            </a>
+                            <a href="#ch-privesc" class="timeline-nav-item" data-target="ch-privesc">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">08</span>
+                                <span class="timeline-label">Privilege Escalation (Root)</span>
+                            </a>
+                            <a href="#ch-findings" class="timeline-nav-item" data-target="ch-findings">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">09</span>
+                                <span class="timeline-label">Vulnerability Matrix</span>
+                            </a>
+                            <a href="#ch-conclusion" class="timeline-nav-item" data-target="ch-conclusion">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">10</span>
+                                <span class="timeline-label">Lessons Learned</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div class="timeline-footer">
+                        <button type="button" class="timeline-action-btn js-back-to-top">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>Back to Top</span>
+                        </button>
+                        <a href="../blog.html" class="timeline-action-btn">
+                            <i class="fa-solid fa-list-ul"></i>
+                            <span>All Blogs</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- EDITORIAL CHAPTERS FLOW -->
+            <article class="article-content-flow">
+                
+                <!-- CHAPTER 01: TARGET OVERVIEW & ATTACK CHAIN -->
+                <section class="story-chapter" id="ch-overview" data-number="01" data-title="Target Overview">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-crosshairs"></i> Chapter 01 // Target Intelligence
+                        </span>
+                        <h2 class="chapter-title">Investigation Brief & Target Overview</h2>
+                    </header>
+
+                    <div style="text-align: center; margin: 1.5rem 0 2rem;">
+                        <img src="../images/mr-robot/logo.png" alt="Mr Robot CTF Logo" style="max-height: 110px; width: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
+                    </div>
+
+                    <p class="chapter-intro-lead">
+                        The <strong>Mr. Robot</strong> vulnerable machine is an acclaimed Linux-based boot-to-root challenge themed after the USA Network television series. Designed to emulate real-world misconfigurations, this assessment evaluates web application security, credential hygiene, and Linux privilege containment.
+                    </p>
+
+                    <div class="callout-box callout-info">
+                        <div class="callout-icon"><i class="fa-solid fa-circle-info"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Target Environment Specification</div>
+                            <p class="callout-text">
+                                • <strong>Application Name:</strong> Mr Robot<br>
+                                • <strong>Target IP Address:</strong> <code>192.168.1.41</code> <em>(Note: Target IP addresses depend on your local virtual network configuration; discovery steps are documented below)</em>.<br>
+                                • <strong>Challenge Goal:</strong> Locate and exfiltrate 3 hidden cryptographic key flags and establish root privilege.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>Offensive Security Arsenal</h3>
+                    <p>
+                        The following toolset and open-source intelligence repositories were leveraged throughout this penetration test:
+                    </p>
+
+                    <ul>
+                        <li><strong>Nmap:</strong> Network discovery, service version detection, and vulnerability scripting engine.</li>
+                        <li><strong>Dirb:</strong> Content scanner and web path brute-forcing utility.</li>
+                        <li><strong>Burp Suite Community Edition:</strong> HTTP proxy, request inspection, and payload decoding.</li>
+                        <li><strong>Netcat:</strong> Raw TCP connection handler and reverse shell listener.</li>
+                        <li><strong>External Reference Hubs:</strong>
+                            <a href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer">revshells.com</a> (Reverse Shell Generator),
+                            <a href="https://gtfobins.org/" target="_blank" rel="noopener noreferrer">gtfobins.org</a> (Unix Binaries for Privilege Escalation), and
+                            <a href="https://crackstation.net/" target="_blank" rel="noopener noreferrer">crackstation.net</a> (Rainbow Table Hash Cracking).
+                        </li>
+                    </ul>
+
+                    <!-- INTERACTIVE DEMO 1: ATTACK CHAIN FLOW SIMULATOR -->
+                    <div class="interactive-demo-card" id="attack-chain-demo">
+                        <div class="demo-header">
+                            <div class="demo-title-group">
+                                <div class="demo-icon-badge">
+                                    <i class="fa-solid fa-route"></i>
+                                </div>
+                                <div>
+                                    <h4 class="demo-title">Interactive Attack Chain Flow</h4>
+                                    <div class="demo-sub">Click any milestone or step through the exploitation kill chain</div>
+                                </div>
+                            </div>
+                            <div class="demo-status-badge">
+                                <i class="fa-solid fa-shield-halved"></i> Privilege: <strong>UNAUTHENTICATED</strong>
+                            </div>
+                        </div>
+
+                        <!-- Visual Stepper Nodes -->
+                        <div class="attack-chain-steps">
+                            <div class="chain-step-node active" data-step="0">
+                                <div class="node-phase-tag">Phase 01</div>
+                                <div class="node-title">Recon & Discovery</div>
+                                <div class="node-privilege-tag">Access: Unauthenticated</div>
+                            </div>
+                            <div class="chain-step-node" data-step="1">
+                                <div class="node-phase-tag">Phase 02</div>
+                                <div class="node-title">Initial Access (RCE)</div>
+                                <div class="node-privilege-tag">Access: User 'daemon'</div>
+                            </div>
+                            <div class="chain-step-node" data-step="2">
+                                <div class="node-phase-tag">Phase 03</div>
+                                <div class="node-title">Lateral Movement</div>
+                                <div class="node-privilege-tag">Access: User 'robot'</div>
+                            </div>
+                            <div class="chain-step-node" data-step="3">
+                                <div class="node-phase-tag">Phase 04</div>
+                                <div class="node-title">SUID Root Takeover</div>
+                                <div class="node-privilege-tag">Access: User 'root'</div>
+                            </div>
+                        </div>
+
+                        <!-- Live Interactive Simulation Screen -->
+                        <div class="demo-simulation-screen">
+                            <div class="demo-detail-pane">
+                                <div class="demo-detail-lead"></div>
+                                <div class="demo-payload-inspect"></div>
+                            </div>
+                            <div class="demo-terminal-sim"></div>
+                        </div>
+
+                        <div class="demo-controls-bar">
+                            <span style="font-family:var(--blog-font-mono);font-size:0.75rem;color:var(--blog-text-faint);">
+                                <i class="fa-solid fa-lightbulb"></i> Step-by-step vector progression
+                            </span>
+                            <button type="button" class="demo-btn-action">
+                                Advance to Phase 2 <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CHAPTER 02: INITIAL RECONNAISSANCE -->
+                <section class="story-chapter" id="ch-recon" data-number="02" data-title="Initial Reconnaissance">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-radar"></i> Chapter 02 // Reconnaissance
+                        </span>
+                        <h2 class="chapter-title">Host Identification & Target Scoping</h2>
+                    </header>
+
+                    <p>
+                        In a localized laboratory or black-box assessment, the engagement initiates with Layer 2/Layer 3 host discovery. Identifying active hosts on the subnet allows us to isolate the target virtual machine without generating unnecessary noise across unrelated network services.
+                    </p>
+
+                    <p>
+                        Using tools like <code>netdiscover</code> or ARP scanning, the target IP was resolved to <code>192.168.1.41</code>. With the host online and responding, we transition to in-depth service and port enumeration.
+                    </p>
+
+                    <div class="callout-box callout-tip">
+                        <div class="callout-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Methodology Insight</div>
+                            <p class="callout-text">
+                                Thorough initial reconnaissance dictates the velocity of the entire penetration test. Prematurely launching heavy automated scanners can miss subtle web endpoints or cause denial-of-service in fragile environments.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CHAPTER 03: PORT SCANNING -->
+                <section class="story-chapter" id="ch-scanning" data-number="03" data-title="Port Scanning (Nmap)">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-network-wired"></i> Chapter 03 // Network Scanning
+                        </span>
+                        <h2 class="chapter-title">Port Scanning with Nmap</h2>
+                    </header>
+
+                    <p>
+                        To identify listening TCP sockets and uncover running service banners, we execute a comprehensive Nmap scan utilizing default NSE scripts and service version detection.
+                    </p>
+
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="terminal-dot dot-red"></span>
+                                <span class="terminal-dot dot-yellow"></span>
+                                <span class="terminal-dot dot-green"></span>
+                            </div>
+                            <span class="terminal-title">bash — nmap port scan</span>
+                            <button type="button" class="code-copy-btn">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd"><span class="prompt-sym">$</span>nmap -sV -sC 192.168.1.41</div>
+                        </div>
+                    </div>
+
+                    <p>
+                        The scan reveals port 80 (HTTP) actively responding with an Apache web server, as captured below:
+                    </p>
+
+                    <!-- EVIDENCE 01 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #01 — Nmap Scan Output
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/1.png" alt="Nmap scan terminal output showing open port 80" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 1:</strong> Port 80 is open, confirming an active HTTP service hosted on the target machine.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Navigating to <code>http://192.168.1.41/</code> in a browser loads an interactive web terminal interface inspired by the Mr. Robot series:
+                    </p>
+
+                    <!-- EVIDENCE 02 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #02 — Target Web Interface
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/2.png" alt="Browser view of the Mr. Robot web landing page" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 2:</strong> The web root reveals an interactive terminal simulation interface.
+                        </figcaption>
+                    </figure>
+                </section>
+
+
+                <!-- CHAPTER 04: DIRECTORY ENUMERATION -->
+                <section class="story-chapter" id="ch-enumeration" data-number="04" data-title="Directory Enumeration">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-folder-tree"></i> Chapter 04 // Content Discovery
+                        </span>
+                        <h2 class="chapter-title">Directory & Endpoint Enumeration</h2>
+                    </header>
+
+                    <p>
+                        With HTTP confirmed on port 80, web directory brute-forcing is initiated using <code>dirb</code>. The objective is to discover hidden administrative portals, API routes, or exposed static assets.
+                    </p>
+
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="terminal-dot dot-red"></span>
+                                <span class="terminal-dot dot-yellow"></span>
+                                <span class="terminal-dot dot-green"></span>
+                            </div>
+                            <span class="terminal-title">bash — directory fuzzing</span>
+                            <button type="button" class="code-copy-btn">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd"><span class="prompt-sym">$</span>dirb http://192.168.1.41/ -o dirbResult.txt</div>
+                            <div class="terminal-cmd"><span class="prompt-sym">$</span>grep "CODE:200" dirbResult.txt</div>
+                        </div>
+                    </div>
+
+                    <p>
+                        Filtering the output for HTTP 200 (OK) response codes isolates valid, publicly reachable endpoints:
+                    </p>
+
+                    <!-- EVIDENCE 03 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #03 — Dirb HTTP 200 URLs
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/3.png" alt="Filtered dirb output displaying discovered HTTP 200 endpoints" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 3:</strong> Extraction of all HTTP status 200 URLs, highlighting endpoints like <code>/robots.txt</code>, <code>/license</code>, and WordPress core paths.
+                        </figcaption>
+                    </figure>
+                </section>
+
+
+                <!-- CHAPTER 05: KEY 1 GATHERING -->
+                <section class="story-chapter" id="ch-key1" data-number="05" data-title="Key 1: Robots.txt">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-key"></i> Chapter 05 // Objective Exfiltration
+                        </span>
+                        <h2 class="chapter-title">Sensitive Information Disclosure & Key 1 of 3</h2>
+                    </header>
+
+                    <p>
+                        Each discovered endpoint was systematically probed using Burp Suite to analyze HTTP request/response headers and raw payloads.
+                    </p>
+
+                    <!-- EVIDENCE 04 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #04 — Burp Suite Inspection
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/4.png" alt="Burp Suite HTTP request and response inspection" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 4:</strong> Requesting enumerated paths and analyzing server responses in Burp Suite.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Inspecting <code>/robots.txt</code> exposed two intriguing disallowed entries: <code>fsocity.dic</code> (a wordlist file) and <code>key-1-of-3.txt</code>:
+                    </p>
+
+                    <!-- EVIDENCE 05 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #05 — Exposed /robots.txt
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/5.png" alt="Robots.txt contents showing fsocity.dic and key-1-of-3.txt" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 5:</strong> <code>/robots.txt</code> discloses the path to access the first key flag and a custom dictionary.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Navigating directly to <code>http://192.168.1.41/key-1-of-3.txt</code> successfully retrieves the first key flag without requiring authentication:
+                    </p>
+
+                    <!-- EVIDENCE 06 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #06 — Key 1 of 3 Retrieval
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/6.png" alt="Exfiltration of Key 1 of 3" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 6:</strong> Retrieval of the plaintext secret flag for Key 1.
+                        </figcaption>
+                    </figure>
+
+                    <!-- KEY 1 TROPHY COMPONENT -->
+                    <div class="flag-trophy-card">
+                        <div class="flag-header">
+                            <span class="flag-badge">
+                                <i class="fa-solid fa-trophy"></i> Objective Acquired — Key 1 of 3
+                            </span>
+                            <span style="font-family:var(--blog-font-mono);font-size:0.75rem;color:var(--blog-green);">STATUS: CAPTURED</span>
+                        </div>
+                        <div class="flag-value-box">
+                            <span id="flag-key-1">073403c8a58a1f80d943455fb30724b9</span>
+                            <button type="button" class="code-copy-btn" data-target="#flag-key-1">
+                                <i class="fa-regular fa-copy"></i> Copy Flag
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CHAPTER 06: INITIAL ACCESS & REVERSE SHELL -->
+                <section class="story-chapter" id="ch-initial-access" data-number="06" data-title="Initial Access & RCE">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-terminal"></i> Chapter 06 // Weaponization & Foothold
+                        </span>
+                        <h2 class="chapter-title">Initial Access, Credential Recovery & Reverse Shell</h2>
+                    </header>
+
+                    <p>
+                        Further examination of <code>/license</code> uncovered an encoded string. Inspecting and decoding it via Burp Decoder (or our interactive decoding sandbox below) reveals a valid administrative credential pair:
+                    </p>
+
+                    <!-- EVIDENCE 07 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #07 — /license Decoding
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/7.png" alt="Burp Decoder decoding Base64 string from /license" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 7:</strong> Base64 decoding of the string inside <code>/license</code> yields credentials <code>elliot:ER28-0652</code>.
+                        </figcaption>
+                    </figure>
+
+                    <!-- INTERACTIVE DEMO 2: CRYPTO & HASH SANDBOX -->
+                    <div class="crypto-sandbox-card" id="crypto-sandbox">
+                        <div class="sandbox-tabs">
+                            <button type="button" class="sandbox-tab-btn active" data-tab="b64">
+                                <i class="fa-solid fa-code"></i> Base64 License Decoder
+                            </button>
+                            <button type="button" class="sandbox-tab-btn" data-tab="md5">
+                                <i class="fa-solid fa-hashtag"></i> MD5 Password Cracker
+                            </button>
+                        </div>
+
+                        <!-- Tab 1: Base64 Decoder -->
+                        <div class="sandbox-pane active" data-pane="b64">
+                            <div class="sandbox-input-group">
+                                <label for="b64-input" class="sandbox-input-label">Encoded String from /license</label>
+                                <input type="text" id="b64-input" class="sandbox-input" value="ZWxsaW90OkVSMjgtMDY1Mg==">
+                            </div>
+                            <div class="sandbox-action-row">
+                                <button type="button" id="b64-decode-btn" class="sandbox-btn">
+                                    <i class="fa-solid fa-bolt"></i> Decode Payload
+                                </button>
+                            </div>
+                            <div id="b64-result" class="sandbox-result-box">
+                                Ready to decode. Click "Decode Payload" above.
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: MD5 Cracker -->
+                        <div class="sandbox-pane" data-pane="md5">
+                            <div class="sandbox-input-group">
+                                <label for="md5-input" class="sandbox-input-label">MD5 Hash from /home/robot/password.raw-md5</label>
+                                <input type="text" id="md5-input" class="sandbox-input" value="c3fcd3d76192e4007dfb496cca67e13b">
+                            </div>
+                            <div class="sandbox-action-row">
+                                <button type="button" id="md5-crack-btn" class="sandbox-btn">
+                                    <i class="fa-solid fa-database"></i> Query Rainbow Table
+                                </button>
+                            </div>
+                            <div id="md5-result" class="sandbox-result-box">
+                                Enter an MD5 hash and click "Query Rainbow Table".
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        We proceed to the WordPress administrative portal at <code>/wp-login.php</code>:
+                    </p>
+
+                    <!-- EVIDENCE 08 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #08 — WordPress Login Portal
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/8.png" alt="WordPress login interface on /wp-login.php" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 8:</strong> Navigating to the WordPress authentication gateway.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Submitting the recovered credentials (<code>elliot:ER28-0652</code>) successfully authenticates us into the WordPress administrator dashboard:
+                    </p>
+
+                    <!-- EVIDENCE 09 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #09 — Administrative Access Granted
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/9.png" alt="Logged into WordPress dashboard as elliot" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 9:</strong> Administrative session established within the WordPress backend.
+                        </figcaption>
+                    </figure>
+
+                    <h3>Weaponizing the Theme Editor (Remote Code Execution)</h3>
+                    <p>
+                        In WordPress installations where file editing is not explicitly restricted via <code>DISALLOW_FILE_EDIT</code>, administrators have write privileges over active theme templates.
+                    </p>
+
+                    <p>
+                        Accessing <code>/wp-admin/theme-editor.php?file=404.php&theme=twentyfifteen</code> allowed us to replace the default 404 error template with a PHP reverse shell payload sourced from <a href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer">revshells.com</a>:
+                    </p>
+
+                    <!-- EVIDENCE 10 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #10 — Injected Theme 404 Template
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/10.png" alt="Modifying WordPress 404.php template with PHP reverse shell" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 10:</strong> Replacing the contents of <code>twentyfifteen/404.php</code> with a pentest reverse shell payload.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Before executing the trigger, we spawn a local Netcat listener to intercept the incoming TCP connection:
+                    </p>
+
+                    <!-- EVIDENCE 11 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #11 — Netcat Listener Setup
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/11.png" alt="Netcat listening on local port" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 11:</strong> Netcat listener running on attacking machine.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Requesting any non-existent URI on the server causes WordPress to invoke the weaponized <code>404.php</code> file:
+                    </p>
+
+                    <!-- EVIDENCE 12 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #12 — Triggering Payload Execution
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/12.png" alt="Sending GET request to non-existent route to execute 404 template" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 12:</strong> Triggering the payload by issuing an HTTP GET to a non-existent route.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        The reverse shell catches immediately, granting us interactive command execution under the <code>daemon</code> service account:
+                    </p>
+
+                    <!-- EVIDENCE 13 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #13 — Shell Foothold Acquired
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/13.png" alt="Interactive reverse shell session obtained as daemon" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 13:</strong> Shell established as user <code>daemon</code>. Initial foothold achieved!
+                        </figcaption>
+                    </figure>
+                </section>
+
+
+                <!-- CHAPTER 07: LATERAL MOVEMENT & KEY 2 -->
+                <section class="story-chapter" id="ch-lateral" data-number="07" data-title="Lateral Movement (Key 2)">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-user-lock"></i> Chapter 07 // Lateral Movement
+                        </span>
+                        <h2 class="chapter-title">Local Privilege Escalation & Key 2 of 3</h2>
+                    </header>
+
+                    <p>
+                        Enumerating local file systems, we navigate to <code>/home/robot</code>:
+                    </p>
+
+                    <!-- EVIDENCE 14 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #14 — Inspecting /home/robot
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/14.png" alt="Listing directory contents of /home/robot" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 14:</strong> Navigating to <code>/home/robot</code> reveals <code>key-2-of-3.txt</code> and <code>password.raw-md5</code>.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Attempting to read <code>key-2-of-3.txt</code> directly as <code>daemon</code> fails due to strict discretionary access controls:
+                    </p>
+
+                    <!-- EVIDENCE 15 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #15 — Permission Denied
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/15.png" alt="Access denied when attempting to cat key-2-of-3.txt" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 15:</strong> <code>key-2-of-3.txt</code> is only readable by user <code>robot</code>.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        However, the companion file <code>password.raw-md5</code> had world-readable permissions. Reading it revealed an MD5-hashed credential string:
+                    </p>
+
+                    <!-- EVIDENCE 16 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #16 — Exposed MD5 Hash
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/16.png" alt="Reading password.raw-md5 containing MD5 hash" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 16:</strong> <code>password.raw-md5</code> contents: <code>robot:c3fcd3d76192e4007dfb496cca67e13b</code>.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Submitting the MD5 hash <code>c3fcd3d76192e4007dfb496cca67e13b</code> to CrackStation immediately matched a precomputed rainbow table entry:
+                    </p>
+
+                    <!-- EVIDENCE 17 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #17 — CrackStation Hash Lookup
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/17.png" alt="Cracking MD5 hash on CrackStation to reveal alphabet plaintext" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 17:</strong> Plaintext password recovered: <code>abcdefghijklmnopqrstuvwxyz</code>.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        With the credential pair <code>robot:abcdefghijklmnopqrstuvwxyz</code>, we switch user identity to <code>robot</code>:
+                    </p>
+
+                    <!-- EVIDENCE 18 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #18 — Switching User to Robot
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/18.png" alt="Executing su robot and switching context" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 18:</strong> Successfully transitioning to user <code>robot</code>.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Now authorized, we read <code>key-2-of-3.txt</code> and secure the second objective:
+                    </p>
+
+                    <!-- EVIDENCE 19 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #19 — Key 2 of 3 Retrieval
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/19.png" alt="Reading key-2-of-3.txt" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 19:</strong> Exfiltrating Key 2 of 3.
+                        </figcaption>
+                    </figure>
+
+                    <!-- KEY 2 TROPHY COMPONENT -->
+                    <div class="flag-trophy-card">
+                        <div class="flag-header">
+                            <span class="flag-badge">
+                                <i class="fa-solid fa-trophy"></i> Objective Acquired — Key 2 of 3
+                            </span>
+                            <span style="font-family:var(--blog-font-mono);font-size:0.75rem;color:var(--blog-green);">STATUS: CAPTURED</span>
+                        </div>
+                        <div class="flag-value-box">
+                            <span id="flag-key-2">822c73956184f694993bede3eb39f959</span>
+                            <button type="button" class="code-copy-btn" data-target="#flag-key-2">
+                                <i class="fa-regular fa-copy"></i> Copy Flag
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CHAPTER 08: PRIVILEGE ESCALATION & ROOT -->
+                <section class="story-chapter" id="ch-privesc" data-number="08" data-title="Privilege Escalation (Root)">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-shield-virus"></i> Chapter 08 // Privilege Escalation
+                        </span>
+                        <h2 class="chapter-title">SUID Binary Exploitation & Complete Root Takeover</h2>
+                    </header>
+
+                    <p>
+                        User <code>robot</code> does not possess sudo privileges. To achieve complete host compromise, we search for executables with the SetUID bit configured, allowing non-privileged users to execute binaries with the effective permissions of the file owner (root).
+                    </p>
+
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="terminal-dot dot-red"></span>
+                                <span class="terminal-dot dot-yellow"></span>
+                                <span class="terminal-dot dot-green"></span>
+                            </div>
+                            <span class="terminal-title">bash — SUID discovery audit</span>
+                            <button type="button" class="code-copy-btn">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd"><span class="prompt-sym">$</span>find / -perm -u=s -type f 2>/dev/null</div>
+                        </div>
+                    </div>
+
+                    <!-- EVIDENCE 20 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #20 — SUID Binaries Enumeration
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/20.png" alt="Output of SUID discovery revealing /usr/local/bin/nmap" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 20:</strong> SUID audit exposes an elevated <code>nmap</code> binary located at <code>/usr/local/bin/nmap</code>.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Consulting <a href="https://gtfobins.org/" target="_blank" rel="noopener noreferrer">gtfobins.org</a> confirms that older versions of Nmap support an interactive execution shell mode (<code>--interactive</code>) which can escape to an interactive root subshell via <code>!sh</code>:
+                    </p>
+
+                    <!-- EVIDENCE 21 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #21 — GTFOBins Nmap Vector
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/21.png" alt="GTFOBins documentation on escaping Nmap interactive mode" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 21:</strong> Researching the SUID escape technique on GTFOBins.
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        Executing <code>nmap --interactive</code> and issuing <code>!sh</code> immediately drops us into an unrestricted root shell:
+                    </p>
+
+                    <!-- EVIDENCE 22 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #22 — Root Shell Spawning
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/22.png" alt="Interactive nmap escape yielding root shell" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 22:</strong> Full administrative privileges obtained. UID=0 (root).
+                        </figcaption>
+                    </figure>
+
+                    <p>
+                        With root authority confirmed, we navigate into <code>/root</code> and open <code>key-3-of-3.txt</code> to complete the CTF objective:
+                    </p>
+
+                    <!-- EVIDENCE 23 -->
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge">
+                                <i class="fa-solid fa-camera"></i> Evidence #23 — Final Key Exfiltration
+                            </span>
+                            <span class="evidence-zoom-hint">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand
+                            </span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/mr-robot/23.png" alt="Reading /root/key-3-of-3.txt to capture final flag" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 23:</strong> Exfiltration of the final flag, Key 3 of 3.
+                        </figcaption>
+                    </figure>
+
+                    <!-- KEY 3 TROPHY COMPONENT -->
+                    <div class="flag-trophy-card">
+                        <div class="flag-header">
+                            <span class="flag-badge">
+                                <i class="fa-solid fa-trophy"></i> Final Objective Acquired — Key 3 of 3
+                            </span>
+                            <span style="font-family:var(--blog-font-mono);font-size:0.75rem;color:var(--blog-green);">STATUS: COMPLETE ROOT COMPROMISE</span>
+                        </div>
+                        <div class="flag-value-box">
+                            <span id="flag-key-3">04787ddef27c3dee1ee161b21670b4e4</span>
+                            <button type="button" class="code-copy-btn" data-target="#flag-key-3">
+                                <i class="fa-regular fa-copy"></i> Copy Flag
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CHAPTER 09: VULNERABILITY MATRIX & FINDINGS -->
+                <section class="story-chapter" id="ch-findings" data-number="09" data-title="Vulnerability Matrix">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-bug"></i> Chapter 09 // Security Assessment
+                        </span>
+                        <h2 class="chapter-title">Formal Findings & Remediation Advisory</h2>
+                    </header>
+
+                    <p>
+                        The following section compiles the four core vulnerabilities discovered during the assessment, categorized according to the OWASP Top 10 framework with remediation guidelines for system administrators.
+                    </p>
+
+                    <!-- FINDING 1 -->
+                    <div class="vulnerability-card severity-high">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">1. Sensitive Information Disclosure</div>
+                                <div class="vuln-owasp-tag">OWASP A02:2021 — Cryptographic Failures</div>
+                            </div>
+                            <span class="vuln-severity-badge">High Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            Sensitive endpoints, dictionary wordlists, and encoded credentials were stored in publicly accessible web directories without access control.
+                        </p>
+                        <div class="vuln-details-grid">
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Affected Assets</span>
+                                <span class="vuln-text"><code>/robots.txt</code>, <code>/license</code>, <code>/fsocity.dic</code></span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Impact</span>
+                                <span class="vuln-text">Allows remote unauthenticated attackers to harvest administrative credentials and sensitive files without brute-force requirements.</span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Remediation & Mitigation</span>
+                                <div class="vuln-mitigation-box">
+                                    • Remove sensitive credentials and wordlists from public document roots.<br>
+                                    • Implement strict HTTP authentication on configuration assets.<br>
+                                    • Ensure <code>robots.txt</code> does not advertise confidential endpoints.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FINDING 2 -->
+                    <div class="vulnerability-card severity-critical">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">2. Insecure WordPress Configuration</div>
+                                <div class="vuln-owasp-tag">OWASP A05:2021 — Security Misconfiguration</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The built-in WordPress theme and plugin editor was enabled, permitting authenticated administrators to overwrite server-side PHP templates with arbitrary executable code.
+                        </p>
+                        <div class="vuln-details-grid">
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Affected Endpoint</span>
+                                <span class="vuln-text"><code>/wp-admin/theme-editor.php</code></span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Impact</span>
+                                <span class="vuln-text">Direct pathway from administrative login to arbitrary Remote Code Execution (RCE) on the underlying operating system.</span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Remediation Snippet</span>
+                                <div class="vuln-mitigation-box">
+                                    Enforce file editor hardening in <code>wp-config.php</code>:
+                                    <div class="terminal-block" style="margin:0.5rem 0 0;">
+                                        <div class="terminal-content" style="padding:0.6rem 0.8rem;">
+                                            <code>define('DISALLOW_FILE_EDIT', true);</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FINDING 3 -->
+                    <div class="vulnerability-card severity-critical">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">3. Remote Code Execution (Reverse Shell)</div>
+                                <div class="vuln-owasp-tag">OWASP A03:2021 — Injection</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            Server executed attacker-supplied reverse shell code via weaponized 404 handler, yielding an interactive command-line session under service user <code>daemon</code>.
+                        </p>
+                        <div class="vuln-details-grid">
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Impact</span>
+                                <span class="vuln-text">Full interactive command execution on the host server and unrestricted file system read access across several user directories.</span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Remediation & Mitigation</span>
+                                <div class="vuln-mitigation-box">
+                                    • Disable dangerous PHP process execution functions (<code>exec</code>, <code>passthru</code>, <code>shell_exec</code>, <code>system</code>) in <code>php.ini</code>.<br>
+                                    • Deploy a Web Application Firewall (WAF) to intercept outbound reverse TCP sockets.<br>
+                                    • Run web services in containerized, unprivileged sandboxes with read-only root filesystems.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FINDING 4 -->
+                    <div class="vulnerability-card severity-critical">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">4. Privilege Escalation via SUID Binary</div>
+                                <div class="vuln-owasp-tag">OWASP A05:2021 — Security Misconfiguration</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The legacy Nmap binary at <code>/usr/local/bin/nmap</code> possessed the SUID permission bit owned by root, allowing standard users to break out of interactive mode into an unconfined root shell.
+                        </p>
+                        <div class="vuln-details-grid">
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Affected Binary</span>
+                                <span class="vuln-text"><code>/usr/local/bin/nmap</code></span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Impact</span>
+                                <span class="vuln-text">Immediate escalation from unprivileged local user to root, resulting in total server compromise.</span>
+                            </div>
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Remediation Snippet</span>
+                                <div class="vuln-mitigation-box">
+                                    Strip the SUID permission from the binary immediately:
+                                    <div class="terminal-block" style="margin:0.5rem 0 0;">
+                                        <div class="terminal-content" style="padding:0.6rem 0.8rem;">
+                                            <code># chmod -s /usr/local/bin/nmap</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CHAPTER 10: CONCLUSION & LESSONS LEARNED -->
+                <section class="story-chapter" id="ch-conclusion" data-number="10" data-title="Lessons Learned">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-graduation-cap"></i> Chapter 10 // Retrospective
+                        </span>
+                        <h2 class="chapter-title">Conclusion & Defensive Key Takeaways</h2>
+                    </header>
+
+                    <p class="chapter-intro-lead">
+                        The Mr. Robot challenge illustrates how minor operational oversights — such as leaving sensitive documentation in web roots, neglecting WordPress hardening, and granting unnecessary SUID privileges — can be chained together by an adversary to transition from zero network access to absolute root control.
+                    </p>
+
+                    <p>
+                        Hands-on penetration testing is the ultimate teacher. If you are following this guide, I highly encourage spinning up the machine locally in VirtualBox or VMware and replicating the steps independently. Experiment with different reverse shell payloads, practice manual hash cracking, and write your own automated scripts.
+                    </p>
+
+                    <div class="callout-box callout-tip" style="margin-top: 2rem;">
+                        <div class="callout-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Author's Note</div>
+                            <p class="callout-text">
+                                Thank you for taking the time to read through this technical report! I hope this walkthrough helps demystify the offensive methodology. Keep sharpening your skills, stay curious, and best of luck on your cybersecurity journey!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </article>
+        </main>
+    </div>
+
+    <!-- MOBILE CHAPTER DRAWER & STICKY BOTTOM BAR (< 1024px) -->
+    <div class="mobile-toc-bar" id="mobile-toc-bar">
+        <div class="mobile-toc-status">
+            <span class="mobile-toc-chip" id="mobile-current-chapter">01. Target Overview</span>
+            <span style="color:var(--blog-text-faint);">•</span>
+            <span class="reading-percent-val" style="color:var(--blog-text-muted);">0%</span>
+        </div>
+        <button type="button" class="mobile-toc-toggle-btn" id="mobile-toc-open-btn">
+            <i class="fa-solid fa-list-ol"></i> Chapters
+        </button>
+    </div>
+
+    <div class="mobile-toc-drawer" id="mobile-toc-drawer">
+        <div class="mobile-drawer-sheet">
+            <div class="mobile-drawer-header">
+                <span class="mobile-drawer-title">Investigation Chapters</span>
+                <button type="button" class="mobile-drawer-close" id="mobile-drawer-close-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="mobile-drawer-list" id="mobile-drawer-list">
+                <!-- Dynamically populated or mirrored -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN EVIDENCE LIGHTBOX MODAL -->
+    <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Evidence Image Lightbox">
+        <div class="lightbox-container">
+            <button type="button" class="lightbox-close-btn" aria-label="Close Lightbox">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <button type="button" class="lightbox-nav-btn lightbox-prev" aria-label="Previous Image">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button type="button" class="lightbox-nav-btn lightbox-next" aria-label="Next Image">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+            <img src="" alt="" class="lightbox-img">
+            <div class="lightbox-caption-bar">
+                <div class="lightbox-title"></div>
+                <div class="lightbox-desc"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Site Footer -->
+    <footer style="border-top:1px solid var(--blog-border-subtle); padding: 3rem 1.5rem; text-align: center; color: var(--blog-text-faint); font-family: var(--blog-font-mono); font-size: 0.85rem; position: relative; z-index: 1;">
+        <div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <p>&copy; <span id="year">2026</span> Pavin Das. All rights reserved.</p>
+            <p style="font-size: 0.78rem;">Cybersecurity Portfolio & Technical Research</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script src="../script.js"></script>
+    <script src="../blog.js"></script>
 </body>
 
 </html>

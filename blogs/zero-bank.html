@@ -13,102 +13,377 @@
     <meta name="author" content="Pavin Das">
     <link rel="canonical" href="https://pavindas.github.io/blogs/zero-bank.html" />
     <meta name="keywords" content="Zero Bank, VAPT, Vulnerability Assessment, Penetration Testing, Web Application Security, Broken Access Control, SQL Injection, CSRF, Pavin Das">
-    <link rel="stylesheet" href="../styles.css">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../blog.css">
     <link rel="alternate" type="text/markdown" title="LLM-friendly version" href="/llms.txt" />
 </head>
 
-<body>
+<body class="blog-article-page">
+    <!-- Reading Progress Bar -->
+    <div id="scroll-progress-bar"></div>
+
+    <!-- Background Grid -->
     <canvas id="particles"></canvas>
 
-    <header>
-        <div class="nav-container">
-            <a href="../index.html" class="logo">PAVIN<span>DAS</span></a>
-            <nav>
-                <span class="blog-views"><i class="fa-regular fa-eye"></i> <span id="blog-page-views">Loading...</span>
-                    reads</span>
-                <a href="../blog.html" class="nav-link">← Back to Blogs</a>
-            </nav>
+    <!-- Header Navigation -->
+    <header class="blog-header">
+        <div class="blog-nav-inner">
+            <div class="blog-nav-left">
+                <a href="../index.html" class="blog-brand">PAVIN<span>DAS</span></a>
+                <span class="blog-brand-divider">/</span>
+                <span class="blog-brand-context">VAPT Report</span>
+            </div>
+            <div class="blog-nav-right">
+                <span class="blog-views-badge">
+                    <i class="fa-regular fa-eye"></i>
+                    <span id="blog-page-views">Loading...</span> reads
+                </span>
+                <a href="../blog.html" class="blog-nav-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>All Articles</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section>
-            <div class="container">
-                <article class="glass-strong blog-article">
-                    <center>
-                        <h1 class="section-title">Penetration Test Report: Zero Bank</h1>
-                        <div class="blog-post-subtitle"
-                            style="margin-top: 0.5rem; margin-bottom: 1.5rem; font-size: 1.1rem; color: rgb(224, 255, 224); font-family: inherit; font-weight: 500;">
-                            A VAPT assessment on the Zero Bank Web application
+    <div class="article-page-wrap">
+        <section class="article-hero">
+            <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>/</span>
+                <a href="../blog.html">Blogs</a>
+                <span>/</span>
+                <span style="color:var(--blog-green);">Zero Bank VAPT</span>
+            </nav>
+
+            <div class="article-category-pill">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>VAPT Assessment · Web Application Security · Financial Systems</span>
+            </div>
+
+            <h1 class="article-main-title">Penetration Test Report: Zero Bank</h1>
+            <p class="article-subtitle">
+                A rigorous web application vulnerability assessment of Zero Bank. Uncovering severe access control failures, unauthenticated administrative access, IDOR on customer accounts, CSRF financial transfers, and SQL injection flaws.
+            </p>
+
+            <div class="article-meta-bar">
+                <div class="meta-author-group">
+                    <img src="../images/about.jpg" alt="Pavin Das" class="meta-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/88970616?v=4'">
+                    <div class="meta-author-details">
+                        <span class="meta-author-name">Pavin Das</span>
+                        <span class="meta-author-role">Security Engineer & Penetration Tester</span>
+                    </div>
+                </div>
+
+                <div class="meta-specs-group">
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <span>Target: <strong>Zero Bank Web Application</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Est. Read: <strong>10 min</strong></span>
+                    </div>
+                    <div class="meta-spec-item">
+                        <i class="fa-solid fa-bug"></i>
+                        <span>Findings: <strong>7 Core Vulnerabilities</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="article-layout-grid">
+            <!-- STICKY VERTICAL TIMELINE -->
+            <aside class="timeline-nav-wrapper" aria-label="Table of Contents Timeline">
+                <div class="timeline-card">
+                    <div class="timeline-header">
+                        <span class="timeline-header-title">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Audit Sections</span>
+                        </span>
+                        <span class="timeline-progress-pill reading-percent-val">0%</span>
+                    </div>
+
+                    <div class="timeline-track-container">
+                        <div class="timeline-guide-line">
+                            <div class="timeline-guide-line-progress"></div>
                         </div>
-                    </center>
 
-                    <pre class="blog-content">
+                        <nav id="timeline-nav-items">
+                            <a href="#zb-overview" class="timeline-nav-item active" data-target="zb-overview">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">01</span>
+                                <span class="timeline-label">Target & Scope</span>
+                            </a>
+                            <a href="#zb-bac" class="timeline-nav-item" data-target="zb-bac">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">02</span>
+                                <span class="timeline-label">Broken Access Control</span>
+                            </a>
+                            <a href="#zb-creds" class="timeline-nav-item" data-target="zb-creds">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">03</span>
+                                <span class="timeline-label">Default Credentials</span>
+                            </a>
+                            <a href="#zb-idor" class="timeline-nav-item" data-target="zb-idor">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">04</span>
+                                <span class="timeline-label">Insecure Direct Object Reference</span>
+                            </a>
+                            <a href="#zb-csrf" class="timeline-nav-item" data-target="zb-csrf">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">05</span>
+                                <span class="timeline-label">CSRF Fraud Transfer</span>
+                            </a>
+                            <a href="#zb-injection" class="timeline-nav-item" data-target="zb-injection">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">06</span>
+                                <span class="timeline-label">Stored XSS & SQLi</span>
+                            </a>
+                            <a href="#zb-outdated" class="timeline-nav-item" data-target="zb-outdated">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">07</span>
+                                <span class="timeline-label">Outdated Components</span>
+                            </a>
+                            <a href="#zb-conclusion" class="timeline-nav-item" data-target="zb-conclusion">
+                                <span class="timeline-bullet"></span>
+                                <span class="timeline-step-num">08</span>
+                                <span class="timeline-label">Conclusion</span>
+                            </a>
+                        </nav>
+                    </div>
 
-<br>
-<h2>Target Information</h2>
-<li><b>Application name:</b> <span>Zero Bank</span></li>
-<li><b>Application URL:</b> <a href="http://zero.webappsecurity.com/" target="_blank" rel="noopener noreferrer">http://zero.webappsecurity.com/</a></li>
+                    <div class="timeline-footer">
+                        <button type="button" class="timeline-action-btn js-back-to-top">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>Back to Top</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
 
-<h2>Testing Details</h2>
-<h3>Tools used:</h3>
-<li>Gobuster</li>
-<li>Burp Suite CE</li>
-<li>Wappalyzer</li>
+            <!-- EDITORIAL CHAPTERS FLOW -->
+            <article class="article-content-flow">
+                
+                <!-- SECTION 1 -->
+                <section class="story-chapter" id="zb-overview" data-number="01" data-title="Target & Scope">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-crosshairs"></i> Section 01 // Target Scope
+                        </span>
+                        <h2 class="chapter-title">Target Information & Testing Details</h2>
+                    </header>
 
-<h3>Websites used:</h3>
-<li><a href="https://csrfshark.github.io/app/" target="_blank" rel="noopener noreferrer">https://csrfshark.github.io/app/</a></li>
+                    <div class="callout-box callout-info">
+                        <div class="callout-icon"><i class="fa-solid fa-circle-info"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Assessment Scope</div>
+                            <p class="callout-text">
+                                • <strong>Application Name:</strong> Zero Bank<br>
+                                • <strong>Target URL:</strong> <a href="http://zero.webappsecurity.com/" target="_blank" rel="noopener noreferrer">http://zero.webappsecurity.com/</a><br>
+                                • <strong>Tools Leveraged:</strong> Gobuster, Burp Suite Community Edition, Wappalyzer<br>
+                                • <strong>External Utility:</strong> <a href="https://csrfshark.github.io/app/" target="_blank" rel="noopener noreferrer">CSRF Shark PoC Generator</a><br>
+                                • <strong>Methodology:</strong> Enumeration, Manual logic validation, Exploitation, and remediation reporting.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
-<h3>Approach:</h3>
-<li>Enumeration (Gobuster, Wappalyzer)</li>
-<li>Manual testing (Burp Suite)</li>
-<li>Exploitation & validation</li>
-<hr>
+                <!-- SECTION 2 -->
+                <section class="story-chapter" id="zb-bac" data-number="02" data-title="Broken Access Control">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-lock-open"></i> Section 02 // Finding 1
+                        </span>
+                        <h2 class="chapter-title">1. Broken Access Control & Sensitive Admin Exposure</h2>
+                    </header>
 
-<h2>Technical Findings</h2>
+                    <div class="vulnerability-card severity-critical">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">Unauthenticated Administrative Interface & Logs Exposure</div>
+                                <div class="vuln-owasp-tag">OWASP A01:2021 — Broken Access Control</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The administrative dashboard and system error logs are directly accessible without any authentication or authorization checks, exposing internal system telemetry and administrative controls.
+                        </p>
+                        <div class="vuln-details-grid">
+                            <div class="vuln-section-block">
+                                <span class="vuln-label">Affected Endpoints</span>
+                                <span class="vuln-text"><code>/admin/</code>, <code>/errors/logs</code></span>
+                            </div>
+                        </div>
+                    </div>
 
-<h3><span>1 Broken Access Control & Sensitive Admin Exposure</span></h3>
-→ A01:2021 - Broken Access Control
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #01 — Direct Admin Access</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/1.gif" alt="Admin portal accessible without authentication" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 1:</strong> Accessing <code>/admin/</code> directly reveals sensitive user controls without requiring login.
+                        </figcaption>
+                    </figure>
 
-The admin panel is accessible without authentication, exposing sensitive user information and administrative functionality.
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #02 — Sensitive Error Logs</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/2.png" alt="Exposed system logs" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 2:</strong> Exposed error logs on <code>/errors/logs</code>.
+                        </figcaption>
+                    </figure>
+                </section>
 
-<b>Affected Endpoints:</b>
-<li>/admin/</li>
-<li>/errors/logs</li>
+                <!-- SECTION 3 -->
+                <section class="story-chapter" id="zb-creds" data-number="03" data-title="Default Credentials">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-id-badge"></i> Section 03 // Finding 2
+                        </span>
+                        <h2 class="chapter-title">2. Default Credentials Exposure</h2>
+                    </header>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/1.gif" alt="">
-<img src="/images/zero-bank/2.png" alt="">
+                    <div class="vulnerability-card severity-high">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">Authentication Bypass via Exposed Default Credentials</div>
+                                <div class="vuln-owasp-tag">OWASP A07:2021 — Identification & Authentication Failures</div>
+                            </div>
+                            <span class="vuln-severity-badge">High Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The application discloses default administrative and user credentials directly through the login help documentation.
+                        </p>
+                    </div>
 
-<h3><span>2 Default Credentials Exposure</span></h3>
-→ A07:2021 - Identification and Authentication Failures
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="terminal-dot dot-red"></span>
+                                <span class="terminal-dot dot-yellow"></span>
+                                <span class="terminal-dot dot-green"></span>
+                            </div>
+                            <span class="terminal-title">Disclosed Credentials</span>
+                            <button type="button" class="code-copy-btn">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd">username:password</div>
+                        </div>
+                    </div>
 
-The application exposes default credentials through the login help feature.
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #03 — Login Help Disclosure</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/3.png" alt="Default credentials exposed in help" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 3:</strong> Help documentation disclosing valid authentication credentials.
+                        </figcaption>
+                    </figure>
+                </section>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/3.png" alt="">
-<article class="glass-strong blog-article">Credentials &gt; username:password</article>
+                <!-- SECTION 4 -->
+                <section class="story-chapter" id="zb-idor" data-number="04" data-title="IDOR Account Activity">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-user-shield"></i> Section 04 // Finding 3
+                        </span>
+                        <h2 class="chapter-title">3. Insecure Direct Object Reference (IDOR)</h2>
+                    </header>
 
-<h3><span>3 Insecure Direct Object Reference (IDOR)</span></h3>
-→ A01:2021 - Broken Access Control
+                    <div class="vulnerability-card severity-critical">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">Horizontal Privilege Escalation on Account Activity</div>
+                                <div class="vuln-owasp-tag">OWASP A01:2021 — Broken Access Control</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The application does not validate whether the authenticated user owns the requested account object, allowing any customer to view the financial transaction history of arbitrary accounts by altering query parameters.
+                        </p>
+                    </div>
 
-The application does not validate user authorization when accessing account data.
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <span class="terminal-title">IDOR Parameter Tampering</span>
+                            <button type="button" class="code-copy-btn">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-cmd">GET /account-activity.html?accountId=1 → Tampered to: accountId=2</div>
+                        </div>
+                    </div>
 
-<b>Proof:</b>
-<article class="glass-strong blog-article">/account-activity.html?accountId=1 → accountId=2</article>
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #04 — Account IDOR Proof</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/4.gif" alt="Accessing another user's bank transactions via IDOR" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 4:</strong> Modifying <code>accountId</code> exposes sensitive financial records of other users.
+                        </figcaption>
+                    </figure>
+                </section>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/4.gif" alt="">
+                <!-- SECTION 5 -->
+                <section class="story-chapter" id="zb-csrf" data-number="05" data-title="CSRF Transfer">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-money-bill-transfer"></i> Section 05 // Finding 4
+                        </span>
+                        <h2 class="chapter-title">4. Cross-Site Request Forgery (CSRF) on Fund Transfer</h2>
+                    </header>
 
-<h3><span>4 Cross Site Request Forgery (CSRF)</span></h3>
-→ A01:2021 - Broken Access Control
+                    <div class="vulnerability-card severity-critical">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">Unauthorized Fund Transfers via CSRF</div>
+                                <div class="vuln-owasp-tag">OWASP A01:2021 — Broken Access Control</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The fund transfer confirmation endpoint lacks anti-CSRF token verification and SameSite cookie restrictions, enabling attackers to force victims into transferring money.
+                        </p>
+                    </div>
 
-Sensitive actions (fraud transfer) due to lack of CSRF protection
-
-<b>Proof:</b>
-<article class="glass-strong blog-article">
-&lt;!DOCTYPE html&gt;
+                    <div class="terminal-block">
+                        <div class="terminal-header">
+                            <span class="terminal-title">HTML CSRF PoC Exploit</span>
+                            <button type="button" class="code-copy-btn">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="terminal-content">
+                            <pre style="color:#00ff88;font-size:0.82rem;line-height:1.5;">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
     &lt;body&gt;
         &lt;h1&gt;Form CSRF PoC&lt;/h1&gt;
@@ -120,56 +395,198 @@ Sensitive actions (fraud transfer) due to lack of CSRF protection
             &lt;input type="submit" value="Submit Request"&gt;
         &lt;/form&gt;
     &lt;/body&gt;
-&lt;/html&gt;
-</article>
+&lt;/html&gt;</pre>
+                        </div>
+                    </div>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/5.gif" alt="">
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #05 — CSRF Fraud Execution</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/5.gif" alt="Executing CSRF attack to trigger fund transfer" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 5:</strong> Automated execution of fund transfer via cross-site request forgery.
+                        </figcaption>
+                    </figure>
+                </section>
 
-<h3><span>5 Stored XSS</span></h3>
-→ A03:2021 - Injection
+                <!-- SECTION 6 -->
+                <section class="story-chapter" id="zb-injection" data-number="06" data-title="Stored XSS & SQLi">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-syringe"></i> Section 06 // Findings 5 & 6
+                        </span>
+                        <h2 class="chapter-title">5. Stored XSS & 6. SQL Injection</h2>
+                    </header>
 
-User input is stored and executed in the admin panel without sanitization.
+                    <div class="vulnerability-card severity-high">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">Stored Cross-Site Scripting (XSS) in Admin Panel</div>
+                                <div class="vuln-owasp-tag">OWASP A03:2021 — Injection</div>
+                            </div>
+                            <span class="vuln-severity-badge">High Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            User input submitted through support or feedback functionality is stored without sanitization and executes in the context of the administrator panel.
+                        </p>
+                    </div>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/6.png" alt="">
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #06 — Stored XSS Execution</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/6.png" alt="Stored XSS alert popup in admin portal" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 6:</strong> Stored XSS payload triggering inside the admin portal.
+                        </figcaption>
+                    </figure>
 
-<h3><span>6 SQL Injection</span></h3>
-→ A03:2021 - Injection
+                    <div class="vulnerability-card severity-critical" style="margin-top:2.5rem;">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">SQL Injection in Payee Parameter</div>
+                                <div class="vuln-owasp-tag">OWASP A03:2021 — Injection</div>
+                            </div>
+                            <span class="vuln-severity-badge">Critical Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            The <code>payeeId</code> parameter fails to use parameterized queries, allowing SQL syntax injection to extract backend database records.
+                        </p>
+                    </div>
 
-The payeeId parameter is vulnerable to SQL Injection
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #07 — SQL Injection Validation</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/7.png" alt="SQL injection error and data extraction" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 7:</strong> SQL Injection proof in <code>payeeId</code> parameter.
+                        </figcaption>
+                    </figure>
+                </section>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/7.png" alt="">
+                <!-- SECTION 7 -->
+                <section class="story-chapter" id="zb-outdated" data-number="07" data-title="Outdated Components">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Section 07 // Finding 7
+                        </span>
+                        <h2 class="chapter-title">7. Information Disclosure & Outdated Server Components</h2>
+                    </header>
 
-<h3><span>7 Information Disclosure & Outdated Components</span></h3>
-→ A06:2021 - Vulnerable and Outdated Components
+                    <div class="vulnerability-card severity-medium">
+                        <div class="vuln-top-row">
+                            <div class="vuln-title-area">
+                                <div class="vuln-name">Outdated Apache Tomcat 7.0.70 with Known CVEs</div>
+                                <div class="vuln-owasp-tag">OWASP A06:2021 — Vulnerable & Outdated Components</div>
+                            </div>
+                            <span class="vuln-severity-badge">Medium Severity</span>
+                        </div>
+                        <p class="vuln-text">
+                            Detailed server version banners expose Apache Tomcat 7.0.70, an end-of-life release subject to multiple publicly documented remote code execution and denial-of-service vulnerabilities.
+                        </p>
+                    </div>
 
-The application exposes server details (Apache Tomcat 7.0.70), which is outdated and contain known vulnerabilities.
+                    <figure class="evidence-card">
+                        <div class="evidence-header">
+                            <span class="evidence-badge"><i class="fa-solid fa-camera"></i> Evidence #08 — Apache Tomcat 7.0.70 Exposure</span>
+                            <span class="evidence-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Click to expand</span>
+                        </div>
+                        <div class="evidence-img-wrap">
+                            <img src="../images/zero-bank/8.png" alt="Server error banner disclosing Apache Tomcat 7.0.70" class="evidence-img">
+                        </div>
+                        <figcaption class="evidence-caption">
+                            <strong>Figure 8:</strong> Server header revealing outdated Apache Tomcat 7.0.70.
+                        </figcaption>
+                    </figure>
+                </section>
 
-<b>Impact:</b>
-<li>Attackers can exploit known CVEs</li>
-<li>Increased attack surface</li>
+                <!-- SECTION 8 -->
+                <section class="story-chapter" id="zb-conclusion" data-number="08" data-title="Conclusion">
+                    <header class="chapter-header">
+                        <span class="chapter-eyebrow">
+                            <i class="fa-solid fa-graduation-cap"></i> Section 08 // Summary
+                        </span>
+                        <h2 class="chapter-title">Conclusion & Strategic Remediation</h2>
+                    </header>
 
-<b>Evidence:</b>
-<img src="/images/zero-bank/8.png" alt="">
+                    <p class="chapter-intro-lead">
+                        Identifying and remediating critical vulnerabilities such as Broken Access Control, IDOR, and SQL Injection is indispensable for financial web platforms. Implementing zero-trust authorization checks, parameterized queries, and anti-CSRF tokens must be prioritized.
+                    </p>
 
-<hr>
-<br>
+                    <div class="callout-box callout-tip" style="margin-top:2rem;">
+                        <div class="callout-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <div class="callout-content">
+                            <div class="callout-title">Author's Note</div>
+                            <p class="callout-text">
+                                Thank you for reading this VAPT assessment report on the Zero Bank application! I hope this walkthrough delivers practical insights into offensive testing methodologies and mitigation best practices. Best of luck on your hacking journey!
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
-<h2><span>Conclusion</span></h2>
-Thank you for reading this VAPT assessment report on the Zero Bank application!
+            </article>
+        </main>
+    </div>
 
-Identifying and understanding these critical vulnerabilities such as Broken Access Control and SQL Injection is crucial for maintaining robust application security. I hope this report provides valuable insights into how these flaws are discovered and the potential risks they carry in real world scenarios.
+    <!-- Mobile Drawer & Bottom Bar -->
+    <div class="mobile-toc-bar" id="mobile-toc-bar">
+        <div class="mobile-toc-status">
+            <span class="mobile-toc-chip" id="mobile-current-chapter">01. Target & Scope</span>
+            <span style="color:var(--blog-text-faint);">•</span>
+            <span class="reading-percent-val" style="color:var(--blog-text-muted);">0%</span>
+        </div>
+        <button type="button" class="mobile-toc-toggle-btn" id="mobile-toc-open-btn">
+            <i class="fa-solid fa-list-ol"></i> Sections
+        </button>
+    </div>
 
-<b><span>Best of luck on your hacking journey!</span></b>
-                    </pre>
-                </article>
+    <div class="mobile-toc-drawer" id="mobile-toc-drawer">
+        <div class="mobile-drawer-sheet">
+            <div class="mobile-drawer-header">
+                <span class="mobile-drawer-title">Assessment Sections</span>
+                <button type="button" class="mobile-drawer-close" id="mobile-drawer-close-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-        </section>
-    </main>
+            <div class="mobile-drawer-list" id="mobile-drawer-list"></div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Evidence Image Lightbox">
+        <div class="lightbox-container">
+            <button type="button" class="lightbox-close-btn" aria-label="Close Lightbox"><i class="fa-solid fa-xmark"></i></button>
+            <button type="button" class="lightbox-nav-btn lightbox-prev" aria-label="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+            <button type="button" class="lightbox-nav-btn lightbox-next" aria-label="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+            <img src="" alt="" class="lightbox-img">
+            <div class="lightbox-caption-bar">
+                <div class="lightbox-title"></div>
+                <div class="lightbox-desc"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Site Footer -->
+    <footer style="border-top:1px solid var(--blog-border-subtle); padding: 3rem 1.5rem; text-align: center; color: var(--blog-text-faint); font-family: var(--blog-font-mono); font-size: 0.85rem; position: relative; z-index: 1;">
+        <div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <p>&copy; <span id="year">2026</span> Pavin Das. All rights reserved.</p>
+            <p style="font-size: 0.78rem;">Cybersecurity Portfolio & Technical Research</p>
+        </div>
+    </footer>
 
     <script src="../script.js"></script>
+    <script src="../blog.js"></script>
 </body>
 
 </html>
